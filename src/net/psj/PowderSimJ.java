@@ -15,6 +15,9 @@ public class PowderSimJ extends BasicGame{
 	public static final int height = 600;
 	public static final int cell = 4;
 	
+	int mouseX;
+	int mouseY;
+	
 	public Air air = new Air();
 	
 	public PowderSimJ()
@@ -24,7 +27,6 @@ public class PowderSimJ extends BasicGame{
  
     @Override
     public void init(GameContainer gc) throws SlickException {
- 
     }
  
     public static void main(String[] args) throws SlickException
@@ -41,13 +43,34 @@ public class PowderSimJ extends BasicGame{
 
 	@Override
 	public void update(GameContainer arg0, int arg1) throws SlickException {
+		
+		air.update_air();
+		air.make_kernel();
+		air.update_airh();
+		
 		Input input = arg0.getInput();
 		onKeypress(input);
-		air.update_air();
+		mouseX = input.getMouseX();
+		mouseY = input.getMouseY();
+		if(input.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON))
+			onMouseClick();
+		if(input.isMouseButtonDown(Input.MOUSE_RIGHT_BUTTON))
+			onMouseRightClick();
+
 	}
 	
 	public void onKeypress(Input keys)
 	{
 		
+	}
+	
+	public void onMouseClick()
+	{
+		air.pv[mouseY/cell][mouseX/cell] -= 1.0f;
+	}
+	
+	public void onMouseRightClick()
+	{
+		air.pv[mouseY/cell][mouseX/cell] += 1.0f;
 	}
 }

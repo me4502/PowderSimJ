@@ -23,7 +23,8 @@ public class Air {
 
 	float[][] vx = new float[PowderSimJ.height/PowderSimJ.cell][PowderSimJ.width/PowderSimJ.cell], ovx = new float[PowderSimJ.height/PowderSimJ.cell][PowderSimJ.width/PowderSimJ.cell];
 	float[][] vy = new float[PowderSimJ.height/PowderSimJ.cell][PowderSimJ.width/PowderSimJ.cell], ovy = new float[PowderSimJ.height/PowderSimJ.cell][PowderSimJ.width/PowderSimJ.cell];
-	float[][] pv = new float[PowderSimJ.height/PowderSimJ.cell][PowderSimJ.width/PowderSimJ.cell], opv = new float[PowderSimJ.height/PowderSimJ.cell][PowderSimJ.width/PowderSimJ.cell];
+	public float[][] pv = new float[PowderSimJ.height/PowderSimJ.cell][PowderSimJ.width/PowderSimJ.cell];
+	float[][] opv = new float[PowderSimJ.height/PowderSimJ.cell][PowderSimJ.width/PowderSimJ.cell];
 	boolean[][] bmap_blockair = new boolean[PowderSimJ.height/PowderSimJ.cell][PowderSimJ.width/PowderSimJ.cell];
 	boolean[][] bmap_blockairh = new boolean[PowderSimJ.height/PowderSimJ.cell][PowderSimJ.width/PowderSimJ.cell];
 
@@ -138,11 +139,11 @@ public class Air {
 		int x, y, i, j;
 		float dp, dx, dy, f, tx, ty;
 
-		for (y=0; y<YRES/CELL; y++)
-			for (x=0; x<XRES/CELL; x++)
-			{
+		//for (y=0; y<YRES/CELL; y++)
+		//	for (x=0; x<XRES/CELL; x++)
+		//	{
 				//bmap_blockair[y][x] = (bmap[y][x]==WL_WALL || bmap[y][x]==WL_WALLELEC || (bmap[y][x]==WL_EWALL && !emap[y][x]));
-			}
+		//	}
 		if (airMode != 4) { //airMode 4 is no air/pressure update
 			for (i=0; i<YRES/CELL; i++) //reduces pressure/velocity on the edges every frame
 			{
@@ -320,10 +321,13 @@ public class Air {
 		for (int y=0; y<YRES/CELL; y++) //update velocity and pressure
 			for (int x=0; x<XRES/CELL; x++)
 			{
-				if(vy[y][x]!=0f)
+				if(vy[y][x]>0f)
 				{
-					System.out.println("Draw");
-					RenderUtils.drawRect(x*CELL, y*CELL, CELL, CELL, 0xFFFFFFFF);
+					RenderUtils.drawRect(x*CELL, y*CELL, CELL, CELL, 0xFF0000FF);
+				}
+				if(vy[y][x]<0f)
+				{
+					RenderUtils.drawRect(x*CELL, y*CELL, CELL, CELL, 0xFFFF0000);
 				}
 			}
 	}

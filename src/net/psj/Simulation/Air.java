@@ -56,11 +56,11 @@ public class Air {
 	{
 		int x, y, i, j;
 		float odh, dh, dx, dy, f, tx, ty;
-		for (y=0; y<YRES/CELL; y++)
-			for (x=0; x<XRES/CELL; x++)
-			{
+		//for (y=0; y<YRES/CELL; y++)
+			//for (x=0; x<XRES/CELL; x++)
+			//{
 				//TODO WALLS bmap_blockairh[y][x] = (bmap[y][x]==WL_WALL || bmap[y][x]==WL_WALLELEC || bmap[y][x]==WL_GRAV || (bmap[y][x]==WL_EWALL && !emap[y][x]));
-			}
+			//}
 		for (i=0; i<YRES/CELL; i++) //reduces pressure/velocity on the edges every frame
 		{
 			hv[i][0] = 295.15f;
@@ -316,8 +316,7 @@ public class Air {
 	}
 	
 	public void drawAir()
-	{
-		//TODO make something modify the air pv[20][42] -= 2.0f;
+        {
 		for (int y=0; y<YRES/CELL; y++) //update velocity and pressure
 			for (int x=0; x<XRES/CELL; x++)
 			{

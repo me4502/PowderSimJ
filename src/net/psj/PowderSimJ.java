@@ -13,7 +13,7 @@ public class PowderSimJ extends BasicGame{
 	
 	public static final int width = 800;
 	public static final int height = 600;
-	public static final int cell = 4;
+	public static final int cell = 16;
 	
 	int mouseX;
 	int mouseY;

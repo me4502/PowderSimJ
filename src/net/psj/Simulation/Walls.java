@@ -17,7 +17,7 @@ public class Walls {
 			for(int y = 0; y < PowderSimJ.height/PowderSimJ.cell; y++)
 			{
 				if(bmap[y][x]==null) continue;
-				bmap[y][x].render();
+				bmap[y][x].render(x,y);
 			}
 	}
 }

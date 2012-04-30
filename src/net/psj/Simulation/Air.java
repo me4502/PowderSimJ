@@ -94,8 +94,8 @@ public class Air {
 					for (i=-1; i<2; i++)
 					{
 						if (y+j>0 && y+j<YRES/CELL-2 &&
-								x+i>0 && x+i<XRES/CELL-2/* TODO &&
-								!bmap_blockairh[y+j][x+i]*/)
+								x+i>0 && x+i<XRES/CELL-2 &&
+								!bmap_blockairh[y+j][x+i])
 						{
 							f = kernel[i+1+(j+1)*3];
 							dh += hv[y+j][x+i]*f;

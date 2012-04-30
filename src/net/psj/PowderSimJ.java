@@ -12,8 +12,13 @@ import org.newdawn.slick.SlickException;
 public class PowderSimJ extends BasicGame{
 	
 	public static final int width = 800;
+<<<<<<< HEAD
 	public static final int height = 400;
 	public static final int cell = 4;
+=======
+	public static final int height = 600;
+	public static final int cell = 16;
+>>>>>>> 510fc352ce3229e2d32fb1646529039d6e6ce56d
 	
 	public static final int MAX_TEMP = 9000;
 	public static final int MIN_TEMP = 0;

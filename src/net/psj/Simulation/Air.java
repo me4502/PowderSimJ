@@ -35,7 +35,8 @@ public class Air {
 	float[][] cb_pv = new float[PowderSimJ.height/PowderSimJ.cell][PowderSimJ.width/PowderSimJ.cell];
 	float[][] cb_hv = new float[PowderSimJ.height/PowderSimJ.cell][PowderSimJ.width/PowderSimJ.cell];
 
-	float[][] fvx = new float[PowderSimJ.height/PowderSimJ.cell][PowderSimJ.width/PowderSimJ.cell], fvy = new float[PowderSimJ.height/PowderSimJ.cell][PowderSimJ.width/PowderSimJ.cell];
+	public float[][] fvx = new float[PowderSimJ.height/PowderSimJ.cell][PowderSimJ.width/PowderSimJ.cell];
+	public float[][] fvy = new float[PowderSimJ.height/PowderSimJ.cell][PowderSimJ.width/PowderSimJ.cell];
 
 	float[][] hv = new float[PowderSimJ.height/PowderSimJ.cell][PowderSimJ.width/PowderSimJ.cell], ohv = new float[PowderSimJ.height/PowderSimJ.cell][PowderSimJ.width/PowderSimJ.cell]; // For Ambient Heat
 

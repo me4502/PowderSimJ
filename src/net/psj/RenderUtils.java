@@ -14,6 +14,13 @@ public class RenderUtils {
 			g.drawRect(x, y, w, height);
 	}
 	
+	public static void drawLine(int x, int y, int x2, int y2, int colour)
+	{
+		Graphics g = new Graphics();
+		g.setColor(new Color(colour));
+		g.drawLine(x, y, x2, y2);
+	}
+	
 	public static int clamp_flt(float f, float min, float max)
 	{
 		if (f<min)

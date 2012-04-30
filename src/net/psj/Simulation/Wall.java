@@ -4,19 +4,14 @@ import net.psj.PowderSimJ;
 import net.psj.RenderUtils;
 
 public class Wall {
-
-	public int x;
-	public int y;
 	
-	int CELL = PowderSimJ.cell;
+	protected int CELL = PowderSimJ.cell;
 	
-	public Wall(int x,int y)
+	public Wall()
 	{
-		this.x = x;
-		this.y = y;
 	}
 	
-	public void render()
+	public void render(int x, int y)
 	{
 		RenderUtils.drawRect(x*CELL, y*CELL, CELL, CELL, 0xFFFFFF);
 	}

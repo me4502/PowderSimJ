@@ -1,5 +1,7 @@
 package net.psj.Simulation;
 
+import Walls.WallBasic;
+import Walls.WallFan;
 import net.psj.PowderSimJ;
 import net.psj.RenderUtils;
 
@@ -56,11 +58,11 @@ public class Air {
 	{
 		int x, y, i, j;
 		float odh, dh, dx, dy, f, tx, ty;
-		//for (y=0; y<YRES/CELL; y++)
-		//for (x=0; x<XRES/CELL; x++)
-		//{
-		//TODO WALLS bmap_blockairh[y][x] = (bmap[y][x]==WL_WALL || bmap[y][x]==WL_WALLELEC || bmap[y][x]==WL_GRAV || (bmap[y][x]==WL_EWALL && !emap[y][x]));
-		//}
+		for (y=0; y<YRES/CELL; y++)
+			for (x=0; x<XRES/CELL; x++)
+			{
+				bmap_blockairh[y][x] = Walls.bmap[y][x]!=null && (Walls.bmap[y][x] instanceof WallBasic);
+			}
 		for (i=0; i<YRES/CELL; i++) //reduces pressure/velocity on the edges every frame
 		{
 			hv[i][0] = 295.15f;
@@ -147,7 +149,7 @@ public class Air {
 		for (y=0; y<YRES/CELL; y++)
 			for (x=0; x<XRES/CELL; x++)
 			{
-				bmap_blockair[y][x] = Walls.bmap[y][x]!=null;
+				bmap_blockair[y][x] = Walls.bmap[y][x]!=null && (Walls.bmap[y][x] instanceof WallBasic);
 			}
 		if (airMode != 4) { //airMode 4 is no air/pressure update
 			//for (i=0; i<YRES/CELL; i++) //reduces pressure/velocity on the edges every frame
@@ -273,11 +275,11 @@ public class Air {
 						dy += AIR_VADV*tx*ty*vy[j+1][i+1];
 					}
 
-					//if (bmap[y][x] == WL_FAN)
-					//{
-					//	dx += fvx[y][x];
-					//	dy += fvy[y][x];
-					//}
+					if (Walls.bmap[y][x] instanceof WallFan)
+					{
+						dx += fvx[y][x];
+						dy += fvy[y][x];
+					}
 					// pressure/velocity caps
 					if (dp > 256.0f) dp = 256.0f;
 					if (dp < -256.0f) dp = -256.0f;

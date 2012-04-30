@@ -1,7 +1,6 @@
 package net.psj;
 
 import net.psj.Simulation.Air;
-import net.psj.Simulation.Wall;
 import net.psj.Simulation.Walls;
 
 import org.newdawn.slick.AppGameContainer;
@@ -11,9 +10,11 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 
+import Walls.*;
+
 public class PowderSimJ extends BasicGame{
 	
-	public static final int width = 800;
+	public static final int width = 400;
 	public static final int height = 400;
 	public static final int cell = 4;
 	
@@ -34,7 +35,7 @@ public class PowderSimJ extends BasicGame{
 	
 	public PowderSimJ()
     {
-        super("PowderSimJ");
+        super("Cabbage Game");
     }
  
     @Override
@@ -98,12 +99,24 @@ public class PowderSimJ extends BasicGame{
 	
 	public void onMouseClick()
 	{
+		while(!(mouseY%cell==0))
+			mouseY--;
+		while(!(mouseX%cell==0))
+			mouseX--;
+		if(Walls.bmap[mouseY/cell][mouseX/cell] instanceof WallFan)
+		{
+			
+		}
 		air.pv[mouseY/cell][mouseX/cell] -= 500.0f;
 	}
 	
 	public void onMouseRightClick()
 	{
-		wall.bmap[Math.round(mouseY/cell)][Math.round(mouseX/cell)] = new Wall(Math.round(mouseX/cell),Math.round(mouseY/cell));
+		while(!(mouseY%cell==0))
+			mouseY--;
+		while(!(mouseX%cell==0))
+			mouseX--;
+		Walls.bmap[mouseY/cell][mouseX/cell] = new WallFan();
 		//air.pv[mouseY/cell][mouseX/cell] += 500.0f;
 	}
 }

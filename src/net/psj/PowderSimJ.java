@@ -116,6 +116,7 @@ public class PowderSimJ extends BasicGame{
 			isSettingFan = !isSettingFan;
 			fanX = mouseX;
 			fanY = mouseY;
+			return;
 		}
 		else if(isSettingFan)
 		{
@@ -124,6 +125,7 @@ public class PowderSimJ extends BasicGame{
 			air.fvx[fanY/cell][fanX/cell] = nfvx;
 			air.fvy[fanY/cell][fanX/cell] = nfvy;
 			isSettingFan = false;
+			return;
 		}
 		air.pv[mouseY/cell][mouseX/cell] -= 500.0f;
 	}

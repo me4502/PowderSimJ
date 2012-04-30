@@ -24,8 +24,12 @@ public class PowderSimJ extends BasicGame{
 	int mouseX;
 	int mouseY;
 	
-	int keyTick = 5;
+	int fanX,fanY;
 	
+	boolean isSettingFan = false;
+		
+	int keyTick = 5;
+		
 	public boolean isPaused = false;
 	
 	public boolean airHeat = false;
@@ -52,8 +56,12 @@ public class PowderSimJ extends BasicGame{
 
 	@Override
 	public void render(GameContainer arg0, Graphics arg1) throws SlickException {
-		air.drawAir();
+		if(!isSettingFan)
+			air.drawAir();
 		wall.renderWalls();
+		
+		if(isSettingFan)
+			RenderUtils.drawLine(fanX,fanY,mouseX,mouseY, 0xFFFFFF);
 	}
 
 	@Override
@@ -72,9 +80,9 @@ public class PowderSimJ extends BasicGame{
 		mouseX = input.getMouseX();
 		mouseY = input.getMouseY();
 		if(input.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON))
-			onMouseClick();
+			onMouseClick(arg0);
 		if(input.isMouseButtonDown(Input.MOUSE_RIGHT_BUTTON))
-			onMouseRightClick();
+			onMouseRightClick(arg0);
 	}
 	
 	public void onKeypress(Input keys)
@@ -97,20 +105,30 @@ public class PowderSimJ extends BasicGame{
 			isPaused = !isPaused;
 	}
 	
-	public void onMouseClick()
+	public void onMouseClick(GameContainer arg0)
 	{
 		while(!(mouseY%cell==0))
 			mouseY--;
 		while(!(mouseX%cell==0))
 			mouseX--;
-		if(Walls.bmap[mouseY/cell][mouseX/cell] instanceof WallFan)
+		if(Walls.bmap[mouseY/cell][mouseX/cell] instanceof WallFan && arg0.getInput().isKeyDown(Input.KEY_LSHIFT))
 		{
-			
+			isSettingFan = !isSettingFan;
+			fanX = mouseX;
+			fanY = mouseY;
+		}
+		else if(isSettingFan)
+		{
+			float nfvx = (mouseX-fanX)*0.055f;
+			float nfvy = (mouseY-fanY)*0.055f;
+			air.fvx[fanY/cell][fanX/cell] = nfvx;
+			air.fvy[fanY/cell][fanX/cell] = nfvy;
+			isSettingFan = false;
 		}
 		air.pv[mouseY/cell][mouseX/cell] -= 500.0f;
 	}
 	
-	public void onMouseRightClick()
+	public void onMouseRightClick(GameContainer arg0)
 	{
 		while(!(mouseY%cell==0))
 			mouseY--;

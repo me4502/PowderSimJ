@@ -8,7 +8,7 @@ public class Air {
 	int YRES = PowderSimJ.height;
 	int XRES = PowderSimJ.width;
 	int CELL = PowderSimJ.cell;
-	
+
 	int airMode = 0;
 	int displayAir = 2;
 
@@ -57,10 +57,10 @@ public class Air {
 		int x, y, i, j;
 		float odh, dh, dx, dy, f, tx, ty;
 		//for (y=0; y<YRES/CELL; y++)
-			//for (x=0; x<XRES/CELL; x++)
-			//{
-				//TODO WALLS bmap_blockairh[y][x] = (bmap[y][x]==WL_WALL || bmap[y][x]==WL_WALLELEC || bmap[y][x]==WL_GRAV || (bmap[y][x]==WL_EWALL && !emap[y][x]));
-			//}
+		//for (x=0; x<XRES/CELL; x++)
+		//{
+		//TODO WALLS bmap_blockairh[y][x] = (bmap[y][x]==WL_WALL || bmap[y][x]==WL_WALLELEC || bmap[y][x]==WL_GRAV || (bmap[y][x]==WL_EWALL && !emap[y][x]));
+		//}
 		for (i=0; i<YRES/CELL; i++) //reduces pressure/velocity on the edges every frame
 		{
 			hv[i][0] = 295.15f;
@@ -147,12 +147,12 @@ public class Air {
 		//for (y=0; y<YRES/CELL; y++)
 		//	for (x=0; x<XRES/CELL; x++)
 		//	{
-				//bmap_blockair[y][x] = (bmap[y][x]==WL_WALL || bmap[y][x]==WL_WALLELEC || (bmap[y][x]==WL_EWALL && !emap[y][x]));
+		//bmap_blockair[y][x] = (bmap[y][x]==WL_WALL || bmap[y][x]==WL_WALLELEC || (bmap[y][x]==WL_EWALL && !emap[y][x]));
 		//	}
 		if (airMode != 4) { //airMode 4 is no air/pressure update
 			//for (i=0; i<YRES/CELL; i++) //reduces pressure/velocity on the edges every frame
 			//{
-				
+
 			//}
 			for (i=0; i<XRES/CELL; i++) //reduces pressure/velocity on the edges every frame
 			{
@@ -287,7 +287,7 @@ public class Air {
 					if (dy < -256.0f) dy = -256.0f;
 
 
-					/*switch (airMode)
+					switch (airMode)
 					{
 					default:
 					case 0:  //Default
@@ -306,7 +306,7 @@ public class Air {
 						break;
 					case 4: //No Update
 						break;
-					}*/
+					}
 
 					ovx[y][x] = dx;
 					ovy[y][x] = dy;
@@ -320,9 +320,10 @@ public class Air {
 			//memcpy(pv, opv, sizeof(pv));
 		}
 	}
-	
+
 	public void drawAir()
-        {
+	{
+		if(displayAir==0) return;	
 		for (int y=0; y<YRES/CELL; y++) //update velocity and pressure
 			for (int x=0; x<XRES/CELL; x++)
 			{

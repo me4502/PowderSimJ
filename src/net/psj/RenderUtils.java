@@ -1,5 +1,6 @@
 package net.psj;
 
+import org.lwjgl.opengl.GL11;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 
@@ -25,5 +26,10 @@ public class RenderUtils {
 	public static int PIXRGB(int r, int g, int b) 
 	{
 		return ((((r)<<8)&0xF800)|(((g)<<3)&0x07E0)|(((b)>>3)&0x001F));
+	}
+	
+	public static int PIXRGBA(int r,int g,int b,int a) 
+	{
+		return (((a)<<24)|((r)<<16)|((g)<<8)|((b)));
 	}
 }

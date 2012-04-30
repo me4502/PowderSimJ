@@ -1,7 +1,5 @@
 package net.psj.Simulation;
 
-import org.lwjgl.opengl.*;
-
 import net.psj.PowderSimJ;
 import net.psj.RenderUtils;
 
@@ -12,6 +10,7 @@ public class Air {
 	int CELL = PowderSimJ.cell;
 	
 	int airMode = 0;
+	int displayAir = 3;
 
 	float AIR_TSTEPP = 0.3f;
 	float AIR_TSTEPV = 0.4f;
@@ -21,8 +20,9 @@ public class Air {
 
 	float[] kernel = new float[9];
 
-	float[][] vx = new float[PowderSimJ.height/PowderSimJ.cell][PowderSimJ.width/PowderSimJ.cell], ovx = new float[PowderSimJ.height/PowderSimJ.cell][PowderSimJ.width/PowderSimJ.cell];
-	float[][] vy = new float[PowderSimJ.height/PowderSimJ.cell][PowderSimJ.width/PowderSimJ.cell], ovy = new float[PowderSimJ.height/PowderSimJ.cell][PowderSimJ.width/PowderSimJ.cell];
+	public float[][] vx = new float[PowderSimJ.height/PowderSimJ.cell][PowderSimJ.width/PowderSimJ.cell];
+	float[][] ovx = new float[PowderSimJ.height/PowderSimJ.cell][PowderSimJ.width/PowderSimJ.cell];
+	public float[][] vy = new float[PowderSimJ.height/PowderSimJ.cell][PowderSimJ.width/PowderSimJ.cell], ovy = new float[PowderSimJ.height/PowderSimJ.cell][PowderSimJ.width/PowderSimJ.cell];
 	public float[][] pv = new float[PowderSimJ.height/PowderSimJ.cell][PowderSimJ.width/PowderSimJ.cell];
 	float[][] opv = new float[PowderSimJ.height/PowderSimJ.cell][PowderSimJ.width/PowderSimJ.cell];
 	boolean[][] bmap_blockair = new boolean[PowderSimJ.height/PowderSimJ.cell][PowderSimJ.width/PowderSimJ.cell];
@@ -56,19 +56,15 @@ public class Air {
 	{
 		int x, y, i, j;
 		float odh, dh, dx, dy, f, tx, ty;
-		for (y=0; y<YRES/CELL; y++)
-			for (x=0; x<XRES/CELL; x++)
-			{
+		//for (y=0; y<YRES/CELL; y++)
+		//	for (x=0; x<XRES/CELL; x++)
+		//	{
 				//TODO WALLS bmap_blockairh[y][x] = (bmap[y][x]==WL_WALL || bmap[y][x]==WL_WALLELEC || bmap[y][x]==WL_GRAV || (bmap[y][x]==WL_EWALL && !emap[y][x]));
-			}
-		for (i=0; i<YRES/CELL; i++) //reduces pressure/velocity on the edges every frame
-		{
-			hv[i][0] = 295.15f;
-			hv[i][1] = 295.15f;
-			hv[i][XRES/CELL-3] = 295.15f;
-			hv[i][XRES/CELL-2] = 295.15f;
-			hv[i][XRES/CELL-1] = 295.15f;
-		}
+		//	}
+		//for (i=0; i<YRES/CELL; i++) //reduces pressure/velocity on the edges every frame
+		//{
+		//	
+		//}
 		for (i=0; i<XRES/CELL; i++) //reduces pressure/velocity on the edges every frame
 		{
 			hv[0][i] = 295.15f;
@@ -79,6 +75,11 @@ public class Air {
 		}
 		for (y=0; y<YRES/CELL; y++) //update velocity and pressure
 		{
+			hv[y][0] = 295.15f;
+			hv[y][1] = 295.15f;
+			hv[y][XRES/CELL-3] = 295.15f;
+			hv[y][XRES/CELL-2] = 295.15f;
+			hv[y][XRES/CELL-1] = 295.15f;
 			for (x=0; x<XRES/CELL; x++)
 			{
 				dh = 0.0f;
@@ -145,22 +146,10 @@ public class Air {
 				//bmap_blockair[y][x] = (bmap[y][x]==WL_WALL || bmap[y][x]==WL_WALLELEC || (bmap[y][x]==WL_EWALL && !emap[y][x]));
 		//	}
 		if (airMode != 4) { //airMode 4 is no air/pressure update
-			for (i=0; i<YRES/CELL; i++) //reduces pressure/velocity on the edges every frame
-			{
-				pv[i][0] = pv[i][0]*0.8f;
-				pv[i][1] = pv[i][1]*0.8f;
-				pv[i][2] = pv[i][2]*0.8f;
-				pv[i][XRES/CELL-2] = pv[i][XRES/CELL-2]*0.8f;
-				pv[i][XRES/CELL-1] = pv[i][XRES/CELL-1]*0.8f;
-				vx[i][0] = vx[i][1]*0.9f;
-				vx[i][1] = vx[i][2]*0.9f;
-				vx[i][XRES/CELL-2] = vx[i][XRES/CELL-3]*0.9f;
-				vx[i][XRES/CELL-1] = vx[i][XRES/CELL-2]*0.9f;
-				vy[i][0] = vy[i][1]*0.9f;
-				vy[i][1] = vy[i][2]*0.9f;
-				vy[i][XRES/CELL-2] = vy[i][XRES/CELL-3]*0.9f;
-				vy[i][XRES/CELL-1] = vy[i][XRES/CELL-2]*0.9f;
-			}
+			//for (i=0; i<YRES/CELL; i++) //reduces pressure/velocity on the edges every frame
+			//{
+				
+			//}
 			for (i=0; i<XRES/CELL; i++) //reduces pressure/velocity on the edges every frame
 			{
 				pv[0][i] = pv[0][i]*0.8f;
@@ -179,6 +168,19 @@ public class Air {
 			}
 			for (j=1; j<YRES/CELL; j++) //clear some velocities near walls
 			{
+				pv[j][0] = pv[j][0]*0.8f;
+				pv[j][1] = pv[j][1]*0.8f;
+				pv[j][2] = pv[j][2]*0.8f;
+				pv[j][XRES/CELL-2] = pv[j][XRES/CELL-2]*0.8f;
+				pv[j][XRES/CELL-1] = pv[j][XRES/CELL-1]*0.8f;
+				vx[j][0] = vx[j][1]*0.9f;
+				vx[j][1] = vx[j][2]*0.9f;
+				vx[j][XRES/CELL-2] = vx[j][XRES/CELL-3]*0.9f;
+				vx[j][XRES/CELL-1] = vx[j][XRES/CELL-2]*0.9f;
+				vy[j][0] = vy[j][1]*0.9f;
+				vy[j][1] = vy[j][2]*0.9f;
+				vy[j][XRES/CELL-2] = vy[j][XRES/CELL-3]*0.9f;
+				vy[j][XRES/CELL-1] = vy[j][XRES/CELL-2]*0.9f;
 				for (i=1; i<XRES/CELL; i++)
 				{
 					if (bmap_blockair[j][i])
@@ -321,14 +323,54 @@ public class Air {
 		for (int y=0; y<YRES/CELL; y++) //update velocity and pressure
 			for (int x=0; x<XRES/CELL; x++)
 			{
-				if(vy[y][x]>0f)
+				int c = 0;
+				if(displayAir==1)
 				{
-					RenderUtils.drawRect(x*CELL, y*CELL, CELL, CELL, 0xFF0000FF);
+					if (pv[y][x] > 0.0f)
+						c  = RenderUtils.PIXRGB(RenderUtils.clamp_flt(pv[y][x], 0.0f, 8.0f), 0, 0);//positive pressure is red!
+					else
+						c  = RenderUtils.PIXRGB(0, 0, RenderUtils.clamp_flt(-pv[y][x], 0.0f, 8.0f));//negative pressure is blue!
 				}
-				if(vy[y][x]<0f)
+				else if(displayAir==2)
 				{
-					RenderUtils.drawRect(x*CELL, y*CELL, CELL, CELL, 0xFFFF0000);
+					c  = RenderUtils.PIXRGB(RenderUtils.clamp_flt(Math.abs(vx[y][x]), 0.0f, 8.0f),//vx adds red
+							RenderUtils.clamp_flt(pv[y][x], 0.0f, 8.0f),//pressure adds green
+							RenderUtils.clamp_flt(Math.abs(vy[y][x]), 0.0f, 8.0f));//vy adds blue
 				}
+				else if(displayAir==3)
+				{
+					int r;
+					int g;
+					int b;
+					// velocity adds grey
+					r = RenderUtils.clamp_flt(Math.abs(vx[y][x]), 0.0f, 24.0f) + RenderUtils.clamp_flt(Math.abs(vy[y][x]), 0.0f, 20.0f);
+					g = RenderUtils.clamp_flt(Math.abs(vx[y][x]), 0.0f, 20.0f) + RenderUtils.clamp_flt(Math.abs(vy[y][x]), 0.0f, 24.0f);
+					b = RenderUtils.clamp_flt(Math.abs(vx[y][x]), 0.0f, 24.0f) + RenderUtils.clamp_flt(Math.abs(vy[y][x]), 0.0f, 20.0f);
+					if (pv[y][x] > 0.0f)
+					{
+						r += RenderUtils.clamp_flt(pv[y][x], 0.0f, 16.0f);//pressure adds red!
+						if (r>255)
+							r=255;
+						if (g>255)
+							g=255;
+						if (b>255)
+							b=255;
+						c  = RenderUtils.PIXRGB(r, g, b);
+					}
+					else
+					{
+						b += RenderUtils.clamp_flt(-pv[y][x], 0.0f, 16.0f);//pressure adds blue!
+						if (r>255)
+							r=255;
+						if (g>255)
+							g=255;
+						if (b>255)
+							b=255;
+						c  = RenderUtils.PIXRGB(r, g, b);
+					}
+				}
+				if(c==0) continue;
+				RenderUtils.drawRect(x*CELL, y*CELL, CELL, CELL, c);
 			}
 	}
 }

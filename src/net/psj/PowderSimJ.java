@@ -12,8 +12,11 @@ import org.newdawn.slick.SlickException;
 public class PowderSimJ extends BasicGame{
 	
 	public static final int width = 800;
-	public static final int height = 600;
+	public static final int height = 400;
 	public static final int cell = 4;
+	
+	public static final int MAX_TEMP = 9000;
+	public static final int MIN_TEMP = 0;
 	
 	int mouseX;
 	int mouseY;
@@ -33,6 +36,7 @@ public class PowderSimJ extends BasicGame{
     {
          AppGameContainer app = new AppGameContainer(new PowderSimJ());
          app.setDisplayMode(width, height, false);
+         app.setVSync(true);
          app.start();
     }
 
@@ -61,16 +65,23 @@ public class PowderSimJ extends BasicGame{
 	
 	public void onKeypress(Input keys)
 	{
-		
+		if(keys.isKeyDown(Input.KEY_EQUALS))
+			for (int y=0; y<height/cell; y++)
+					for (int x=0; x<width/cell; x++)
+					{
+						air.pv[y][x] = 0f;
+						air.vy[y][x] = 0f;
+						air.vx[y][x] = 0f;
+					}
 	}
 	
 	public void onMouseClick()
 	{
-		air.pv[mouseY/cell][mouseX/cell] -= 1.0f;
+		air.pv[mouseY/cell][mouseX/cell] -= 500.0f;
 	}
 	
 	public void onMouseRightClick()
 	{
-		air.pv[mouseY/cell][mouseX/cell] += 1.0f;
+		air.pv[mouseY/cell][mouseX/cell] += 500.0f;
 	}
 }

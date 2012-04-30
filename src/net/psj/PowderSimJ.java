@@ -1,6 +1,8 @@
 package net.psj;
 
 import net.psj.Simulation.Air;
+import net.psj.Simulation.Wall;
+import net.psj.Simulation.Walls;
 
 import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.BasicGame;
@@ -28,6 +30,7 @@ public class PowderSimJ extends BasicGame{
 	public boolean airHeat = false;
 	
 	public Air air = new Air();
+	public Walls wall = new Walls();
 	
 	public PowderSimJ()
     {
@@ -49,6 +52,7 @@ public class PowderSimJ extends BasicGame{
 	@Override
 	public void render(GameContainer arg0, Graphics arg1) throws SlickException {
 		air.drawAir();
+		wall.renderWalls();
 	}
 
 	@Override
@@ -99,6 +103,7 @@ public class PowderSimJ extends BasicGame{
 	
 	public void onMouseRightClick()
 	{
-		air.pv[mouseY/cell][mouseX/cell] += 500.0f;
+		wall.bmap[Math.round(mouseY/cell)][Math.round(mouseX/cell)] = new Wall(Math.round(mouseX/cell),Math.round(mouseY/cell));
+		//air.pv[mouseY/cell][mouseX/cell] += 500.0f;
 	}
 }

@@ -4,18 +4,22 @@ import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 
 import org.lwjgl.opengl.GL11;
-import org.newdawn.slick.Color;
-import org.newdawn.slick.Graphics;
 import org.newdawn.slick.font.GlyphPage;
 
 public class RenderUtils {
 
-	public static void drawRect(int x, int y, int width, int height, int colour)
+	public static void drawRect(int x1, int y1, int x2, int y2, int r,int g,int b)
 	{
-		Graphics g = new Graphics();
-		g.setColor(new Color(colour));
-		for(int w = width; w > 0; w--)
-			g.drawRect(x, y, w, height);
+		GL11.glDisable(3553 /*GL_TEXTURE_2D*/);
+		GL11.glBlendFunc(770, 771);
+		GL11.glColor4d(r,g,b,255);
+		GL11.glBegin(GL11.GL_QUADS);
+		GL11.glVertex2d(x1, y1);
+		GL11.glVertex2d(x2, y1);
+		GL11.glVertex2d(x2, y2);
+		GL11.glVertex2d(x1, y2);
+		GL11.glEnd();
+		GL11.glEnable(3553 /*GL_TEXTURE_2D*/);
 	}
 	
 	public static void setAntiAliasing(boolean antiAlias)
@@ -29,14 +33,7 @@ public class RenderUtils {
                  antiAlias ? RenderingHints.VALUE_TEXT_ANTIALIAS_ON : RenderingHints.VALUE_TEXT_ANTIALIAS_OFF);
         }
 	}
-	
-	public static void drawLine(int x, int y, int x2, int y2, int colour)
-	{
-		Graphics g = new Graphics();
-		g.setColor(new Color(colour));
-		g.drawLine(x, y, x2, y2);
-	}
-	
+		
 	public static int clamp_flt(float f, float min, float max)
 	{
 		if (f<min)
@@ -55,4 +52,32 @@ public class RenderUtils {
 	{
 		return (((a)<<24)|((r)<<16)|((g)<<8)|((b)));
 	}
+	
+	public static int PIXR(int x)
+	{
+		return ((x)&0xFF);
+	}
+	public static int PIXG(int x)
+	{
+		return (((x)>>8)&0xFF);
+	}
+
+	public static int PIXB(int x)
+	{
+		return ((x)>>16);
+	}
+
+	
+    public static void drawLine(int i, int j, int k, int l, int i1, int r, int g, int b)
+    {
+    	GL11.glDisable(3553 /*GL_TEXTURE_2D*/);
+        GL11.glBlendFunc(770, 771);
+        GL11.glColor3d(r,g,b);
+        GL11.glLineWidth(i1);
+        GL11.glBegin(1);
+        GL11.glVertex2i(i, j);
+        GL11.glVertex2i(k, l);
+        GL11.glEnd();
+        GL11.glEnable(3553 /*GL_TEXTURE_2D*/);
+    }
 }

@@ -9,6 +9,6 @@ public class Menu {
 	{
 		int w = PowderSimJ.width;
 		int h = PowderSimJ.height;
-		RenderUtils.drawRect(0, h-10, w, h, 0xFFFFFF);
+		RenderUtils.drawRect(0, h-10, w, h, 255,255,255);
 	}
 }

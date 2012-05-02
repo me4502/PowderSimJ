@@ -7,6 +7,6 @@ public class WallFan extends Wall{
 
 	public void render(int x, int y)
 	{
-		RenderUtils.drawRect(x*CELL, y*CELL, CELL, CELL, 0x0000FF);
+		RenderUtils.drawRect(x*CELL, y*CELL, (x*CELL)+CELL, (y*CELL)+CELL, 0,0,255);
 	}	
 }

@@ -375,7 +375,7 @@ public class Air {
 						c  = RenderUtils.PIXRGB(0, 0, RenderUtils.clamp_flt(-hv[y][x], 0.0f, 8.0f));//negative pressure is blue!
 				}
 				if(c==0) continue;
-				RenderUtils.drawRect(x*CELL, y*CELL, CELL, CELL, c);
+				RenderUtils.drawRect(x*CELL, y*CELL, (x*CELL)+CELL, (y*CELL)+CELL, RenderUtils.PIXR(c),RenderUtils.PIXG(c),RenderUtils.PIXB(c));
 			}
 	}
 }

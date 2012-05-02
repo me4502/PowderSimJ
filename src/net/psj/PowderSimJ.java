@@ -3,6 +3,7 @@ package net.psj;
 import net.psj.Simulation.Air;
 import net.psj.Simulation.Walls;
 
+import org.lwjgl.opengl.GL11;
 import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.BasicGame;
 import org.newdawn.slick.GameContainer;
@@ -45,7 +46,9 @@ public class PowderSimJ extends BasicGame{
  
     @Override
     public void init(GameContainer gc) throws SlickException {
-    	RenderUtils.setAntiAliasing(false);
+    	RenderUtils.setAntiAliasing(true);
+    	GL11.glDisable(GL11.GL_LIGHTING);
+    	GL11.glEnable(GL11.GL_LINE_SMOOTH);
     }
  
     public static void main(String[] args) throws SlickException
@@ -65,7 +68,7 @@ public class PowderSimJ extends BasicGame{
 		Menu.draw();
 		
 		if(isSettingFan)
-			RenderUtils.drawLine(fanX,fanY,mouseX,mouseY, 0xFFFFFF);
+			RenderUtils.drawLine(fanX,fanY,mouseX,mouseY, 1,255,255,255);
 	}
 
 	@Override
@@ -142,7 +145,7 @@ public class PowderSimJ extends BasicGame{
 			mouseY--;
 		while(!(mouseX%cell==0))
 			mouseX--;
-		Walls.bmap[mouseY/cell][mouseX/cell] = new WallBasic();
+		Walls.bmap[mouseY/cell][mouseX/cell] = new WallFan();
 		//air.pv[mouseY/cell][mouseX/cell] += 500.0f;
 	}
 }

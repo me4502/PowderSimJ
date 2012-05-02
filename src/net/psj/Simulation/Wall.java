@@ -13,6 +13,6 @@ public class Wall {
 	
 	public void render(int x, int y)
 	{
-		RenderUtils.drawRect(x*CELL, y*CELL, CELL, CELL, 0xFFFFFF);
+		RenderUtils.drawRect(x*CELL, y*CELL, (x*CELL)+CELL, (y*CELL)+CELL, 255,255,255);
 	}
 }

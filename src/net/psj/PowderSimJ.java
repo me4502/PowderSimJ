@@ -10,6 +10,7 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 
+import Interface.Menu;
 import Walls.*;
 
 public class PowderSimJ extends BasicGame{
@@ -32,7 +33,7 @@ public class PowderSimJ extends BasicGame{
 		
 	public boolean isPaused = false;
 	
-	public boolean airHeat = false;
+	public boolean airHeat = true;
 	
 	public Air air = new Air();
 	public Walls wall = new Walls();
@@ -44,6 +45,7 @@ public class PowderSimJ extends BasicGame{
  
     @Override
     public void init(GameContainer gc) throws SlickException {
+    	RenderUtils.setAntiAliasing(false);
     }
  
     public static void main(String[] args) throws SlickException
@@ -59,6 +61,8 @@ public class PowderSimJ extends BasicGame{
 		if(!isSettingFan)
 			air.drawAir();
 		wall.renderWalls();
+		
+		Menu.draw();
 		
 		if(isSettingFan)
 			RenderUtils.drawLine(fanX,fanY,mouseX,mouseY, 0xFFFFFF);
@@ -100,6 +104,7 @@ public class PowderSimJ extends BasicGame{
 						air.pv[y][x] = 0f;
 						air.vy[y][x] = 0f;
 						air.vx[y][x] = 0f;
+						air.hv[y][x] = 0f;
 					}
 		if(keys.isKeyDown(Input.KEY_SPACE))
 			isPaused = !isPaused;
@@ -127,7 +132,8 @@ public class PowderSimJ extends BasicGame{
 			isSettingFan = false;
 			return;
 		}
-		air.pv[mouseY/cell][mouseX/cell] -= 500.0f;
+		air.pv[mouseY/cell][mouseX/cell] -= 50.0f;
+		air.hv[mouseY/cell][mouseX/cell] -= 50.0f;
 	}
 	
 	public void onMouseRightClick(GameContainer arg0)
@@ -136,7 +142,7 @@ public class PowderSimJ extends BasicGame{
 			mouseY--;
 		while(!(mouseX%cell==0))
 			mouseX--;
-		Walls.bmap[mouseY/cell][mouseX/cell] = new WallFan();
+		Walls.bmap[mouseY/cell][mouseX/cell] = new WallBasic();
 		//air.pv[mouseY/cell][mouseX/cell] += 500.0f;
 	}
 }

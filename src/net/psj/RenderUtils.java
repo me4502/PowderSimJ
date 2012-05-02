@@ -1,8 +1,12 @@
 package net.psj;
 
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
+
 import org.lwjgl.opengl.GL11;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
+import org.newdawn.slick.font.GlyphPage;
 
 public class RenderUtils {
 
@@ -12,6 +16,18 @@ public class RenderUtils {
 		g.setColor(new Color(colour));
 		for(int w = width; w > 0; w--)
 			g.drawRect(x, y, w, height);
+	}
+	
+	public static void setAntiAliasing(boolean antiAlias)
+	{
+        java.awt.Graphics g = GlyphPage.getScratchGraphics();
+        if (g!=null && g instanceof Graphics2D) {
+           Graphics2D g2d = (Graphics2D)g;
+           g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, 
+                 antiAlias ? RenderingHints.VALUE_ANTIALIAS_ON : RenderingHints.VALUE_ANTIALIAS_OFF);
+           g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING,
+                 antiAlias ? RenderingHints.VALUE_TEXT_ANTIALIAS_ON : RenderingHints.VALUE_TEXT_ANTIALIAS_OFF);
+        }
 	}
 	
 	public static void drawLine(int x, int y, int x2, int y2, int colour)

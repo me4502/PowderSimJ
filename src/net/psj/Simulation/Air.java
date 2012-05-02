@@ -38,7 +38,7 @@ public class Air {
 	public float[][] fvx = new float[PowderSimJ.height/PowderSimJ.cell][PowderSimJ.width/PowderSimJ.cell];
 	public float[][] fvy = new float[PowderSimJ.height/PowderSimJ.cell][PowderSimJ.width/PowderSimJ.cell];
 
-	float[][] hv = new float[PowderSimJ.height/PowderSimJ.cell][PowderSimJ.width/PowderSimJ.cell], ohv = new float[PowderSimJ.height/PowderSimJ.cell][PowderSimJ.width/PowderSimJ.cell]; // For Ambient Heat
+	public float[][] hv = new float[PowderSimJ.height/PowderSimJ.cell][PowderSimJ.width/PowderSimJ.cell], ohv = new float[PowderSimJ.height/PowderSimJ.cell][PowderSimJ.width/PowderSimJ.cell]; // For Ambient Heat
 
 	public void make_kernel() //used for velocity
 	{
@@ -59,19 +59,6 @@ public class Air {
 	{
 		int x, y, i, j;
 		float odh, dh, dx, dy, f, tx, ty;
-		for (y=0; y<YRES/CELL; y++)
-			for (x=0; x<XRES/CELL; x++)
-			{
-				bmap_blockairh[y][x] = Walls.bmap[y][x]!=null && (Walls.bmap[y][x] instanceof WallBasic);
-			}
-		for (i=0; i<YRES/CELL; i++) //reduces pressure/velocity on the edges every frame
-		{
-			hv[i][0] = 295.15f;
-			hv[i][1] = 295.15f;
-			hv[i][XRES/CELL-3] = 295.15f;
-			hv[i][XRES/CELL-2] = 295.15f;
-			hv[i][XRES/CELL-1] = 295.15f;
-		}
 		for (i=0; i<XRES/CELL; i++) //reduces pressure/velocity on the edges every frame
 		{
 			hv[0][i] = 295.15f;
@@ -82,6 +69,13 @@ public class Air {
 		}
 		for (y=0; y<YRES/CELL; y++) //update velocity and pressure
 		{
+			//reduce
+			hv[y][0] = 295.15f;
+			hv[y][1] = 295.15f;
+			hv[y][XRES/CELL-3] = 295.15f;
+			hv[y][XRES/CELL-2] = 295.15f;
+			hv[y][XRES/CELL-1] = 295.15f;
+			
 			hv[y][0] = 295.15f;
 			hv[y][1] = 295.15f;
 			hv[y][XRES/CELL-3] = 295.15f;
@@ -89,6 +83,7 @@ public class Air {
 			hv[y][XRES/CELL-1] = 295.15f;
 			for (x=0; x<XRES/CELL; x++)
 			{
+				bmap_blockairh[y][x] = Walls.bmap[y][x]!=null && (Walls.bmap[y][x] instanceof WallBasic);
 				dh = 0.0f;
 				dx = 0.0f;
 				dy = 0.0f;
@@ -153,10 +148,6 @@ public class Air {
 				bmap_blockair[y][x] = Walls.bmap[y][x]!=null && (Walls.bmap[y][x] instanceof WallBasic);
 			}
 		if (airMode != 4) { //airMode 4 is no air/pressure update
-			//for (i=0; i<YRES/CELL; i++) //reduces pressure/velocity on the edges every frame
-			//{
-
-			//}
 			for (i=0; i<XRES/CELL; i++) //reduces pressure/velocity on the edges every frame
 			{
 				pv[0][i] = pv[0][i]*0.8f;
@@ -327,7 +318,7 @@ public class Air {
 	public void drawAir()
 	{
 		if(displayAir==0) return;	
-		for (int y=0; y<YRES/CELL; y++) //update velocity and pressure
+		for (int y=0; y<YRES/CELL; y++)
 			for (int x=0; x<XRES/CELL; x++)
 			{
 				int c = 0;
@@ -375,6 +366,13 @@ public class Air {
 							b=255;
 						c  = RenderUtils.PIXRGB(r, g, b);
 					}
+				}
+				else if(displayAir==4)
+				{
+					if (hv[y][x] > 0.0f)
+						c  = RenderUtils.PIXRGB(RenderUtils.clamp_flt(hv[y][x], 0.0f, 8.0f), 0, 0);//positive pressure is red!
+					else
+						c  = RenderUtils.PIXRGB(0, 0, RenderUtils.clamp_flt(-hv[y][x], 0.0f, 8.0f));//negative pressure is blue!
 				}
 				if(c==0) continue;
 				RenderUtils.drawRect(x*CELL, y*CELL, CELL, CELL, c);

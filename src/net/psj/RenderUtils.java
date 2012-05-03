@@ -12,7 +12,7 @@ public class RenderUtils {
 	{
 		GL11.glDisable(3553 /*GL_TEXTURE_2D*/);
 		GL11.glBlendFunc(770, 771);
-		GL11.glColor4d(r,g,b,255);
+		GL11.glColor3d(r,g,b);
 		GL11.glBegin(GL11.GL_QUADS);
 		GL11.glVertex2d(x1, y1);
 		GL11.glVertex2d(x2, y1);
@@ -45,17 +45,22 @@ public class RenderUtils {
 	
 	public static int PIXRGB(int r, int g, int b) 
 	{
-		return ((((r)<<8)&0xF800)|(((g)<<3)&0x07E0)|(((b)>>3)&0x001F));
+		return (0xFF000000|((r)<<16)|((g)<<8)|((b)));
 	}
 	
-	public static int PIXRGBA(int r,int g,int b,int a) 
+	public static int PIXRGBA(int r, int g, int b, int a) 
 	{
 		return (((a)<<24)|((r)<<16)|((g)<<8)|((b)));
 	}
 	
+	public static int PIXA(int x)
+	{
+		return (((x)>>24)&0xFF);
+	}
+		
 	public static int PIXR(int x)
 	{
-		return ((x)&0xFF);
+		return (((x)>>16)&0xFF);
 	}
 	public static int PIXG(int x)
 	{
@@ -64,7 +69,12 @@ public class RenderUtils {
 
 	public static int PIXB(int x)
 	{
-		return ((x)>>16);
+		return ((x)&0xFF);
+	}
+	
+	public static int PIXPACK(int x)
+	{
+		return (0xFF000000|((x)&0xFFFFFF));
 	}
 
 	

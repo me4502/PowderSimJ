@@ -1,7 +1,9 @@
 package net.psj;
 
+import net.psj.Interface.Menu;
 import net.psj.Simulation.Air;
 import net.psj.Simulation.Walls;
+import net.psj.Walls.*;
 
 import org.lwjgl.opengl.GL11;
 import org.newdawn.slick.AppGameContainer;
@@ -11,13 +13,12 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 
-import Interface.Menu;
-import Walls.*;
 
 public class PowderSimJ extends BasicGame{
 	
-	public static final int width = 400;
-	public static final int height = 400;
+	public static final int width = 612;
+	public static final int height = 384;
+	public static final int menuSize = 40;
 	public static final int cell = 4;
 	
 	public static final int MAX_TEMP = 9000;
@@ -34,7 +35,7 @@ public class PowderSimJ extends BasicGame{
 		
 	public boolean isPaused = false;
 	
-	public boolean airHeat = true;
+	public boolean airHeat = false;
 	
 	public Air air = new Air();
 	public Walls wall = new Walls();
@@ -54,8 +55,8 @@ public class PowderSimJ extends BasicGame{
     public static void main(String[] args) throws SlickException
     {
          AppGameContainer app = new AppGameContainer(new PowderSimJ());
-         app.setDisplayMode(width, height, false);
-         app.setVSync(true);
+         app.setDisplayMode(width, height+menuSize, false);
+         app.setVSync(false);
          app.start();
     }
 
@@ -115,6 +116,7 @@ public class PowderSimJ extends BasicGame{
 	
 	public void onMouseClick(GameContainer arg0)
 	{
+		if(mouseY > height-2) return;
 		while(!(mouseY%cell==0))
 			mouseY--;
 		while(!(mouseX%cell==0))
@@ -141,11 +143,11 @@ public class PowderSimJ extends BasicGame{
 	
 	public void onMouseRightClick(GameContainer arg0)
 	{
+		if(mouseY > height-2) return;
 		while(!(mouseY%cell==0))
 			mouseY--;
 		while(!(mouseX%cell==0))
 			mouseX--;
 		Walls.bmap[mouseY/cell][mouseX/cell] = new WallFan();
-		//air.pv[mouseY/cell][mouseX/cell] += 500.0f;
 	}
 }

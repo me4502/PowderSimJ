@@ -1,9 +1,9 @@
 package net.psj.Simulation;
 
-import Walls.WallBasic;
-import Walls.WallFan;
 import net.psj.PowderSimJ;
 import net.psj.RenderUtils;
+import net.psj.Walls.WallBasic;
+import net.psj.Walls.WallFan;
 
 public class Air {
 
@@ -147,6 +147,7 @@ public class Air {
 			{
 				bmap_blockair[y][x] = Walls.bmap[y][x]!=null && (Walls.bmap[y][x] instanceof WallBasic);
 			}
+		
 		if (airMode != 4) { //airMode 4 is no air/pressure update
 			for (i=0; i<XRES/CELL; i++) //reduces pressure/velocity on the edges every frame
 			{
@@ -314,6 +315,81 @@ public class Air {
 			//memcpy(pv, opv, sizeof(pv));
 		}
 	}
+	
+	public void drawAirXY(int x, int y)
+	{
+		int pixr = 0,pixg = 0,pixb = 0;
+		if(displayAir==1)
+		{
+			if (pv[y][x] > 0.0f)
+			{
+				pixr = RenderUtils.clamp_flt(pv[y][x], 0.0f, 8.0f);
+				pixg = 0;
+				pixb = 0; //positive pressure is red!
+			}
+			else
+			{
+				pixr = 0;
+				pixg = 0;
+				pixb = RenderUtils.clamp_flt(-pv[y][x], 0.0f, 8.0f); //positive pressure is red!
+			}
+		}
+		else if(displayAir==2)
+		{
+			pixr = RenderUtils.clamp_flt(Math.abs(vx[y][x]), 0.0f, 8.0f);//vx adds red
+			pixg = RenderUtils.clamp_flt(pv[y][x], 0.0f, 8.0f);//pressure adds green
+			pixb = RenderUtils.clamp_flt(Math.abs(vy[y][x]), 0.0f, 8.0f);//vy adds blue
+		}
+		else if(displayAir==3)
+		{
+			int r;
+			int g;
+			int b;
+			// velocity adds grey
+			r = RenderUtils.clamp_flt(Math.abs(vx[y][x]), 0.0f, 24.0f) + RenderUtils.clamp_flt(Math.abs(vy[y][x]), 0.0f, 20.0f);
+			g = RenderUtils.clamp_flt(Math.abs(vx[y][x]), 0.0f, 20.0f) + RenderUtils.clamp_flt(Math.abs(vy[y][x]), 0.0f, 24.0f);
+			b = RenderUtils.clamp_flt(Math.abs(vx[y][x]), 0.0f, 24.0f) + RenderUtils.clamp_flt(Math.abs(vy[y][x]), 0.0f, 20.0f);
+			if (pv[y][x] > 0.0f)
+			{
+				r += RenderUtils.clamp_flt(pv[y][x], 0.0f, 16.0f);//pressure adds red!
+				if (r>255)
+					r=255;
+				if (g>255)
+					g=255;
+				if (b>255)
+					b=255;
+				pixr = r;
+				pixg = g;
+				pixb = b;
+			}
+			else
+			{
+				b += RenderUtils.clamp_flt(-pv[y][x], 0.0f, 16.0f);//pressure adds blue!
+				if (r>255)
+					r=255;
+				if (g>255)
+					g=255;
+				if (b>255)
+					b=255;
+				pixr = r;
+				pixg = g;
+				pixb = b;
+			}
+		}
+		else if(displayAir==4)
+		{
+			if (hv[y][x] > 0.0f)
+			{
+				//c  = RenderUtils.PIXRGB(RenderUtils.clamp_flt(hv[y][x], 0.0f, 8.0f), 0, 0);//positive pressure is red!
+			}
+			else
+			{
+				//c  = RenderUtils.PIXRGB(0, 0, RenderUtils.clamp_flt(-hv[y][x], 0.0f, 8.0f));//negative pressure is blue!
+			}
+		}
+		if(pixr==0&&pixg==0&&pixb==0) return;
+		RenderUtils.drawRect(x*CELL, y*CELL, (x*CELL)+CELL, (y*CELL)+CELL, pixr,pixg,pixb);
+	}
 
 	public void drawAir()
 	{
@@ -321,61 +397,7 @@ public class Air {
 		for (int y=0; y<YRES/CELL; y++)
 			for (int x=0; x<XRES/CELL; x++)
 			{
-				int c = 0;
-				if(displayAir==1)
-				{
-					if (pv[y][x] > 0.0f)
-						c  = RenderUtils.PIXRGB(RenderUtils.clamp_flt(pv[y][x], 0.0f, 8.0f), 0, 0);//positive pressure is red!
-					else
-						c  = RenderUtils.PIXRGB(0, 0, RenderUtils.clamp_flt(-pv[y][x], 0.0f, 8.0f));//negative pressure is blue!
-				}
-				else if(displayAir==2)
-				{
-					c  = RenderUtils.PIXRGB(RenderUtils.clamp_flt(Math.abs(vx[y][x]), 0.0f, 8.0f),//vx adds red
-							RenderUtils.clamp_flt(pv[y][x], 0.0f, 8.0f),//pressure adds green
-							RenderUtils.clamp_flt(Math.abs(vy[y][x]), 0.0f, 8.0f));//vy adds blue
-				}
-				else if(displayAir==3)
-				{
-					int r;
-					int g;
-					int b;
-					// velocity adds grey
-					r = RenderUtils.clamp_flt(Math.abs(vx[y][x]), 0.0f, 24.0f) + RenderUtils.clamp_flt(Math.abs(vy[y][x]), 0.0f, 20.0f);
-					g = RenderUtils.clamp_flt(Math.abs(vx[y][x]), 0.0f, 20.0f) + RenderUtils.clamp_flt(Math.abs(vy[y][x]), 0.0f, 24.0f);
-					b = RenderUtils.clamp_flt(Math.abs(vx[y][x]), 0.0f, 24.0f) + RenderUtils.clamp_flt(Math.abs(vy[y][x]), 0.0f, 20.0f);
-					if (pv[y][x] > 0.0f)
-					{
-						r += RenderUtils.clamp_flt(pv[y][x], 0.0f, 16.0f);//pressure adds red!
-						if (r>255)
-							r=255;
-						if (g>255)
-							g=255;
-						if (b>255)
-							b=255;
-						c  = RenderUtils.PIXRGB(r, g, b);
-					}
-					else
-					{
-						b += RenderUtils.clamp_flt(-pv[y][x], 0.0f, 16.0f);//pressure adds blue!
-						if (r>255)
-							r=255;
-						if (g>255)
-							g=255;
-						if (b>255)
-							b=255;
-						c  = RenderUtils.PIXRGB(r, g, b);
-					}
-				}
-				else if(displayAir==4)
-				{
-					if (hv[y][x] > 0.0f)
-						c  = RenderUtils.PIXRGB(RenderUtils.clamp_flt(hv[y][x], 0.0f, 8.0f), 0, 0);//positive pressure is red!
-					else
-						c  = RenderUtils.PIXRGB(0, 0, RenderUtils.clamp_flt(-hv[y][x], 0.0f, 8.0f));//negative pressure is blue!
-				}
-				if(c==0) continue;
-				RenderUtils.drawRect(x*CELL, y*CELL, (x*CELL)+CELL, (y*CELL)+CELL, RenderUtils.PIXR(c),RenderUtils.PIXG(c),RenderUtils.PIXB(c));
+				drawAirXY(x,y);
 			}
 	}
 }

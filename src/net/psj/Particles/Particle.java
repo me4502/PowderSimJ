@@ -10,30 +10,32 @@ import net.psj.Simulation.Air;
 public class Particle 
 {
 	public String name;
-	public int colour;
+	public float[] colour;
 	float airdrag;
 	float airloss;
 	float advection;
 	float loss;
 	float diffusion;
 	float gravity;
-	int state = 0;//powder,solid,liquid,gas,special
+	int state = 0;//solid,powder,liquid,gas,special
 	
 	public int x = 0;
 	public int y = 0;
 	public int id = 0;
 	
+	public int temp;
+	
 	static int CELL = PowderSimJ.cell;
 	
 	public int vy = 0;
-	int vx = 0;
+	public int vx = 0;
 	
 	public static final float CFDS = (4.0f/CELL);
 	public static final int RAND_MAX = 0x7FFF;
 	
 	Random rand = new Random();
 	
-	public Particle(String name, int colour, float airdrag, float airloss, float advection, float loss, float diffusion, float gravity, int state)
+	public Particle(String name, float[] colour, float airdrag, float airloss, float advection, float loss, float diffusion, float gravity, int state)
 	{
 		this.name = name;
 		this.colour = colour;
@@ -56,18 +58,35 @@ public class Particle
 	{
 		//vx++;
 		boolean ret = false;
-		float pGravX = 0.0f;
-		float pGravY = gravity;
+		float pGravX,pGravY,pGravD;
+		//Gravity mode by Moach
+		switch (ParticleData.gravityMode)
+		{
+		default:
+		case 0:
+			pGravX = 0.0f;
+			pGravY = gravity;
+			break;
+		case 1:
+			pGravX = pGravY = 0.0f;
+			break;
+		case 2:
+			pGravD = (float) (0.01f - Math.hypot((x - PowderSimJ.cenX), (y - PowderSimJ.cenY)));
+			pGravX = gravity * ((float)(x - PowderSimJ.cenX) / pGravD);
+			pGravY = gravity * ((float)(y - PowderSimJ.cenY) / pGravD);
+		}
 		Air.vx[y/CELL][x/CELL] = Air.vx[y/CELL][x/CELL]*airloss + airdrag*vx;
 		Air.vy[y/CELL][x/CELL] = Air.vy[y/CELL][x/CELL]*airloss + airdrag*vy;
 		vx *= loss;
 		vy *= loss;
-		vx += advection*Air.vx[y/CELL][x/CELL] + pGravX;
-		vy += advection*Air.vy[y/CELL][x/CELL] + pGravY;
-		vx += diffusion*(rand.nextInt()/(0.5f*RAND_MAX)-1.0f);
-		vy += diffusion*(rand.nextInt()/(0.5f*RAND_MAX)-1.0f);
+		vx += advection*Air.vx[y/CELL][x/CELL];
+		vy += advection*Air.vy[y/CELL][x/CELL];
+		vy += pGravY*10;
+		vx += pGravX*10;
+		vx += diffusion*(rand.nextInt()/(0.5f*RAND_MAX)-1.0f)*10;
+		vy += diffusion*(rand.nextInt()/(0.5f*RAND_MAX)-1.0f)*10;
 		try{
-			if(ParticleData.pmap[y][x-vx]==0)
+			if(ParticleData.pmap[y][x+vx]==0)
 			{
 				setPos(x+vx, y, id);
 				ret =  true;
@@ -80,7 +99,7 @@ public class Particle
 		}
 
 		try{
-			if(ParticleData.pmap[y-vy][x]==0)
+			if(ParticleData.pmap[y+vy][x]==0)
 			{
 				setPos(x, y+vy, id);
 				ret =  true;
@@ -96,7 +115,7 @@ public class Particle
 	
 	public boolean render()
 	{
-		RenderUtils.drawPixel(x, y, RenderUtils.PIXR(colour),RenderUtils.PIXG(colour),RenderUtils.PIXB(colour));
+		RenderUtils.drawPixel(x, y, colour[0],colour[1],colour[2]);
 		return false;
 	}
 }

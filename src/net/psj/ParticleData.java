@@ -3,12 +3,14 @@ package net.psj;
 import net.psj.Particles.Particle;
 import net.psj.Particles.ParticleClone;
 import net.psj.Particles.ParticleDust;
+import net.psj.Particles.ParticleWater;
 
 public class ParticleData {
 	public static int[][] pmap = new int[PowderSimJ.height][PowderSimJ.width];
 	public static Particle[] parts = new Particle[PowderSimJ.height*PowderSimJ.width*PowderSimJ.cell];
 	
 	public static int latPart = 1;
+	public static int gravityMode = 0;
 	
 	public Particle create_part(int x, int y, int id)
 	{
@@ -119,6 +121,7 @@ public class ParticleData {
 		if(id==0) return null;
 		if(id==1) return new ParticleDust();
 		if(id==2) return new ParticleClone();
+		if(id==3) return new ParticleWater();
 		return null;
 	}
 }

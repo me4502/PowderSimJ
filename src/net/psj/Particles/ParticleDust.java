@@ -1,14 +1,11 @@
 package net.psj.Particles;
 
+import net.psj.RenderUtils;
+
 public class ParticleDust extends Particle{
 
 	public ParticleDust()
 	{
-		super("Dust",0xE6CFA5,0.1f,0.3f, 1.0f);
+		super("Dust",RenderUtils.PIXPACK(0xFFE0A0),0.02f * CFDS, 0.96f,0.7f, 0.80f, 0.00f, 0);
 	}
-	
-	public ParticleDust(String name, int colour, float airdrag, float advection, float loss) {
-		super(name, colour, airdrag, advection, loss);
-	}
-
 }

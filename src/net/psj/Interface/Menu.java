@@ -28,7 +28,7 @@ public class Menu {
 		int h = PowderSimJ.height;
 		int m = PowderSimJ.menuSize;
 		ArrayList<Particle> menuItems = new ArrayList<Particle>();
-		for(int i = 1; i < ParticleData.PT_NUM; i++)
+		for(int i = 0; i < ParticleData.PT_NUM; i++)
 		{
 			if(ParticleData.newPartFromID(i).menu == selected)
 			{
@@ -38,7 +38,7 @@ public class Menu {
 		for(int i = 0; i < menuItems.size(); i++)
 		{
 			RenderUtils.drawRect((i*64)+5, h+6, (i*64)+63, (h+m)-6, menuItems.get(i).colour[0], menuItems.get(i).colour[1], menuItems.get(i).colour[2]);
-			RenderUtils.drawFont((i*64)+23, h+(m/2)-5, menuItems.get(i).name, menuItems.get(i).colour[2], menuItems.get(i).colour[1], menuItems.get(i).colour[0]);
+			RenderUtils.drawFont((i*64)+23, h+(m/2)-5, menuItems.get(i).name, 1.0f,1.0f,1.0f);
 		}
 	}
 	
@@ -48,7 +48,7 @@ public class Menu {
 		int h = PowderSimJ.height;
 		int m = PowderSimJ.menuSize;
 		ArrayList<Particle> menuItems = new ArrayList<Particle>();
-		for(int i = 1; i < ParticleData.PT_NUM; i++)
+		for(int i = 0; i < ParticleData.PT_NUM; i++)
 		{
 			if(ParticleData.newPartFromID(i).menu == selected)
 			{
@@ -61,7 +61,7 @@ public class Menu {
 				if(y>h+6 && y < (h+m)-6)
 				{
 					if(button==0) PowderSimJ.selectedl = menuItems.get(i).id;
-					else if(button==4) PowderSimJ.selectedr = menuItems.get(i).id;
+					else if(button==1) PowderSimJ.selectedr = menuItems.get(i).id;
 				}
 		}
 	}

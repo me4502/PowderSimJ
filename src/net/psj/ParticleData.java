@@ -3,6 +3,7 @@ package net.psj;
 import net.psj.Particles.Particle;
 import net.psj.Particles.ParticleClone;
 import net.psj.Particles.ParticleDust;
+import net.psj.Particles.ParticleErase;
 import net.psj.Particles.ParticleWater;
 
 public class ParticleData {
@@ -19,13 +20,13 @@ public class ParticleData {
 			return null;
 		}
 		Particle newPart = newPartFromID(id);
-		if(newPart!=null && pmap[y][x]==0)
+		if(!(newPart instanceof ParticleErase) && pmap[y][x]==0 && newPart!=null)
 		{
 			newPart.setPos(x,y,id);
 			parts[latPart] = newPart;
 			return parts[latPart++];
 		}
-		else if(newPart==null && pmap[y][x]!=0)
+		else if(newPart instanceof ParticleErase && pmap[y][x]!=0)
 			kill(pmap[y][x]);
 		
 		return null;
@@ -118,7 +119,7 @@ public class ParticleData {
 	
 	public static Particle newPartFromID(int id)
 	{
-		if(id==0) return null;
+		if(id==0) return new ParticleErase();
 		if(id==1) return new ParticleDust();
 		if(id==2) return new ParticleClone();
 		if(id==3) return new ParticleWater();

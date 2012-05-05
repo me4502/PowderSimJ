@@ -12,7 +12,7 @@ public class Air {
 	int CELL = PowderSimJ.cell;
 
 	int airMode = 0;
-	int displayAir = 1;
+	int displayAir = 2;
 
 	float AIR_TSTEPP = 0.3f;
 	float AIR_TSTEPV = 0.4f;

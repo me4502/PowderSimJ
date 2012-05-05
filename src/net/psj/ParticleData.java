@@ -46,6 +46,8 @@ public class ParticleData {
 	
 	public void update()
 	{
+		int part = 0;
+		int index = 0;
 		for(int x = 0; x < PowderSimJ.width; x++)
 			for(int y = 0; y < PowderSimJ.height; y++)
 			{
@@ -66,11 +68,15 @@ public class ParticleData {
 						continue;
 					}
 					pmap[y][x] = i;
+					part++;
+					index = i;
 				}
 				else
 					kill(i);
 			}
 		}
+		if(part==0) latPart = 0;
+		else latPart = index;
 	}
 	
 	public void kill(int i)

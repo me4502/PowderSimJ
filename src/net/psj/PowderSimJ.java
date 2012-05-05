@@ -27,7 +27,11 @@ public class PowderSimJ extends BasicGame implements MouseListener,KeyListener{
 	public static final int MAX_TEMP = 9000;
 	public static final int MIN_TEMP = 0;
 	
+	/* Settings */
 	static int AA = 0;
+	static boolean VSync = true;
+	static boolean Debug = true;
+	static int targetFrames = 60;
 	
 	int mouseX;
 	int mouseY;
@@ -53,7 +57,7 @@ public class PowderSimJ extends BasicGame implements MouseListener,KeyListener{
 	
 	public PowderSimJ()
     {
-        super("Cabbage Game");
+        super("Powder Sim Java");
     }
  
     @Override
@@ -69,8 +73,10 @@ public class PowderSimJ extends BasicGame implements MouseListener,KeyListener{
     {
          AppGameContainer app = new AppGameContainer(new PowderSimJ());
          app.setDisplayMode(width+barSize, height+menuSize, false);
-         app.setVSync(true);
+         app.setVSync(VSync);
          app.setMultiSample(AA);
+         app.setVerbose(Debug);
+         app.setTargetFrameRate(targetFrames);
          app.start();
     }
 
@@ -125,7 +131,7 @@ public class PowderSimJ extends BasicGame implements MouseListener,KeyListener{
 			for (int y=0; y<height/cell; y++)
 					for (int x=0; x<width/cell; x++)
 					{
-						air.pv[y][x] = 0f;
+						Air.pv[y][x] = 0f;
 						Air.vy[y][x] = 0f;
 						Air.vx[y][x] = 0f;
 						air.hv[y][x] = 0f;

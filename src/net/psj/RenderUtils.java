@@ -14,6 +14,7 @@ public class RenderUtils {
 
 	static UnicodeFont font = new UnicodeFont(new Font("Verdana",Font.BOLD,8));
 	
+	@SuppressWarnings("unchecked")
 	public static void init()
 	{
 		try{

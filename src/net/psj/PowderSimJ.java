@@ -20,6 +20,8 @@ public class PowderSimJ extends BasicGame implements MouseListener,KeyListener{
 	
 	public static final int width = 612;
 	public static final int height = 384;
+	public static final int cenX = width/2;
+	public static final int cenY = height/2;
 	public static final int menuSize = 40;
 	public static final int barSize = 17;
 	public static final int cell = 4;
@@ -65,10 +67,10 @@ public class PowderSimJ extends BasicGame implements MouseListener,KeyListener{
     @Override
     public void init(GameContainer gc) throws SlickException {
     	this.gc = gc;
-    	RenderUtils.setAntiAliasing(true);
-    	GL11.glDisable(GL11.GL_LIGHTING);
-    	GL11.glEnable(GL11.GL_SMOOTH);
-    	GL11.glEnable(GL11.GL_LINE_SMOOTH);
+    	//RenderUtils.setAntiAliasing(true);
+    	//GL11.glDisable(GL11.GL_LIGHTING);
+        //GL11.glEnable(GL11.GL_TEXTURE_2D);
+    	GL11.glShadeModel(GL11.GL_SMOOTH);
     	RenderUtils.init();
     }
  

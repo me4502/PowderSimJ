@@ -13,7 +13,7 @@ public class Menu {
 		int w = PowderSimJ.width;
 		int h = PowderSimJ.height;
 		int m = PowderSimJ.menuSize;
-		RenderUtils.drawRect(0, h+m, w, h, 66,66,66);
+		RenderUtils.drawRect(0, h+m, w, h, 1.0f,1.0f,1.0f);
         for (int i=0; i<menus; i++)//draw all the menu sections
         {
             draw_menu(i);

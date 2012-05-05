@@ -30,23 +30,26 @@ public class RenderUtils {
 		Color c = new Color(r,g,b);
 		font.drawString(x,y,text,c);
 	}
-	
-	public static void drawPixel(int x, int y, int r, int g, int b)
+		
+	public static void drawPixel(int x, int y, float r, float g, float b)
 	{
 		GL11.glDisable(3553 /*GL_TEXTURE_2D*/);
-		GL11.glBlendFunc(770, 771);
-		GL11.glColor3d(r,g,b);
+		GL11.glEnable(GL11.GL_NORMALIZE); 
+	    GL11.glEnable(GL11.GL_BLEND);
+	    GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 		GL11.glBegin(GL11.GL_POINTS);
+		GL11.glColor3f(r,g,b);
 		GL11.glVertex2f(x, y);
 		GL11.glEnd();
 		GL11.glEnable(3553 /*GL_TEXTURE_2D*/);
 	}
 	
-	public static void drawRect(int x1, int y1, int x2, int y2, int r,int g,int b)
+	public static void drawRect(int x1, int y1, int x2, int y2, float r,float g,float b)
 	{
 		GL11.glDisable(3553 /*GL_TEXTURE_2D*/);
-		GL11.glBlendFunc(770, 771);
-		GL11.glColor3d(r,g,b);
+	    GL11.glEnable(GL11.GL_BLEND);
+	    GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+		GL11.glColor3f(r,g,b);
 		GL11.glBegin(GL11.GL_QUADS);
 		GL11.glVertex2d(x1, y1);
 		GL11.glVertex2d(x2, y1);
@@ -56,10 +59,11 @@ public class RenderUtils {
 		GL11.glEnable(3553 /*GL_TEXTURE_2D*/);
 	}
 	
-	public static void drawRectLine(int x1, int y1, int x2, int y2, int r,int g,int b)
+	public static void drawRectLine(int x1, int y1, int x2, int y2, double r,double g,double b)
 	{
 		GL11.glDisable(3553 /*GL_TEXTURE_2D*/);
-		GL11.glBlendFunc(770, 771);
+	    GL11.glEnable(GL11.GL_BLEND);
+	    GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 		GL11.glColor3d(r,g,b);
 		GL11.glBegin(GL11.GL_LINE_LOOP);
 		GL11.glVertex2d(x1, y1);
@@ -127,11 +131,11 @@ public class RenderUtils {
 	}
 
 	
-    public static void drawLine(int i, int j, int k, int l, int i1, int r, int g, int b)
+    public static void drawLine(int i, int j, int k, int l, int i1, float r, float g, float b)
     {
     	GL11.glDisable(3553 /*GL_TEXTURE_2D*/);
         GL11.glBlendFunc(770, 771);
-        GL11.glColor3d(r,g,b);
+        GL11.glColor3f(r,g,b);
         GL11.glLineWidth(i1);
         GL11.glBegin(1);
         GL11.glVertex2i(i, j);

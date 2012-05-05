@@ -5,7 +5,7 @@ import net.psj.PowderSimJ;
 public class ParticleClone extends Particle{
 
 	public ParticleClone() {
-		super("CLNE", 0xFFD010, 0.0f, 0.90f, 0.0f, 0.0f, 0.0f, 0.0f, 1);
+		super("CLNE", new float[]{1.0f,0.81f,0.06f}, 0.0f, 0.90f, 0.0f, 0.0f, 0.0f, 0.0f, 0);
 	}
 
 	public boolean update()

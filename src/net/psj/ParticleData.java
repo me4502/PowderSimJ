@@ -6,7 +6,6 @@ import net.psj.Particles.ParticleDust;
 public class ParticleData {
 	public static int[][] pmap = new int[PowderSimJ.height][PowderSimJ.width];
 	public static Particle[] parts = new Particle[PowderSimJ.height*PowderSimJ.width];
-	public static Particle dust;
 	
 	public static int latPart = 0;
 	
@@ -95,9 +94,5 @@ public class ParticleData {
 	{
 		if(id==1) return new ParticleDust();
 		return null;
-	}
-	
-	static{
-		dust = new Particle("Dust",0xEDD69F,0.1f,0.3f, 1.0f);
 	}
 }

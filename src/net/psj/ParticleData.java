@@ -116,7 +116,7 @@ public class ParticleData {
 		}
 	}
 	
-	public Particle newPartFromID(int id)
+	public static Particle newPartFromID(int id)
 	{
 		if(id==0) return null;
 		if(id==1) return new ParticleDust();
@@ -124,4 +124,6 @@ public class ParticleData {
 		if(id==3) return new ParticleWater();
 		return null;
 	}
+	
+	public static int PT_NUM = 4;
 }

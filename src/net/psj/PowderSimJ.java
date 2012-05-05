@@ -67,9 +67,8 @@ public class PowderSimJ extends BasicGame implements MouseListener,KeyListener{
     @Override
     public void init(GameContainer gc) throws SlickException {
     	this.gc = gc;
-    	//RenderUtils.setAntiAliasing(true);
-    	//GL11.glDisable(GL11.GL_LIGHTING);
-        //GL11.glEnable(GL11.GL_TEXTURE_2D);
+    	RenderUtils.setAntiAliasing(true);
+    	GL11.glDisable(GL11.GL_LIGHTING);
     	GL11.glShadeModel(GL11.GL_SMOOTH);
     	RenderUtils.init();
     }
@@ -95,13 +94,13 @@ public class PowderSimJ extends BasicGame implements MouseListener,KeyListener{
 		Menu.draw();
 		
 		if(isSettingFan)
-			RenderUtils.drawLine(fanX,fanY,mouseX,mouseY, 1,255,255,255);
+			RenderUtils.drawLine(fanX,fanY,mouseX,mouseY, 1,1.0f,1.0f,1.0f);
 		else
 		{
 			int x1 = mouseX, y1 = mouseY;
 			x1 = x1-(PowderSimJ.brushSize/2);
 			y1 = y1-(PowderSimJ.brushSize/2);
-			RenderUtils.drawRectLine(x1, y1, x1+brushSize, y1+brushSize, 255, 255, 255);
+			RenderUtils.drawRectLine(x1, y1, x1+brushSize, y1+brushSize, 1.0f, 1.0f, 1.0f);
 		}
 	}
 
@@ -152,25 +151,32 @@ public class PowderSimJ extends BasicGame implements MouseListener,KeyListener{
 	@Override
 	public void mouseClicked(int button, int x, int y, int clickCount)
 	{
-		while(!(mouseY%cell==0))
-			mouseY--;
-		while(!(mouseX%cell==0))
-			mouseX--;
-		if(Walls.bmap[mouseY/cell][mouseX/cell] instanceof WallFan && gc.getInput().isKeyDown(Input.KEY_LSHIFT))
+		Menu.click(button,x,y);
+		if(mouseY>0 && mouseY<height)
 		{
-			isSettingFan = !isSettingFan;
-			fanX = mouseX;
-			fanY = mouseY;
-			return;
-		}
-		else if(isSettingFan)
-		{
-			float nfvx = (mouseX-fanX)*0.055f;
-			float nfvy = (mouseY-fanY)*0.055f;
-			air.fvx[fanY/cell][fanX/cell] = nfvx;
-			air.fvy[fanY/cell][fanX/cell] = nfvy;
-			isSettingFan = false;
-			return;
+			if(mouseX>0 && mouseX<width)
+			{
+				while(!(mouseY%cell==0))
+					mouseY--;
+				while(!(mouseX%cell==0))
+					mouseX--;
+				if(Walls.bmap[mouseY/cell][mouseX/cell] instanceof WallFan && gc.getInput().isKeyDown(Input.KEY_LSHIFT))
+				{
+					isSettingFan = !isSettingFan;
+					fanX = mouseX;
+					fanY = mouseY;
+					return;
+				}
+				else if(isSettingFan)
+				{
+					float nfvx = (mouseX-fanX)*0.055f;
+					float nfvy = (mouseY-fanY)*0.055f;
+					air.fvx[fanY/cell][fanX/cell] = nfvx;
+					air.fvy[fanY/cell][fanX/cell] = nfvy;
+					isSettingFan = false;
+					return;
+				}
+			}
 		}
 	}
 	

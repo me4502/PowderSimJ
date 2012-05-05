@@ -1,13 +1,35 @@
 package net.psj;
 
+import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 
 import org.lwjgl.opengl.GL11;
+import org.newdawn.slick.Color;
+import org.newdawn.slick.UnicodeFont;
 import org.newdawn.slick.font.GlyphPage;
+import org.newdawn.slick.font.effects.ColorEffect;
 
 public class RenderUtils {
 
+	static UnicodeFont font = new UnicodeFont(new Font("Verdana",Font.BOLD,8));
+	
+	public static void init()
+	{
+		try{
+			font.addAsciiGlyphs();
+			font.getEffects().add(new ColorEffect());
+			font.loadGlyphs();
+		}
+		catch(Exception e){e.printStackTrace();}
+	}
+	
+	public static void drawFont(int x, int y, String text, int r, int g, int b)
+	{
+		Color c = new Color(r,g,b);
+		font.drawString(x,y,text,c);
+	}
+	
 	public static void drawPixel(int x, int y, int r, int g, int b)
 	{
 		GL11.glDisable(3553 /*GL_TEXTURE_2D*/);

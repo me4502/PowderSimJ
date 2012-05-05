@@ -26,7 +26,7 @@ public class Air {
 	float[][] ovx = new float[PowderSimJ.height/PowderSimJ.cell][PowderSimJ.width/PowderSimJ.cell];
 	public static float[][] vy = new float[PowderSimJ.height/PowderSimJ.cell][PowderSimJ.width/PowderSimJ.cell];
 	public float[][] ovy = new float[PowderSimJ.height/PowderSimJ.cell][PowderSimJ.width/PowderSimJ.cell];
-	public float[][] pv = new float[PowderSimJ.height/PowderSimJ.cell][PowderSimJ.width/PowderSimJ.cell];
+	public static float[][] pv = new float[PowderSimJ.height/PowderSimJ.cell][PowderSimJ.width/PowderSimJ.cell];
 	float[][] opv = new float[PowderSimJ.height/PowderSimJ.cell][PowderSimJ.width/PowderSimJ.cell];
 	boolean[][] bmap_blockair = new boolean[PowderSimJ.height/PowderSimJ.cell][PowderSimJ.width/PowderSimJ.cell];
 	boolean[][] bmap_blockairh = new boolean[PowderSimJ.height/PowderSimJ.cell][PowderSimJ.width/PowderSimJ.cell];

@@ -12,7 +12,7 @@ public class Air {
 	int CELL = PowderSimJ.cell;
 
 	int airMode = 0;
-	int displayAir = 2;
+	int displayAir = 1;
 
 	float AIR_TSTEPP = 0.3f;
 	float AIR_TSTEPV = 0.4f;
@@ -22,9 +22,10 @@ public class Air {
 
 	float[] kernel = new float[9];
 
-	public float[][] vx = new float[PowderSimJ.height/PowderSimJ.cell][PowderSimJ.width/PowderSimJ.cell];
+	public static float[][] vx = new float[PowderSimJ.height/PowderSimJ.cell][PowderSimJ.width/PowderSimJ.cell];
 	float[][] ovx = new float[PowderSimJ.height/PowderSimJ.cell][PowderSimJ.width/PowderSimJ.cell];
-	public float[][] vy = new float[PowderSimJ.height/PowderSimJ.cell][PowderSimJ.width/PowderSimJ.cell], ovy = new float[PowderSimJ.height/PowderSimJ.cell][PowderSimJ.width/PowderSimJ.cell];
+	public static float[][] vy = new float[PowderSimJ.height/PowderSimJ.cell][PowderSimJ.width/PowderSimJ.cell];
+	public float[][] ovy = new float[PowderSimJ.height/PowderSimJ.cell][PowderSimJ.width/PowderSimJ.cell];
 	public float[][] pv = new float[PowderSimJ.height/PowderSimJ.cell][PowderSimJ.width/PowderSimJ.cell];
 	float[][] opv = new float[PowderSimJ.height/PowderSimJ.cell][PowderSimJ.width/PowderSimJ.cell];
 	boolean[][] bmap_blockair = new boolean[PowderSimJ.height/PowderSimJ.cell][PowderSimJ.width/PowderSimJ.cell];

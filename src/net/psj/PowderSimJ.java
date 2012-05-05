@@ -11,10 +11,11 @@ import org.newdawn.slick.BasicGame;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
+import org.newdawn.slick.MouseListener;
 import org.newdawn.slick.SlickException;
 
 
-public class PowderSimJ extends BasicGame{
+public class PowderSimJ extends BasicGame implements MouseListener{
 	
 	public static final int width = 612;
 	public static final int height = 384;
@@ -26,6 +27,9 @@ public class PowderSimJ extends BasicGame{
 	
 	int mouseX;
 	int mouseY;
+	
+	public static int selectedl = 1;/*0x00 - 0xFF are particles */
+	public static int selectedr = 0;
 	
 	int fanX,fanY;
 	
@@ -39,6 +43,9 @@ public class PowderSimJ extends BasicGame{
 	
 	public Air air = new Air();
 	public Walls wall = new Walls();
+	public ParticleData ptypes = new ParticleData();
+	
+	public static int brushSize = 10;
 	
 	public PowderSimJ()
     {
@@ -56,15 +63,22 @@ public class PowderSimJ extends BasicGame{
     {
          AppGameContainer app = new AppGameContainer(new PowderSimJ());
          app.setDisplayMode(width, height+menuSize, false);
-         app.setVSync(false);
+         app.setVSync(true);
          app.start();
     }
 
 	@Override
 	public void render(GameContainer arg0, Graphics arg1) throws SlickException {
+		
+		int x1 = mouseX, y1 = mouseY;
+		x1 = x1-(PowderSimJ.brushSize/2);
+		y1 = y1-(PowderSimJ.brushSize/2);
+		RenderUtils.drawRectLine(x1, y1, x1+brushSize, y1+brushSize, 255, 255, 255);
+		
 		if(!isSettingFan)
 			air.drawAir();
 		wall.renderWalls();
+		ptypes.render();
 		
 		Menu.draw();
 		
@@ -83,10 +97,14 @@ public class PowderSimJ extends BasicGame{
 				air.update_airh();
 		}
 		
+		ptypes.update();
+		
 		Input input = arg0.getInput();
 		onKeypress(input);
 		mouseX = input.getMouseX();
 		mouseY = input.getMouseY();
+		input.setMouseClickTolerance(0);
+		input.setDoubleClickInterval(0);
 		if(input.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON))
 			onMouseClick(arg0);
 		if(input.isMouseButtonDown(Input.MOUSE_RIGHT_BUTTON))
@@ -106,17 +124,24 @@ public class PowderSimJ extends BasicGame{
 					for (int x=0; x<width/cell; x++)
 					{
 						air.pv[y][x] = 0f;
-						air.vy[y][x] = 0f;
-						air.vx[y][x] = 0f;
+						Air.vy[y][x] = 0f;
+						Air.vx[y][x] = 0f;
 						air.hv[y][x] = 0f;
 					}
 		if(keys.isKeyDown(Input.KEY_SPACE))
 			isPaused = !isPaused;
 	}
 	
+	@Override
+	public void mouseWheelMoved(int change) {
+		brushSize += change/100;
+		if(brushSize<1) brushSize = 1;
+	}
+	
 	public void onMouseClick(GameContainer arg0)
 	{
 		if(mouseY > height-2) return;
+		ptypes.create_parts(mouseX, mouseY, selectedl);
 		while(!(mouseY%cell==0))
 			mouseY--;
 		while(!(mouseX%cell==0))
@@ -137,13 +162,14 @@ public class PowderSimJ extends BasicGame{
 			isSettingFan = false;
 			return;
 		}
-		air.pv[mouseY/cell][mouseX/cell] -= 50.0f;
-		air.hv[mouseY/cell][mouseX/cell] -= 50.0f;
+		//air.pv[mouseY/cell][mouseX/cell] -= 50.0f;
+		//air.hv[mouseY/cell][mouseX/cell] -= 50.0f;
 	}
 	
 	public void onMouseRightClick(GameContainer arg0)
 	{
 		if(mouseY > height-2) return;
+		ptypes.create_parts(mouseX, mouseY, selectedr);
 		while(!(mouseY%cell==0))
 			mouseY--;
 		while(!(mouseX%cell==0))

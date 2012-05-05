@@ -1,7 +1,6 @@
 package net.psj.Walls;
 
 import net.psj.RenderUtils;
-import net.psj.Simulation.Wall;
 
 public class WallFan extends Wall{
 

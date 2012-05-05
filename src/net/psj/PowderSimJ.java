@@ -43,7 +43,7 @@ public class PowderSimJ extends BasicGame implements MouseListener{
 	
 	public Air air = new Air();
 	public Walls wall = new Walls();
-	public ParticleData ptypes = new ParticleData();
+	public static ParticleData ptypes = new ParticleData();
 	
 	public static int brushSize = 10;
 	

@@ -389,7 +389,7 @@ public class Air {
 			}
 		}
 		if(pixr==0&&pixg==0&&pixb==0) return;
-		RenderUtils.drawRect(x*CELL, y*CELL, (x*CELL)+CELL, (y*CELL)+CELL, pixr,pixg,pixb);
+		RenderUtils.drawRect(x*CELL, y*CELL, (x*CELL)+CELL, (y*CELL)+CELL, (float)pixr/255,(float)pixg/255,(float)pixb/255);
 	}
 
 	public void drawAir()

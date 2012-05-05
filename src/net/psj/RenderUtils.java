@@ -25,7 +25,7 @@ public class RenderUtils {
 		catch(Exception e){e.printStackTrace();}
 	}
 	
-	public static void drawFont(int x, int y, String text, int r, int g, int b)
+	public static void drawFont(int x, int y, String text, float r, float g, float b)
 	{
 		Color c = new Color(r,g,b);
 		font.drawString(x,y,text,c);

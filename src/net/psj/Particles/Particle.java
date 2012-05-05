@@ -18,6 +18,7 @@ public class Particle
 	float diffusion;
 	float gravity;
 	int state = 0;//solid,powder,liquid,gas,special
+	public int menu = 0;
 	
 	public int x = 0;
 	public int y = 0;
@@ -47,11 +48,12 @@ public class Particle
 		this.state = state;
 	}
 	
-	public void setPos(int x, int y, int id)
+	public Particle setPos(int x, int y, int id)
 	{
 		this.x = x;
 		this.y = y;
 		this.id = id;
+		return this;
 	}
 	
 	public boolean update()

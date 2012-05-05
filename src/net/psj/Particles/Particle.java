@@ -16,6 +16,7 @@ public class Particle
 	float advection;
 	float loss;
 	float diffusion;
+	float gravity;
 	int state = 0;//powder,solid,liquid,gas,special
 	
 	public int x = 0;
@@ -32,7 +33,7 @@ public class Particle
 	
 	Random rand = new Random();
 	
-	public Particle(String name, int colour, float airdrag, float airloss, float advection, float loss, float diffusion, int state)
+	public Particle(String name, int colour, float airdrag, float airloss, float advection, float loss, float diffusion, float gravity, int state)
 	{
 		this.name = name;
 		this.colour = colour;
@@ -40,6 +41,7 @@ public class Particle
 		this.airloss = airloss;
 		this.advection = advection;
 		this.diffusion = diffusion;
+		this.gravity = gravity;
 		this.state = state;
 	}
 	
@@ -54,12 +56,14 @@ public class Particle
 	{
 		//vx++;
 		boolean ret = false;
+		float pGravX = 0.0f;
+		float pGravY = gravity;
 		Air.vx[y/CELL][x/CELL] = Air.vx[y/CELL][x/CELL]*airloss + airdrag*vx;
 		Air.vy[y/CELL][x/CELL] = Air.vy[y/CELL][x/CELL]*airloss + airdrag*vy;
 		vx *= loss;
 		vy *= loss;
-		vx += advection*Air.vx[y/CELL][x/CELL];
-		vy += advection*Air.vy[y/CELL][x/CELL];
+		vx += advection*Air.vx[y/CELL][x/CELL] + pGravX;
+		vy += advection*Air.vy[y/CELL][x/CELL] + pGravY;
 		vx += diffusion*(rand.nextInt()/(0.5f*RAND_MAX)-1.0f);
 		vy += diffusion*(rand.nextInt()/(0.5f*RAND_MAX)-1.0f);
 		try{

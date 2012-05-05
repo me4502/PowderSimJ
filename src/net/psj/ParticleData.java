@@ -3,7 +3,6 @@ package net.psj;
 import net.psj.Particles.Particle;
 import net.psj.Particles.ParticleClone;
 import net.psj.Particles.ParticleDust;
-import net.psj.Simulation.Air;
 
 public class ParticleData {
 	public static int[][] pmap = new int[PowderSimJ.height][PowderSimJ.width];
@@ -22,10 +21,9 @@ public class ParticleData {
 		{
 			newPart.setPos(x,y,id);
 			parts[latPart] = newPart;
-			Air.pv[y/4][x/4] += 10;
 			return parts[latPart++];
 		}
-		else if(pmap[y][x]!=0 && newPart==null)
+		else if(newPart==null && pmap[y][x]!=0)
 			kill(pmap[y][x]);
 		
 		return null;
@@ -47,13 +45,12 @@ public class ParticleData {
 	public void update()
 	{
 		int part = 0;
-		int index = 0;
 		for(int x = 0; x < PowderSimJ.width; x++)
 			for(int y = 0; y < PowderSimJ.height; y++)
 			{
 				pmap[y][x] = 0;
 			}
-		for(int i = 0; i < latPart; i++)
+		for(int i = 1; i < latPart; i++)
 		{
 			if(parts[i]!=null)
 			{
@@ -69,37 +66,45 @@ public class ParticleData {
 					}
 					pmap[y][x] = i;
 					part++;
-					index = i;
 				}
 				else
 					kill(i);
 			}
+			else
+			{
+				moveDown(i);
+				i--;
+			}
 		}
-		if(part==0) latPart = 0;
-		else latPart = index;
+		if(part==0) latPart = 1;
 	}
 	
-	public void kill(int i)
+	public static void moveDown(int i)
+	{
+		for(int p = i; p < latPart; p++)
+		{
+			if(p!=latPart)
+				parts[p] = parts[p+1];
+			else
+				parts[p] = null;
+		}
+		latPart--;
+	}
+	
+	public static void kill(int i)
 	{
 		parts[i] = null;
 		if(latPart>300000)
 		{
 			System.out.println(latPart);
-			for(int p = i; p < latPart; p++)
-			{
-				if(p!=latPart)
-					parts[p] = parts[p+1];
-				else
-					parts[p] = null;
-			}
-			latPart--;
+			moveDown(i);
 			System.out.println(latPart);
 		}
 	}
 	
 	public void render()
 	{
-		for(int i = 0; i < latPart; i++)
+		for(int i = 1; i < latPart; i++)
 		{
 			if(parts[i]!=null)
 			{

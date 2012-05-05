@@ -3,12 +3,13 @@ package net.psj;
 import net.psj.Particles.Particle;
 import net.psj.Particles.ParticleClone;
 import net.psj.Particles.ParticleDust;
+import net.psj.Simulation.Air;
 
 public class ParticleData {
 	public static int[][] pmap = new int[PowderSimJ.height][PowderSimJ.width];
 	public static Particle[] parts = new Particle[PowderSimJ.height*PowderSimJ.width*PowderSimJ.cell];
 	
-	public static int latPart = 0;
+	public static int latPart = 1;
 	
 	public Particle create_part(int x, int y, int id)
 	{
@@ -21,6 +22,7 @@ public class ParticleData {
 		{
 			newPart.setPos(x,y,id);
 			parts[latPart] = newPart;
+			Air.pv[y/4][x/4] += 10;
 			return parts[latPart++];
 		}
 		else if(pmap[y][x]!=0 && newPart==null)

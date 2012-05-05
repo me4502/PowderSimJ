@@ -11,19 +11,23 @@ import org.newdawn.slick.BasicGame;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
+import org.newdawn.slick.KeyListener;
 import org.newdawn.slick.MouseListener;
 import org.newdawn.slick.SlickException;
 
 
-public class PowderSimJ extends BasicGame implements MouseListener{
+public class PowderSimJ extends BasicGame implements MouseListener,KeyListener{
 	
 	public static final int width = 612;
 	public static final int height = 384;
 	public static final int menuSize = 40;
+	public static final int barSize = 17;
 	public static final int cell = 4;
 	
 	public static final int MAX_TEMP = 9000;
 	public static final int MIN_TEMP = 0;
+	
+	static int AA = 0;
 	
 	int mouseX;
 	int mouseY;
@@ -56,25 +60,22 @@ public class PowderSimJ extends BasicGame implements MouseListener{
     public void init(GameContainer gc) throws SlickException {
     	RenderUtils.setAntiAliasing(true);
     	GL11.glDisable(GL11.GL_LIGHTING);
+    	GL11.glEnable(GL11.GL_SMOOTH);
     	GL11.glEnable(GL11.GL_LINE_SMOOTH);
+    	RenderUtils.init();
     }
  
     public static void main(String[] args) throws SlickException
     {
          AppGameContainer app = new AppGameContainer(new PowderSimJ());
-         app.setDisplayMode(width, height+menuSize, false);
+         app.setDisplayMode(width+barSize, height+menuSize, false);
          app.setVSync(true);
+         app.setMultiSample(AA);
          app.start();
     }
 
 	@Override
 	public void render(GameContainer arg0, Graphics arg1) throws SlickException {
-		
-		int x1 = mouseX, y1 = mouseY;
-		x1 = x1-(PowderSimJ.brushSize/2);
-		y1 = y1-(PowderSimJ.brushSize/2);
-		RenderUtils.drawRectLine(x1, y1, x1+brushSize, y1+brushSize, 255, 255, 255);
-		
 		if(!isSettingFan)
 			air.drawAir();
 		wall.renderWalls();
@@ -84,6 +85,13 @@ public class PowderSimJ extends BasicGame implements MouseListener{
 		
 		if(isSettingFan)
 			RenderUtils.drawLine(fanX,fanY,mouseX,mouseY, 1,255,255,255);
+		else
+		{
+			int x1 = mouseX, y1 = mouseY;
+			x1 = x1-(PowderSimJ.brushSize/2);
+			y1 = y1-(PowderSimJ.brushSize/2);
+			RenderUtils.drawRectLine(x1, y1, x1+brushSize, y1+brushSize, 255, 255, 255);
+		}
 	}
 
 	@Override
@@ -100,26 +108,20 @@ public class PowderSimJ extends BasicGame implements MouseListener{
 		ptypes.update();
 		
 		Input input = arg0.getInput();
-		onKeypress(input);
 		mouseX = input.getMouseX();
 		mouseY = input.getMouseY();
 		input.setMouseClickTolerance(0);
 		input.setDoubleClickInterval(0);
 		if(input.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON))
-			onMouseClick(arg0);
+			onMouseClick(arg0,0);
 		if(input.isMouseButtonDown(Input.MOUSE_RIGHT_BUTTON))
-			onMouseRightClick(arg0);
+			onMouseClick(arg0,4);
 	}
 	
-	public void onKeypress(Input keys)
+	@Override
+	public void keyPressed(int key, char c)
 	{
-		if(keyTick>0)
-		{
-			keyTick--;
-			return;
-		}
-		keyTick = 2;
-		if(keys.isKeyDown(Input.KEY_EQUALS))
+		if(key==Input.KEY_EQUALS)
 			for (int y=0; y<height/cell; y++)
 					for (int x=0; x<width/cell; x++)
 					{
@@ -128,7 +130,7 @@ public class PowderSimJ extends BasicGame implements MouseListener{
 						Air.vx[y][x] = 0f;
 						air.hv[y][x] = 0f;
 					}
-		if(keys.isKeyDown(Input.KEY_SPACE))
+		if(key==Input.KEY_SPACE)
 			isPaused = !isPaused;
 	}
 	
@@ -138,42 +140,37 @@ public class PowderSimJ extends BasicGame implements MouseListener{
 		if(brushSize<1) brushSize = 1;
 	}
 	
-	public void onMouseClick(GameContainer arg0)
+	public void onMouseClick(GameContainer arg0, int button)
 	{
-		if(mouseY > height-2) return;
-		ptypes.create_parts(mouseX, mouseY, selectedl);
-		while(!(mouseY%cell==0))
-			mouseY--;
-		while(!(mouseX%cell==0))
-			mouseX--;
-		if(Walls.bmap[mouseY/cell][mouseX/cell] instanceof WallFan && arg0.getInput().isKeyDown(Input.KEY_LSHIFT))
+		if(mouseY>0 && mouseY<height)
 		{
-			isSettingFan = !isSettingFan;
-			fanX = mouseX;
-			fanY = mouseY;
-			return;
+			if(mouseX>0 && mouseX<width)
+			{
+				if(button==0)
+					ptypes.create_parts(mouseX, mouseY, selectedl);
+				else if(button==4)
+					ptypes.create_parts(mouseX, mouseY, selectedr);
+				while(!(mouseY%cell==0))
+					mouseY--;
+				while(!(mouseX%cell==0))
+					mouseX--;
+				if(Walls.bmap[mouseY/cell][mouseX/cell] instanceof WallFan && arg0.getInput().isKeyDown(Input.KEY_LSHIFT))
+				{
+					isSettingFan = !isSettingFan;
+					fanX = mouseX;
+					fanY = mouseY;
+					return;
+				}
+				else if(isSettingFan)
+				{
+					float nfvx = (mouseX-fanX)*0.055f;
+					float nfvy = (mouseY-fanY)*0.055f;
+					air.fvx[fanY/cell][fanX/cell] = nfvx;
+					air.fvy[fanY/cell][fanX/cell] = nfvy;
+					isSettingFan = false;
+					return;
+				}
+			}
 		}
-		else if(isSettingFan)
-		{
-			float nfvx = (mouseX-fanX)*0.055f;
-			float nfvy = (mouseY-fanY)*0.055f;
-			air.fvx[fanY/cell][fanX/cell] = nfvx;
-			air.fvy[fanY/cell][fanX/cell] = nfvy;
-			isSettingFan = false;
-			return;
-		}
-		//air.pv[mouseY/cell][mouseX/cell] -= 50.0f;
-		//air.hv[mouseY/cell][mouseX/cell] -= 50.0f;
-	}
-	
-	public void onMouseRightClick(GameContainer arg0)
-	{
-		if(mouseY > height-2) return;
-		ptypes.create_parts(mouseX, mouseY, selectedr);
-		while(!(mouseY%cell==0))
-			mouseY--;
-		while(!(mouseX%cell==0))
-			mouseX--;
-		Walls.bmap[mouseY/cell][mouseX/cell] = new WallFan();
 	}
 }

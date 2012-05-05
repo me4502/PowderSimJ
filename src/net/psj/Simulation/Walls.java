@@ -1,6 +1,7 @@
 package net.psj.Simulation;
 
 import net.psj.PowderSimJ;
+import net.psj.Walls.Wall;
 
 public class Walls {
 

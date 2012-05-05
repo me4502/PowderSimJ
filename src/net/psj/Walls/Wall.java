@@ -1,4 +1,4 @@
-package net.psj.Simulation;
+package net.psj.Walls;
 
 import net.psj.PowderSimJ;
 import net.psj.RenderUtils;

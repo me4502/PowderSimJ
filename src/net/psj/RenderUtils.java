@@ -8,6 +8,17 @@ import org.newdawn.slick.font.GlyphPage;
 
 public class RenderUtils {
 
+	public static void drawPixel(int x, int y, int r, int g, int b)
+	{
+		GL11.glDisable(3553 /*GL_TEXTURE_2D*/);
+		GL11.glBlendFunc(770, 771);
+		GL11.glColor3d(r,g,b);
+		GL11.glBegin(GL11.GL_POINTS);
+		GL11.glVertex2f(x, y);
+		GL11.glEnd();
+		GL11.glEnable(3553 /*GL_TEXTURE_2D*/);
+	}
+	
 	public static void drawRect(int x1, int y1, int x2, int y2, int r,int g,int b)
 	{
 		GL11.glDisable(3553 /*GL_TEXTURE_2D*/);
@@ -21,6 +32,21 @@ public class RenderUtils {
 		GL11.glEnd();
 		GL11.glEnable(3553 /*GL_TEXTURE_2D*/);
 	}
+	
+	public static void drawRectLine(int x1, int y1, int x2, int y2, int r,int g,int b)
+	{
+		GL11.glDisable(3553 /*GL_TEXTURE_2D*/);
+		GL11.glBlendFunc(770, 771);
+		GL11.glColor3d(r,g,b);
+		GL11.glBegin(GL11.GL_LINE_LOOP);
+		GL11.glVertex2d(x1, y1);
+		GL11.glVertex2d(x2, y1);
+		GL11.glVertex2d(x2, y2);
+		GL11.glVertex2d(x1, y2);
+		GL11.glEnd();
+		GL11.glEnable(3553 /*GL_TEXTURE_2D*/);
+	}
+
 	
 	public static void setAntiAliasing(boolean antiAlias)
 	{

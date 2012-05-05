@@ -29,7 +29,7 @@ public class PowderSimJ extends BasicGame implements MouseListener,KeyListener{
 	
 	/* Settings */
 	static int AA = 0;
-	static boolean VSync = true;
+	static boolean VSync = false;
 	static boolean Debug = true;
 	static int targetFrames = 60;
 	
@@ -49,6 +49,8 @@ public class PowderSimJ extends BasicGame implements MouseListener,KeyListener{
 	
 	public boolean airHeat = false;
 	
+	GameContainer gc;
+	
 	public Air air = new Air();
 	public Walls wall = new Walls();
 	public static ParticleData ptypes = new ParticleData();
@@ -62,6 +64,7 @@ public class PowderSimJ extends BasicGame implements MouseListener,KeyListener{
  
     @Override
     public void init(GameContainer gc) throws SlickException {
+    	this.gc = gc;
     	RenderUtils.setAntiAliasing(true);
     	GL11.glDisable(GL11.GL_LIGHTING);
     	GL11.glEnable(GL11.GL_SMOOTH);
@@ -109,15 +112,13 @@ public class PowderSimJ extends BasicGame implements MouseListener,KeyListener{
 			air.make_kernel();
 			if(airHeat)
 				air.update_airh();
+			
+			ptypes.update();
 		}
-		
-		ptypes.update();
 		
 		Input input = arg0.getInput();
 		mouseX = input.getMouseX();
 		mouseY = input.getMouseY();
-		input.setMouseClickTolerance(0);
-		input.setDoubleClickInterval(0);
 		if(input.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON))
 			onMouseClick(arg0,0);
 		if(input.isMouseButtonDown(Input.MOUSE_RIGHT_BUTTON))
@@ -146,6 +147,31 @@ public class PowderSimJ extends BasicGame implements MouseListener,KeyListener{
 		if(brushSize<1) brushSize = 1;
 	}
 	
+	@Override
+	public void mouseClicked(int button, int x, int y, int clickCount)
+	{
+		while(!(mouseY%cell==0))
+			mouseY--;
+		while(!(mouseX%cell==0))
+			mouseX--;
+		if(Walls.bmap[mouseY/cell][mouseX/cell] instanceof WallFan && gc.getInput().isKeyDown(Input.KEY_LSHIFT))
+		{
+			isSettingFan = !isSettingFan;
+			fanX = mouseX;
+			fanY = mouseY;
+			return;
+		}
+		else if(isSettingFan)
+		{
+			float nfvx = (mouseX-fanX)*0.055f;
+			float nfvy = (mouseY-fanY)*0.055f;
+			air.fvx[fanY/cell][fanX/cell] = nfvx;
+			air.fvy[fanY/cell][fanX/cell] = nfvy;
+			isSettingFan = false;
+			return;
+		}
+	}
+	
 	public void onMouseClick(GameContainer arg0, int button)
 	{
 		if(mouseY>0 && mouseY<height)
@@ -156,26 +182,6 @@ public class PowderSimJ extends BasicGame implements MouseListener,KeyListener{
 					ptypes.create_parts(mouseX, mouseY, selectedl);
 				else if(button==4)
 					ptypes.create_parts(mouseX, mouseY, selectedr);
-				while(!(mouseY%cell==0))
-					mouseY--;
-				while(!(mouseX%cell==0))
-					mouseX--;
-				if(Walls.bmap[mouseY/cell][mouseX/cell] instanceof WallFan && arg0.getInput().isKeyDown(Input.KEY_LSHIFT))
-				{
-					isSettingFan = !isSettingFan;
-					fanX = mouseX;
-					fanY = mouseY;
-					return;
-				}
-				else if(isSettingFan)
-				{
-					float nfvx = (mouseX-fanX)*0.055f;
-					float nfvy = (mouseY-fanY)*0.055f;
-					air.fvx[fanY/cell][fanX/cell] = nfvx;
-					air.fvy[fanY/cell][fanX/cell] = nfvy;
-					isSettingFan = false;
-					return;
-				}
 			}
 		}
 	}

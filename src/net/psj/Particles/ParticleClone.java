@@ -9,7 +9,7 @@ public class ParticleClone extends Particle{
 	public int cloneID = -1;
 	
 	public ParticleClone() {
-		super("CLNE", new float[]{1.0f,0.81f,0.06f}, 0.0f, 0.90f, 0.0f, 0.0f, 0.0f, 0.0f, 2,MenuData.MENU_PARTS);
+		super("CLNE", new float[]{1.0f,0.81f,0.06f}, 0.0f, 0.90f, 0.0f, 0.0f, 0.0f, 0.0f, 0,MenuData.MENU_PARTS);
 		cloneID = -1;
 	}
 

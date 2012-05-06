@@ -23,7 +23,7 @@ public class ParticleData {
 			return null;
 		}
 		Particle newPart = newPartFromID(id);
-		if(!(newPart instanceof ParticleErase) && pmap[y][x]==0 && newPart!=null)
+		if(!(newPart instanceof ParticleErase) && parts[pmap[y][x]]==null && newPart!=null)
 		{
 			newPart.setPos(x,y,id);
 			parts[latPart] = newPart;
@@ -34,7 +34,7 @@ public class ParticleData {
 			ParticleClone p = (ParticleClone) parts[pmap[y][x]];
 			p.cloneID = id;
 		}
-		else if(newPart instanceof ParticleErase && pmap[y][x]!=0)
+		else if(newPart instanceof ParticleErase && parts[pmap[y][x]]!=null)
 			kill(pmap[y][x]);
 		
 		return null;
@@ -71,7 +71,7 @@ public class ParticleData {
 					{
 						int x = parts[i].x;
 						int y = parts[i].y;
-						if(x>PowderSimJ.width - PowderSimJ.cell || x<PowderSimJ.cell || y>PowderSimJ.height - PowderSimJ.cell || y<PowderSimJ.cell || pmap[y][x]!=0 || wallBlocksParticles(WallData.getWallAt(x, y)))
+						if(x>PowderSimJ.width - PowderSimJ.cell || x<PowderSimJ.cell || y>PowderSimJ.height - PowderSimJ.cell || y<PowderSimJ.cell || wallBlocksParticles(WallData.getWallAt(x, y)))
 						{
 							kill(i);
 							continue;

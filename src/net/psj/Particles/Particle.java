@@ -30,6 +30,8 @@ public class Particle extends Placable
 	public int vy = 0;
 	public int vx = 0;
 	
+	int lastY,lastX;
+	
 	public static final float CFDS = (4.0f/CELL);
 	public static final int RAND_MAX = 0x7FFF;
 	
@@ -50,6 +52,12 @@ public class Particle extends Placable
 	{
 		this.x = x;
 		this.y = y;
+		ParticleData.pmap[y][x] = id;
+		return setId(id);
+	}
+	
+	public Particle setId(int id)
+	{
 		this.id = id;
 		return this;
 	}
@@ -98,7 +106,6 @@ public class Particle extends Placable
 						}
 						if(ParticleData.wallBlocksParticles(WallData.getWallAt(x+xx,y)))
 						{
-							System.out.println("IT ONE A DEM WALLS");
 							vx = 0;
 							break motion;
 						}
@@ -124,11 +131,7 @@ public class Particle extends Placable
 				{
 					return true;
 				}
-				if(ParticleData.pmap[y][x+vx]==0 && !ParticleData.wallBlocksParticles(WallData.getWallAt(x+vx,y)))
-				{
-					setPos(x+vx, y, id);
-				}
-				else
+				if(!tryMove(x+vx, y))
 					vx = 0;
 			}
 			catch(IndexOutOfBoundsException e)
@@ -159,7 +162,6 @@ public class Particle extends Placable
 					{
 						if(ParticleData.wallBlocksParticles(WallData.getWallAt(x,y+yy)))
 						{
-							System.out.println("IT ONE A DEM WALLS");
 							vy = 0;
 							break motion;
 						}
@@ -175,11 +177,7 @@ public class Particle extends Placable
 				{
 					return true;
 				}
-				if(ParticleData.pmap[y+vy][x]==0 && !ParticleData.wallBlocksParticles(WallData.getWallAt(x,y+vy)))
-				{
-					setPos(x, y+vy, id);
-				}
-				else
+				if(!tryMove(x, y+vy))
 					vy = 0;
 			}
 			catch(IndexOutOfBoundsException e)
@@ -187,8 +185,40 @@ public class Particle extends Placable
 				if(vy>0)vy--;
 				else vy++;
 			}
+			
+			if(state==2 && lastY==y) //Liquid stuff.
+			{
+				if(!tryMove(x,y+1))
+				{
+					int c = rand.nextInt(5)-2;
+					if(!tryMove(x+c,y+1))
+					{
+						tryMove(x+c,y);
+					}
+				}
+			}
 		}
+		lastY = y;
+		lastX = x;
 		return false;
+	}
+	
+	public boolean tryMove(int x, int y)
+	{
+		boolean ret = false;
+		motion:
+		{
+			try
+			{
+				Particle r = ParticleData.parts[ParticleData.pmap[y][x]];
+				if(r!=null) break motion;
+				if(ParticleData.wallBlocksParticles(WallData.getWallAt(x,y))) break motion;
+				setPos(x,y,id);
+				ret =  true;
+			}
+			catch(Exception e){e.printStackTrace(); ret = false;}
+		}
+		return ret;
 	}
 	
 	public boolean render()

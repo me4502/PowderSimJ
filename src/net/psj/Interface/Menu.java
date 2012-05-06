@@ -6,11 +6,11 @@ import net.psj.ParticleData;
 import net.psj.Placable;
 import net.psj.PowderSimJ;
 import net.psj.RenderUtils;
-import net.psj.Simulation.WallsData;
+import net.psj.Simulation.WallData;
 
 public class Menu {
 
-	public static int selected = 1;
+	public static int selected = 0;
 	static int menus = 2;
 	
 	public static int MENU_WALLS = 1;
@@ -32,11 +32,11 @@ public class Menu {
 		int h = PowderSimJ.height;
 		int m = PowderSimJ.menuSize;
 		ArrayList<Placable> menuItems = new ArrayList<Placable>();
-		for(int i = PowderSimJ.wallStart; i < PowderSimJ.wallStart+WallsData.WL_NUM; i++)
+		for(int i = PowderSimJ.wallStart; i < PowderSimJ.wallStart+WallData.WL_NUM; i++)
 		{
-			if(WallsData.newWallfromID(i).menu == selected)
+			if(WallData.newWallfromID(i).menu == selected)
 			{
-				menuItems.add(WallsData.newWallfromID(i));
+				menuItems.add(WallData.newWallfromID(i));
 			}
 		}
 		for(int i = 0; i < ParticleData.PT_NUM; i++)
@@ -49,8 +49,17 @@ public class Menu {
 
 		for(int i = 0; i < menuItems.size(); i++)
 		{
+			float c = menuItems.get(i).colour[0] * menuItems.get(i).colour[1] * menuItems.get(i).colour[1];
+			if (c<0.5f)
+			{
+				c = 1.0f;
+			}
+			else
+			{
+				c = 0f;
+			}
 			RenderUtils.drawRect((i*64)+5, h+6, (i*64)+63, (h+m)-6, menuItems.get(i).colour[0], menuItems.get(i).colour[1], menuItems.get(i).colour[2]);
-			RenderUtils.drawFont((i*64)+23, h+(m/2)-5, menuItems.get(i).name, 1.0f,1.0f,1.0f);
+			RenderUtils.drawFont((i*64)+23, h+(m/2)-5, menuItems.get(i).name, c,c,c);
 		}
 	}
 	
@@ -59,15 +68,15 @@ public class Menu {
 		int w = PowderSimJ.width;
 		int h = PowderSimJ.height;
 		int m = PowderSimJ.menuSize;
-		int b = PowderSimJ.barSize;
+		//int b = PowderSimJ.barSize;
 		if(y>h && x<w)
 		{
 			ArrayList<Placable> menuItems = new ArrayList<Placable>();
-			for(int i = PowderSimJ.wallStart; i < PowderSimJ.wallStart+WallsData.WL_NUM; i++)
+			for(int i = PowderSimJ.wallStart; i < PowderSimJ.wallStart+WallData.WL_NUM; i++)
 			{
-				if(WallsData.newWallfromID(i).menu == selected)
+				if(WallData.newWallfromID(i).menu == selected)
 				{
-					menuItems.add(WallsData.newWallfromID(i));
+					menuItems.add(WallData.newWallfromID(i));
 				}
 			}
 			for(int i = 0; i < ParticleData.PT_NUM; i++)

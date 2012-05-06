@@ -7,6 +7,7 @@ import net.psj.Placable;
 import net.psj.PowderSimJ;
 import net.psj.RenderUtils;
 import net.psj.Simulation.Air;
+import net.psj.Simulation.WallData;
 
 public class Particle extends Placable
 {
@@ -82,36 +83,103 @@ public class Particle extends Placable
 		vx += pGravX*10;
 		vx += diffusion*(rand.nextInt()/(0.5f*RAND_MAX)-1.0f)*10;
 		vy += diffusion*(rand.nextInt()/(0.5f*RAND_MAX)-1.0f)*10;
-		try{
-			if(x+vx>PowderSimJ.width - PowderSimJ.cell || x+vx<PowderSimJ.cell || y>PowderSimJ.height - PowderSimJ.cell || y<PowderSimJ.cell)
-			{
-				return true;
-			}
-			if(ParticleData.pmap[y][x+vx]==0)
-			{
-				setPos(x+vx, y, id);
-			}
-		}
-		catch(IndexOutOfBoundsException e)
+		motion:
 		{
-			if(vx>0)vx--;
-			else vx++;
-		}
+			try{
+				if(vx>0)
+				{
+					for(int xx = vx; xx < 1; xx--)
+					{
+						if(ParticleData.pmap[y][x+xx]!=0)
+						{
+							vx = 0;
+							break motion;
+						}
+						if(ParticleData.bmap_block[y/PowderSimJ.cell][(x+xx)/PowderSimJ.cell]==true)
+						{
+							vx = 0;
+							break motion;
+						}
+					}
+				}
+				else if(vx<0)
+				{
+					for(int xx = vx; xx > -1; xx++)
+					{
+						if(ParticleData.pmap[y][x+xx]!=0)
+						{
+							vx = 0;
+							break motion;
+						}
+						if(ParticleData.bmap_block[y/PowderSimJ.cell][(x+xx)/PowderSimJ.cell]==true)
+						{
+							vx = 0;
+							break motion;
+						}
+					}
+				}
+				if(x+vx>PowderSimJ.width - PowderSimJ.cell || x+vx<PowderSimJ.cell || y>PowderSimJ.height - PowderSimJ.cell || y<PowderSimJ.cell)
+				{
+					return true;
+				}
+				if(ParticleData.pmap[y][x+vx]==0)
+				{
+					setPos(x+vx, y, id);
+				}
+			}
+			catch(IndexOutOfBoundsException e)
+			{
+				if(vx>0)vx--;
+				else vx++;
+			}
+			try{
+				if(vy>0)
+				{
+					for(int yy = vy; yy < 1; yy--)
+					{
+						if(ParticleData.pmap[y+yy][x]!=0)
+						{
+							vy = 0;
+							break motion;
+						}
+						if(ParticleData.bmap_block[(y+yy)/PowderSimJ.cell][x/PowderSimJ.cell]==true)
+						{
+							vy = 0;
+							break motion;
+						}
 
-		try{
-			if(x>PowderSimJ.width - PowderSimJ.cell || x<PowderSimJ.cell || y+vy>PowderSimJ.height - PowderSimJ.cell || y+vy<PowderSimJ.cell)
-			{
-				return true;
+					}
+				}
+				else if(vy<0)
+				{
+					for(int yy = vy; yy > -1; yy++)
+					{
+						if(ParticleData.pmap[y+yy][x]!=0)
+						{
+							vy = 0;
+							break motion;
+						}
+						if(ParticleData.bmap_block[(y+yy)/PowderSimJ.cell][x/PowderSimJ.cell]==true)
+						{
+							vy = 0;
+							break motion;
+						}
+					}
+				}
+				if(x>PowderSimJ.width - PowderSimJ.cell || x<PowderSimJ.cell || y+vy>PowderSimJ.height - PowderSimJ.cell || y+vy<PowderSimJ.cell)
+				{
+					return true;
+				}
+				if(ParticleData.pmap[y+vy][x]==0)
+				{
+					setPos(x, y+vy, id);
+				}
 			}
-			if(ParticleData.pmap[y+vy][x]==0)
+			catch(IndexOutOfBoundsException e)
 			{
-				setPos(x, y+vy, id);
+				if(vy>0)vy--;
+				else vy++;
 			}
-		}
-		catch(IndexOutOfBoundsException e)
-		{
-			if(vy>0)vy--;
-			else vy++;
 		}
 		return false;
 	}

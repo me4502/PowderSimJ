@@ -49,6 +49,11 @@ public class WallData {
 			}
 	}
 	
+	public static Wall getWallAt(int x, int y)
+	{
+		return WallData.bmap[y/PowderSimJ.cell][x/PowderSimJ.cell];
+	}
+	
 	public static Wall newWallfromID(int id)
 	{
 		id -= PowderSimJ.wallStart;

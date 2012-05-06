@@ -2,14 +2,14 @@ package net.psj.Particles;
 
 import net.psj.ParticleData;
 import net.psj.PowderSimJ;
-import net.psj.Interface.Menu;
+import net.psj.Interface.MenuData;
 
 public class ParticleClone extends Particle{
 
-	int cloneID = -1;
+	public int cloneID = -1;
 	
 	public ParticleClone() {
-		super("CLNE", new float[]{1.0f,0.81f,0.06f}, 0.0f, 0.90f, 0.0f, 0.0f, 0.0f, 0.0f, 2,Menu.MENU_PARTS);
+		super("CLNE", new float[]{1.0f,0.81f,0.06f}, 0.0f, 0.90f, 0.0f, 0.0f, 0.0f, 0.0f, 2,MenuData.MENU_PARTS);
 		cloneID = -1;
 	}
 
@@ -18,7 +18,6 @@ public class ParticleClone extends Particle{
 		boolean ret = super.update();
 		if(cloneID!=-1)
 		{
-			System.out.println("Makin' Some " + cloneID);
 			for(int x2 = x-1; x2 < x+1; x2++)
 				for(int y2 = y-1; y2 < y+1; y2++)
 					PowderSimJ.ptypes.create_part(x2,y2,cloneID);
@@ -37,7 +36,6 @@ public class ParticleClone extends Particle{
 							continue;
 						if(r.id==id)
 							continue;
-						System.out.println("Derp");
 						cloneID = r.id;
 						break;
 					}

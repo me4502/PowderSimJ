@@ -6,20 +6,19 @@ import net.psj.Particles.ParticleDust;
 import net.psj.Particles.ParticleErase;
 import net.psj.Particles.ParticleWater;
 import net.psj.Simulation.WallData;
+import net.psj.Walls.Wall;
 import net.psj.Walls.WallBasic;
 
 public class ParticleData {
 	public static int[][] pmap = new int[PowderSimJ.height][PowderSimJ.width];
 	public static Particle[] parts = new Particle[PowderSimJ.height*PowderSimJ.width*PowderSimJ.cell];
-	
-	public static boolean[][] bmap_block = new boolean[PowderSimJ.height/PowderSimJ.cell][PowderSimJ.width/PowderSimJ.cell];
-	
+		
 	public static int latPart = 1;
 	public static int gravityMode = 0;
 	
 	public Particle create_part(int x, int y, int id)
 	{
-		if(x>PowderSimJ.width - PowderSimJ.cell || x<PowderSimJ.cell || y>PowderSimJ.height - PowderSimJ.cell || y<PowderSimJ.cell || bmap_block[y/PowderSimJ.cell][x/PowderSimJ.cell]==true)
+		if(x>PowderSimJ.width - PowderSimJ.cell || x<PowderSimJ.cell || y>PowderSimJ.height - PowderSimJ.cell || y<PowderSimJ.cell || wallBlocksParticles(WallData.getWallAt(x,y)))
 		{
 			return null;
 		}
@@ -29,6 +28,11 @@ public class ParticleData {
 			newPart.setPos(x,y,id);
 			parts[latPart] = newPart;
 			return parts[latPart++];
+		}
+		else if(!(newPart instanceof ParticleErase) && parts[pmap[y][x]].id==2 && id != 2 && newPart!=null)
+		{
+			ParticleClone p = (ParticleClone) parts[pmap[y][x]];
+			p.cloneID = id;
 		}
 		else if(newPart instanceof ParticleErase && pmap[y][x]!=0)
 			kill(pmap[y][x]);
@@ -52,11 +56,6 @@ public class ParticleData {
 	public void update()
 	{
 		int part = 0;
-		for (int y=0; y<PowderSimJ.height/PowderSimJ.cell; y++)
-			for (int x=0; x<PowderSimJ.width/PowderSimJ.cell; x++)
-			{
-				bmap_block[y][x] = WallData.bmap[y][x]!=null && (WallData.bmap[y][x] instanceof WallBasic);
-			}
 		for(int x = 0; x < PowderSimJ.width; x++)
 			for(int y = 0; y < PowderSimJ.height; y++)
 			{
@@ -72,7 +71,7 @@ public class ParticleData {
 					{
 						int x = parts[i].x;
 						int y = parts[i].y;
-						if(x>PowderSimJ.width - PowderSimJ.cell || x<PowderSimJ.cell || y>PowderSimJ.height - PowderSimJ.cell || y<PowderSimJ.cell || pmap[y][x]!=0 || bmap_block[y/PowderSimJ.cell][x/PowderSimJ.cell]==true)
+						if(x>PowderSimJ.width - PowderSimJ.cell || x<PowderSimJ.cell || y>PowderSimJ.height - PowderSimJ.cell || y<PowderSimJ.cell || pmap[y][x]!=0)
 						{
 							kill(i);
 							continue;
@@ -137,6 +136,15 @@ public class ParticleData {
 		if(id==2) return new ParticleClone();
 		if(id==3) return new ParticleWater();
 		return null;
+	}
+	
+	public static boolean wallBlocksParticles(Wall w)
+	{
+		if(w==null) return false;
+		if(w instanceof WallBasic)
+			return true;
+		else
+			return false;
 	}
 	
 	public static int PT_NUM = 4;

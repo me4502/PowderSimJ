@@ -3,12 +3,13 @@ package net.psj.Walls;
 import net.psj.Placable;
 import net.psj.PowderSimJ;
 import net.psj.RenderUtils;
+import net.psj.Interface.Menu;
 
 public class Wall extends Placable{
 	
 	protected int CELL = PowderSimJ.cell;
 		
-	public Wall(String name, float[] colour, int id, int menu)
+	public Wall(String name, float[] colour, int id, Menu menu)
 	{
 		super(name,colour,id+PowderSimJ.wallStart, menu);
 	}

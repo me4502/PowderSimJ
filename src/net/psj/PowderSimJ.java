@@ -12,14 +12,17 @@ import net.psj.Interface.MenuData;
 import net.psj.Interface.Overlay;
 import net.psj.Simulation.Air;
 import net.psj.Simulation.ParticleData;
+import net.psj.Simulation.ShaderData;
 import net.psj.Simulation.WallData;
 import net.psj.Walls.WallFan;
+import net.psj.shader.Shader;
 
 import org.lwjgl.opengl.GL11;
 import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.BasicGame;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
+import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.KeyListener;
 import org.newdawn.slick.MouseListener;
@@ -89,6 +92,7 @@ public class PowderSimJ extends BasicGame implements MouseListener,KeyListener{
     	GL11.glDisable(GL11.GL_LIGHTING);
     	GL11.glShadeModel(GL11.GL_SMOOTH);
     	RenderUtils.init();
+    	ShaderData.init();
     }
  
     public static void main(String[] args) throws SlickException
@@ -114,7 +118,13 @@ public class PowderSimJ extends BasicGame implements MouseListener,KeyListener{
 		if(!isSettingFan)
 			air.drawAir();
 		wall.renderWalls();
+		ShaderData.blurH.activate();
+		ShaderData.blurV.activate();
+		ShaderData.fancy.activate();
 		ptypes.render();
+		ShaderData.blurH.deactivate();
+		ShaderData.blurV.deactivate();
+		ShaderData.fancy.deactivate();
 		
 		MenuData.draw();
 		

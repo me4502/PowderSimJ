@@ -3,14 +3,13 @@ package net.psj.Particles;
 import java.util.Random;
 
 import net.psj.ParticleData;
+import net.psj.Placable;
 import net.psj.PowderSimJ;
 import net.psj.RenderUtils;
 import net.psj.Simulation.Air;
 
-public class Particle 
+public class Particle extends Placable
 {
-	public String name;
-	public float[] colour;
 	float airdrag;
 	float airloss;
 	float advection;
@@ -18,11 +17,9 @@ public class Particle
 	float diffusion;
 	float gravity;
 	int state = 0;//solid,powder,liquid,gas,special
-	public int menu = 0;
 	
 	public int x = 0;
 	public int y = 0;
-	public int id = 0;
 	
 	public int temp;
 	
@@ -36,10 +33,9 @@ public class Particle
 	
 	Random rand = new Random();
 	
-	public Particle(String name, float[] colour, float airdrag, float airloss, float advection, float loss, float diffusion, float gravity, int state)
+	public Particle(String name, float[] colour, float airdrag, float airloss, float advection, float loss, float diffusion, float gravity, int state, int menu)
 	{
-		this.name = name;
-		this.colour = colour;
+		super(name,colour,0,menu);
 		this.airdrag = airdrag;
 		this.airloss = airloss;
 		this.advection = advection;
@@ -59,7 +55,6 @@ public class Particle
 	public boolean update()
 	{
 		//vx++;
-		boolean ret = false;
 		float pGravX,pGravY,pGravD;
 		//Gravity mode by Moach
 		switch (ParticleData.gravityMode)
@@ -88,10 +83,13 @@ public class Particle
 		vx += diffusion*(rand.nextInt()/(0.5f*RAND_MAX)-1.0f)*10;
 		vy += diffusion*(rand.nextInt()/(0.5f*RAND_MAX)-1.0f)*10;
 		try{
+			if(x+vx>PowderSimJ.width - PowderSimJ.cell || x+vx<PowderSimJ.cell || y>PowderSimJ.height - PowderSimJ.cell || y<PowderSimJ.cell)
+			{
+				return true;
+			}
 			if(ParticleData.pmap[y][x+vx]==0)
 			{
 				setPos(x+vx, y, id);
-				ret =  true;
 			}
 		}
 		catch(IndexOutOfBoundsException e)
@@ -101,10 +99,13 @@ public class Particle
 		}
 
 		try{
+			if(x>PowderSimJ.width - PowderSimJ.cell || x<PowderSimJ.cell || y+vy>PowderSimJ.height - PowderSimJ.cell || y+vy<PowderSimJ.cell)
+			{
+				return true;
+			}
 			if(ParticleData.pmap[y+vy][x]==0)
 			{
 				setPos(x, y+vy, id);
-				ret =  true;
 			}
 		}
 		catch(IndexOutOfBoundsException e)
@@ -112,7 +113,7 @@ public class Particle
 			if(vy>0)vy--;
 			else vy++;
 		}
-		return ret;
+		return false;
 	}
 	
 	public boolean render()

@@ -1,8 +1,8 @@
 package net.psj.Particles;
 
-import net.psj.ParticleData;
 import net.psj.PowderSimJ;
 import net.psj.Interface.MenuData;
+import net.psj.Simulation.ParticleData;
 
 public class ParticleClone extends Particle{
 
@@ -11,6 +11,11 @@ public class ParticleClone extends Particle{
 	public ParticleClone() {
 		super("CLNE", new float[]{1.0f,0.81f,0.06f}, 0.0f, 0.90f, 0.0f, 0.0f, 0.0f, 0.0f, 0,MenuData.MENU_PARTS);
 		cloneID = -1;
+	}
+	
+	public String getExtraData()
+	{
+		return " C: " + cloneID;
 	}
 
 	public boolean update()

@@ -25,6 +25,11 @@ public class RenderUtils {
 		catch(Exception e){e.printStackTrace();}
 	}
 	
+	public static int getFontWidth(String text)
+	{
+		return font.getWidth(text);
+	}
+	
 	public static void drawFont(int x, int y, String text, float r, float g, float b)
 	{
 		Color c = new Color(r,g,b);

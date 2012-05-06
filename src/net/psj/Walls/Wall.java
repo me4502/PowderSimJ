@@ -1,9 +1,9 @@
 package net.psj.Walls;
 
-import net.psj.Placable;
 import net.psj.PowderSimJ;
 import net.psj.RenderUtils;
 import net.psj.Interface.Menu;
+import net.psj.Simulation.Placable;
 
 public class Wall extends Placable{
 	
@@ -17,5 +17,10 @@ public class Wall extends Placable{
 	public void render(int x, int y)
 	{
 		RenderUtils.drawRect(x*CELL, y*CELL, (x*CELL)+CELL, (y*CELL)+CELL, colour[0],colour[1],colour[2]);
+	}
+	
+	public String getExtraData()
+	{
+		return "";
 	}
 }

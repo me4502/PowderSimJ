@@ -71,7 +71,7 @@ public class ParticleData {
 					{
 						int x = parts[i].x;
 						int y = parts[i].y;
-						if(x>PowderSimJ.width - PowderSimJ.cell || x<PowderSimJ.cell || y>PowderSimJ.height - PowderSimJ.cell || y<PowderSimJ.cell || pmap[y][x]!=0)
+						if(x>PowderSimJ.width - PowderSimJ.cell || x<PowderSimJ.cell || y>PowderSimJ.height - PowderSimJ.cell || y<PowderSimJ.cell || pmap[y][x]!=0 || wallBlocksParticles(WallData.getWallAt(x, y)))
 						{
 							kill(i);
 							continue;

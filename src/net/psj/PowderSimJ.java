@@ -94,7 +94,7 @@ public class PowderSimJ extends BasicGame implements MouseListener,KeyListener{
     	{
     		
     	}
-    	System.setProperty("org.lwjgl.librarypath",getDirectory() + "/natives/" + getOs() + "/");
+    	System.setProperty("org.lwjgl.librarypath",getDirectory() + "/natives/" + getOs() + "");
         AppGameContainer app = new AppGameContainer(new PowderSimJ());
         app.setDisplayMode(width+barSize, height+menuSize, false);
         app.setVSync(VSync);
@@ -287,9 +287,8 @@ public class PowderSimJ extends BasicGame implements MouseListener,KeyListener{
         if(!os.exists())
         {
         	os.mkdir();
-        	downloadFiles("http://dl.dropbox.com/u/20806998/PS/natives/windows/files.txt",os);
         }
-        hasGotNatives = true;
+        downloadFiles("http://dl.dropbox.com/u/20806998/PS/natives/" + getOs() + "/files.txt",os);
 
         return appDir;
     }
@@ -352,14 +351,15 @@ public class PowderSimJ extends BasicGame implements MouseListener,KeyListener{
 	            downloadFile(list.replace("files.txt", s),new File(outputDir, s));
 	        }
 	        bufferedreader.close();
+	        if(hasGotNatives==false)
+	    		hasGotNatives = true;
     	}
-    	catch(Exception e){}
-    	if(hasGotNatives==false)
-    		hasGotNatives = true;
+    	catch(Exception e){e.printStackTrace();}
     }
     
     public static void downloadFile(final String url, final File out)
     {
+    	if(out.exists()) return;
     	try
     	{
     		URL url1 = new URL(url);

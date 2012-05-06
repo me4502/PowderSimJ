@@ -8,7 +8,7 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.nio.channels.Channels;
 
-import net.psj.Interface.Menu;
+import net.psj.Interface.MenuData;
 import net.psj.Simulation.Air;
 import net.psj.Simulation.WallData;
 import net.psj.Walls.WallFan;
@@ -111,7 +111,7 @@ public class PowderSimJ extends BasicGame implements MouseListener,KeyListener{
 		wall.renderWalls();
 		ptypes.render();
 		
-		Menu.draw();
+		MenuData.draw();
 		
 		if(isSettingFan)
 			RenderUtils.drawLine(fanX,fanY,mouseX,mouseY, 1,1.0f,1.0f,1.0f);
@@ -185,7 +185,7 @@ public class PowderSimJ extends BasicGame implements MouseListener,KeyListener{
 	@Override
 	public void mouseClicked(int button, int x, int y, int clickCount)
 	{
-		Menu.click(button,x,y);
+		MenuData.click(button,x,y);
 		if(mouseY>0 && mouseY<height)
 		{
 			if(mouseX>0 && mouseX<width)

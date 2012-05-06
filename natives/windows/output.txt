@@ -1,4 +1,0 @@
-Initializing Pythagorus Learning Tool by Madeline Miller
-Initialized with 16x Anti Aliasing.
-Created Display Successfully
-Initialized Triangular Points

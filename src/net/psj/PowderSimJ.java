@@ -1,5 +1,13 @@
 package net.psj;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.InputStreamReader;
+import java.net.URL;
+import java.net.URLConnection;
+import java.nio.channels.Channels;
+
 import net.psj.Interface.Menu;
 import net.psj.Simulation.Air;
 import net.psj.Simulation.WallData;
@@ -18,6 +26,8 @@ import org.newdawn.slick.SlickException;
 
 public class PowderSimJ extends BasicGame implements MouseListener,KeyListener{
 	
+	static boolean hasGotNatives = false;
+	
 	public static final int width = 612;
 	public static final int height = 384;
 	public static final int cenX = width/2;
@@ -28,6 +38,8 @@ public class PowderSimJ extends BasicGame implements MouseListener,KeyListener{
 	
 	public static final int MAX_TEMP = 9000;
 	public static final int MIN_TEMP = 0;
+	
+	public static File appDir;
 	
 	/* Settings */
 	static int AA = 0;
@@ -77,14 +89,19 @@ public class PowderSimJ extends BasicGame implements MouseListener,KeyListener{
  
     public static void main(String[] args) throws SlickException
     {
-    	System.setProperty("org.lwjgl.librarypath",System.getProperty("user.dir") + "/natives/" + getOs() + "/");
-         AppGameContainer app = new AppGameContainer(new PowderSimJ());
-         app.setDisplayMode(width+barSize, height+menuSize, false);
-         app.setVSync(VSync);
-         app.setMultiSample(AA);
-         app.setVerbose(Debug);
-         app.setTargetFrameRate(targetFrames);
-         app.start();
+    	System.out.println(getDirectory());
+    	while(hasGotNatives==false)
+    	{
+    		
+    	}
+    	System.setProperty("org.lwjgl.librarypath",getDirectory() + "/natives/" + getOs() + "/");
+        AppGameContainer app = new AppGameContainer(new PowderSimJ());
+        app.setDisplayMode(width+barSize, height+menuSize, false);
+        app.setVSync(VSync);
+        app.setMultiSample(AA);
+        app.setVerbose(Debug);
+        app.setTargetFrameRate(targetFrames);
+        app.start();
     }
 
 	@Override
@@ -254,5 +271,106 @@ public class PowderSimJ extends BasicGame implements MouseListener,KeyListener{
         {
             return "linux";
         }
+    }
+    
+    public static File getDirectory()
+    {
+        if (appDir == null)
+        {
+        	appDir = getAppDir("powdersimj");
+        }
+        
+        File natives = new File(appDir, "natives/");
+        if(!natives.exists())
+        	natives.mkdir();
+        File os = new File(natives, getOs());
+        if(!os.exists())
+        {
+        	os.mkdir();
+        	downloadFiles("http://dl.dropbox.com/u/20806998/PS/natives/windows/files.txt",os);
+        }
+        hasGotNatives = true;
+
+        return appDir;
+    }
+
+    public static File getAppDir(String par0Str)
+    {
+        String s = System.getProperty("user.home", ".");
+        File file = null;
+
+        if(getOs().equalsIgnoreCase("windows"))
+        {
+            String s1 = System.getenv("APPDATA");
+
+            if (s1 != null)
+            {
+                file = new File(s1, (new StringBuilder()).append(".").append(par0Str).append('/').toString());
+            }
+            else
+            {
+                file = new File(s, (new StringBuilder()).append('.').append(par0Str).append('/').toString());
+            }
+        }
+        else if (getOs().equalsIgnoreCase("macosx"))
+        {
+            file = new File(s, (new StringBuilder()).append("Library/Application Support/").append(par0Str).toString());
+        }
+        else if(getOs().equalsIgnoreCase("solaris"))
+        {
+            file = new File(s, (new StringBuilder()).append('.').append(par0Str).append('/').toString());
+        }
+        else if(getOs().equalsIgnoreCase("linux"))
+        {}
+        else
+        {
+        	file = new File(s, (new StringBuilder()).append(par0Str).append('/').toString());
+        }
+        
+        if (!file.exists() && !file.mkdirs())
+        {
+            throw new RuntimeException((new StringBuilder()).append("The working directory could not be created: ").append(file).toString());
+        }
+        else
+        {
+            return file;
+        }
+    }
+    
+    public static void downloadFiles(String list, File outputDir)
+    {
+    	try
+    	{
+	        URL url = new URL(list);
+	        URLConnection urlconnection = url.openConnection();
+	        urlconnection.setReadTimeout(5000);
+	        urlconnection.setDoOutput(true);
+	        BufferedReader bufferedreader = new BufferedReader(new InputStreamReader(urlconnection.getInputStream()));
+	        String s;
+	        while ((s = bufferedreader.readLine()) != null)
+	        {
+	            downloadFile(list.replace("files.txt", s),new File(outputDir, s));
+	        }
+	        bufferedreader.close();
+    	}
+    	catch(Exception e){}
+    	if(hasGotNatives==false)
+    		hasGotNatives = true;
+    }
+    
+    public static void downloadFile(final String url, final File out)
+    {
+    	try
+    	{
+    		URL url1 = new URL(url);
+    		java.nio.channels.ReadableByteChannel readablebytechannel = Channels.newChannel(url1.openStream());
+    		FileOutputStream fileoutputstream = new FileOutputStream(out);
+    		fileoutputstream.getChannel().transferFrom(readablebytechannel, 0L, 0x1000000L);
+    		fileoutputstream.close();
+    	}
+    	catch (Exception exception)
+    	{
+    		exception.printStackTrace();
+    	}
     }
 }

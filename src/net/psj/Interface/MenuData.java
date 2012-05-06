@@ -90,7 +90,7 @@ public class MenuData {
 			{
 				if(ParticleData.newPartFromID(i).menu.id == selected)
 				{
-					menuItems.add(ParticleData.newPartFromID(i).setPos(x, y, i));
+					menuItems.add(ParticleData.newPartFromID(i).setId(i));
 				}
 			}
 			for(int i = 0; i < menuItems.size(); i++)

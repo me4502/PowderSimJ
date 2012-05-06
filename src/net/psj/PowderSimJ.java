@@ -2,7 +2,7 @@ package net.psj;
 
 import net.psj.Interface.Menu;
 import net.psj.Simulation.Air;
-import net.psj.Simulation.WallsData;
+import net.psj.Simulation.WallData;
 import net.psj.Walls.WallFan;
 
 import org.lwjgl.opengl.GL11;
@@ -56,7 +56,7 @@ public class PowderSimJ extends BasicGame implements MouseListener,KeyListener{
 	GameContainer gc;
 	
 	public Air air = new Air();
-	public WallsData wall = new WallsData();
+	public WallData wall = new WallData();
 	public static ParticleData ptypes = new ParticleData();
 	
 	public static int brushSize = 10;
@@ -77,6 +77,7 @@ public class PowderSimJ extends BasicGame implements MouseListener,KeyListener{
  
     public static void main(String[] args) throws SlickException
     {
+    	System.setProperty("org.lwjgl.librarypath",System.getProperty("user.dir") + "/natives/" + getOs() + "/");
          AppGameContainer app = new AppGameContainer(new PowderSimJ());
          app.setDisplayMode(width+barSize, height+menuSize, false);
          app.setVSync(VSync);
@@ -142,6 +143,14 @@ public class PowderSimJ extends BasicGame implements MouseListener,KeyListener{
 					}
 		if(key==Input.KEY_SPACE)
 			isPaused = !isPaused;
+		
+		if(key==Input.KEY_LBRACKET)
+			brushSize-=20;
+		
+		if(key==Input.KEY_RBRACKET)
+			brushSize+=20;
+		
+		if(brushSize<1) brushSize = 1;
 	}
 	
 	@Override
@@ -168,7 +177,7 @@ public class PowderSimJ extends BasicGame implements MouseListener,KeyListener{
 					mouseY--;
 				while(!(mouseX%cell==0))
 					mouseX--;
-				if(WallsData.bmap[mouseY/cell][mouseX/cell] instanceof WallFan && gc.getInput().isKeyDown(Input.KEY_LSHIFT))
+				if(WallData.bmap[mouseY/cell][mouseX/cell] instanceof WallFan && gc.getInput().isKeyDown(Input.KEY_LSHIFT))
 				{
 					isSettingFan = !isSettingFan;
 					fanX = mouseX;
@@ -206,4 +215,44 @@ public class PowderSimJ extends BasicGame implements MouseListener,KeyListener{
 			}
 		}
 	}
+	
+	
+    private static String getOs()
+    {
+        String s = System.getProperty("os.name").toLowerCase();
+
+        if (s.contains("win"))
+        {
+            return "windows";
+        }
+
+        if (s.contains("mac"))
+        {
+            return "macosx";
+        }
+
+        if (s.contains("solaris"))
+        {
+            return "solaris";
+        }
+
+        if (s.contains("sunos"))
+        {
+            return "solaris";
+        }
+
+        if (s.contains("linux"))
+        {
+            return "linux";
+        }
+
+        if (s.contains("unix"))
+        {
+            return "linux";
+        }
+        else
+        {
+            return "linux";
+        }
+    }
 }

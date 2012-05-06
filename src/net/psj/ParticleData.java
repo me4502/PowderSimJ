@@ -5,17 +5,21 @@ import net.psj.Particles.ParticleClone;
 import net.psj.Particles.ParticleDust;
 import net.psj.Particles.ParticleErase;
 import net.psj.Particles.ParticleWater;
+import net.psj.Simulation.WallData;
+import net.psj.Walls.WallBasic;
 
 public class ParticleData {
 	public static int[][] pmap = new int[PowderSimJ.height][PowderSimJ.width];
 	public static Particle[] parts = new Particle[PowderSimJ.height*PowderSimJ.width*PowderSimJ.cell];
+	
+	public static boolean[][] bmap_block = new boolean[PowderSimJ.height/PowderSimJ.cell][PowderSimJ.width/PowderSimJ.cell];
 	
 	public static int latPart = 1;
 	public static int gravityMode = 0;
 	
 	public Particle create_part(int x, int y, int id)
 	{
-		if(x>PowderSimJ.width - PowderSimJ.cell || x<PowderSimJ.cell || y>PowderSimJ.height - PowderSimJ.cell || y<PowderSimJ.cell)
+		if(x>PowderSimJ.width - PowderSimJ.cell || x<PowderSimJ.cell || y>PowderSimJ.height - PowderSimJ.cell || y<PowderSimJ.cell || bmap_block[y/PowderSimJ.cell][x/PowderSimJ.cell]==true)
 		{
 			return null;
 		}
@@ -48,6 +52,11 @@ public class ParticleData {
 	public void update()
 	{
 		int part = 0;
+		for (int y=0; y<PowderSimJ.height/PowderSimJ.cell; y++)
+			for (int x=0; x<PowderSimJ.width/PowderSimJ.cell; x++)
+			{
+				bmap_block[y][x] = WallData.bmap[y][x]!=null && (WallData.bmap[y][x] instanceof WallBasic);
+			}
 		for(int x = 0; x < PowderSimJ.width; x++)
 			for(int y = 0; y < PowderSimJ.height; y++)
 			{
@@ -63,7 +72,7 @@ public class ParticleData {
 					{
 						int x = parts[i].x;
 						int y = parts[i].y;
-						if(x>PowderSimJ.width - PowderSimJ.cell || x<PowderSimJ.cell || y>PowderSimJ.height - PowderSimJ.cell || y<PowderSimJ.cell || pmap[y][x]!=0)
+						if(x>PowderSimJ.width - PowderSimJ.cell || x<PowderSimJ.cell || y>PowderSimJ.height - PowderSimJ.cell || y<PowderSimJ.cell || pmap[y][x]!=0 || bmap_block[y/PowderSimJ.cell][x/PowderSimJ.cell]==true)
 						{
 							kill(i);
 							continue;
@@ -101,7 +110,7 @@ public class ParticleData {
 	public static void kill(int i)
 	{
 		parts[i] = null;
-		if(latPart>300000)
+		if(latPart>600000)
 		{
 			System.out.println(latPart);
 			moveDown(i);

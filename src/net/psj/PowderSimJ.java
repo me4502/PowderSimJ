@@ -15,14 +15,12 @@ import net.psj.Simulation.ParticleData;
 import net.psj.Simulation.ShaderData;
 import net.psj.Simulation.WallData;
 import net.psj.Walls.WallFan;
-import net.psj.shader.Shader;
 
 import org.lwjgl.opengl.GL11;
 import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.BasicGame;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
-import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.KeyListener;
 import org.newdawn.slick.MouseListener;

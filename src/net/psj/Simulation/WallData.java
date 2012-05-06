@@ -3,7 +3,7 @@ package net.psj.Simulation;
 import net.psj.PowderSimJ;
 import net.psj.Walls.*;
 
-public class WallsData {
+public class WallData {
 
 	public static Wall[][] bmap = new Wall[PowderSimJ.height/PowderSimJ.cell][PowderSimJ.width/PowderSimJ.cell];
 	

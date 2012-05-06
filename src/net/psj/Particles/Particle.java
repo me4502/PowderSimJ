@@ -6,8 +6,10 @@ import net.psj.ParticleData;
 import net.psj.Placable;
 import net.psj.PowderSimJ;
 import net.psj.RenderUtils;
+import net.psj.Interface.Menu;
 import net.psj.Simulation.Air;
 import net.psj.Simulation.WallData;
+import net.psj.Walls.WallBasic;
 
 public class Particle extends Placable
 {
@@ -34,7 +36,7 @@ public class Particle extends Placable
 	
 	Random rand = new Random();
 	
-	public Particle(String name, float[] colour, float airdrag, float airloss, float advection, float loss, float diffusion, float gravity, int state, int menu)
+	public Particle(String name, float[] colour, float airdrag, float airloss, float advection, float loss, float diffusion, float gravity, int state, Menu menu)
 	{
 		super(name,colour,0,menu);
 		this.airdrag = airdrag;
@@ -88,15 +90,16 @@ public class Particle extends Placable
 			try{
 				if(vx>0)
 				{
-					for(int xx = vx; xx < 1; xx--)
+					for(int xx = vx; xx < 0; xx--)
 					{
-						if(ParticleData.pmap[y][x+xx]!=0)
+						if(ParticleData.parts[ParticleData.pmap[y][x+xx]].id!=0)
 						{
 							vx = 0;
 							break motion;
 						}
-						if(ParticleData.bmap_block[y/PowderSimJ.cell][(x+xx)/PowderSimJ.cell]==true)
+						if(ParticleData.wallBlocksParticles(WallData.getWallAt(x+xx,y)))
 						{
+							System.out.println("IT ONE A DEM WALLS");
 							vx = 0;
 							break motion;
 						}
@@ -104,15 +107,16 @@ public class Particle extends Placable
 				}
 				else if(vx<0)
 				{
-					for(int xx = vx; xx > -1; xx++)
+					for(int xx = vx; xx > 0; xx++)
 					{
-						if(ParticleData.pmap[y][x+xx]!=0)
+						if(ParticleData.parts[ParticleData.pmap[y][x+xx]].id!=0)
 						{
 							vx = 0;
 							break motion;
 						}
-						if(ParticleData.bmap_block[y/PowderSimJ.cell][(x+xx)/PowderSimJ.cell]==true)
+						if(ParticleData.wallBlocksParticles(WallData.getWallAt(x+xx,y)))
 						{
+							System.out.println("IT ONE A DEM WALLS");
 							vx = 0;
 							break motion;
 						}
@@ -122,7 +126,7 @@ public class Particle extends Placable
 				{
 					return true;
 				}
-				if(ParticleData.pmap[y][x+vx]==0)
+				if(ParticleData.pmap[y][x+vx]==0 && !ParticleData.wallBlocksParticles(WallData.getWallAt(x+vx,y)))
 				{
 					setPos(x+vx, y, id);
 				}
@@ -135,31 +139,33 @@ public class Particle extends Placable
 			try{
 				if(vy>0)
 				{
-					for(int yy = vy; yy < 1; yy--)
+					for(int yy = vy; yy < 0; yy--)
 					{
-						if(ParticleData.pmap[y+yy][x]!=0)
+						if(ParticleData.wallBlocksParticles(WallData.getWallAt(x,y+yy)))
+						{
+							System.out.println("IT ONE A DEM WALLS");
+							vy = 0;
+							break motion;
+						}
+						if(ParticleData.parts[ParticleData.pmap[y+yy][x]].id!=0)
 						{
 							vy = 0;
 							break motion;
 						}
-						if(ParticleData.bmap_block[(y+yy)/PowderSimJ.cell][x/PowderSimJ.cell]==true)
-						{
-							vy = 0;
-							break motion;
-						}
-
 					}
 				}
 				else if(vy<0)
 				{
-					for(int yy = vy; yy > -1; yy++)
+					for(int yy = vy; yy > 0; yy++)
 					{
-						if(ParticleData.pmap[y+yy][x]!=0)
+						if(ParticleData.wallBlocksParticles(WallData.getWallAt(x,y+yy)))
 						{
+							System.out.println("IT ONE A DEM WALLS");
 							vy = 0;
 							break motion;
 						}
-						if(ParticleData.bmap_block[(y+yy)/PowderSimJ.cell][x/PowderSimJ.cell]==true)
+
+						if(ParticleData.parts[ParticleData.pmap[y+yy][x]].id!=0)
 						{
 							vy = 0;
 							break motion;
@@ -170,7 +176,7 @@ public class Particle extends Placable
 				{
 					return true;
 				}
-				if(ParticleData.pmap[y+vy][x]==0)
+				if(ParticleData.pmap[y+vy][x]==0 && !ParticleData.wallBlocksParticles(WallData.getWallAt(x,y+vy)))
 				{
 					setPos(x, y+vy, id);
 				}

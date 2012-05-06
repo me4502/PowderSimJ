@@ -1,13 +1,15 @@
 package net.psj;
 
+import net.psj.Interface.Menu;
+
 public class Placable {
 
 	public String name;
 	public float[] colour;
 	public int id;
-	public int menu;
+	public Menu menu;
 	
-	public Placable(String name, float[] colour, int id, int menu)
+	public Placable(String name, float[] colour, int id, Menu menu)
 	{
 		this.name = name;
 		this.colour = colour;

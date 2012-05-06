@@ -2,12 +2,12 @@ package net.psj.Particles;
 
 import java.util.Random;
 
-import net.psj.ParticleData;
-import net.psj.Placable;
 import net.psj.PowderSimJ;
 import net.psj.RenderUtils;
 import net.psj.Interface.Menu;
 import net.psj.Simulation.Air;
+import net.psj.Simulation.ParticleData;
+import net.psj.Simulation.Placable;
 import net.psj.Simulation.WallData;
 
 public class Particle extends Placable
@@ -225,5 +225,10 @@ public class Particle extends Placable
 	{
 		RenderUtils.drawPixel(x, y, colour[0],colour[1],colour[2]);
 		return false;
+	}
+	
+	public String getExtraData()
+	{
+		return "";
 	}
 }

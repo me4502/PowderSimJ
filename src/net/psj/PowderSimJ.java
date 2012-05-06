@@ -9,7 +9,9 @@ import java.net.URLConnection;
 import java.nio.channels.Channels;
 
 import net.psj.Interface.MenuData;
+import net.psj.Interface.Overlay;
 import net.psj.Simulation.Air;
+import net.psj.Simulation.ParticleData;
 import net.psj.Simulation.WallData;
 import net.psj.Walls.WallFan;
 
@@ -42,13 +44,13 @@ public class PowderSimJ extends BasicGame implements MouseListener,KeyListener{
 	public static File appDir;
 	
 	/* Settings */
-	static int AA = 0;
-	static boolean VSync = false;
-	static boolean Debug = true;
-	static int targetFrames = 60;
+	public static int AA = 0;
+	public static boolean VSync = false;
+	public static boolean Debug = true;
+	public static int targetFrames = 60;
 	
-	int mouseX;
-	int mouseY;
+	public static int mouseX;
+	public static int mouseY;
 	
 	public static int selectedl = 1;/*0x00 - 0xFF are particles */
 	public static int selectedr = 0;
@@ -65,13 +67,15 @@ public class PowderSimJ extends BasicGame implements MouseListener,KeyListener{
 	
 	public boolean airHeat = false;
 	
-	GameContainer gc;
+	public static GameContainer gc;
 	
 	public Air air = new Air();
 	public WallData wall = new WallData();
 	public static ParticleData ptypes = new ParticleData();
 	
 	public static int brushSize = 10;
+
+	public static String version = "0.1 Alpha";
 	
 	public PowderSimJ()
     {
@@ -80,7 +84,7 @@ public class PowderSimJ extends BasicGame implements MouseListener,KeyListener{
  
     @Override
     public void init(GameContainer gc) throws SlickException {
-    	this.gc = gc;
+    	PowderSimJ.gc = gc;
     	RenderUtils.setAntiAliasing(true);
     	GL11.glDisable(GL11.GL_LIGHTING);
     	GL11.glShadeModel(GL11.GL_SMOOTH);
@@ -101,6 +105,7 @@ public class PowderSimJ extends BasicGame implements MouseListener,KeyListener{
         app.setMultiSample(AA);
         app.setVerbose(Debug);
         app.setTargetFrameRate(targetFrames);
+        app.setShowFPS(false);
         app.start();
     }
 
@@ -122,6 +127,9 @@ public class PowderSimJ extends BasicGame implements MouseListener,KeyListener{
 			y1 = y1-(PowderSimJ.brushSize/2);
 			RenderUtils.drawRectLine(x1, y1, x1+brushSize, y1+brushSize, 1.0f, 1.0f, 1.0f);
 		}
+		
+		Overlay.drawInfoBar();
+		Overlay.drawPixInfo();
 	}
 
 	@Override
@@ -214,22 +222,28 @@ public class PowderSimJ extends BasicGame implements MouseListener,KeyListener{
 		}
 	}
 	
-	public void onMouseClick(GameContainer arg0, int button)
+	public static boolean isInPlayField(int x, int y)
 	{
 		if(mouseY>0 && mouseY<height)
-		{
 			if(mouseX>0 && mouseX<width)
+				return true;
+		
+		return false;
+	}
+	
+	public void onMouseClick(GameContainer arg0, int button)
+	{
+		if(isInPlayField(mouseX,mouseY))
+		{
+			if(button==0)
 			{
-				if(button==0)
-				{
-					if(selectedl<wallStart)
-						ptypes.create_parts(mouseX, mouseY, selectedl);
-					else
-						wall.create_walls(mouseX/4, mouseY/4, selectedl);
-				}
-				else if(button==4)
-					ptypes.create_parts(mouseX, mouseY, selectedr);
+				if(selectedl<wallStart)
+					ptypes.create_parts(mouseX, mouseY, selectedl);
+				else
+					wall.create_walls(mouseX/4, mouseY/4, selectedl);
 			}
+			else if(button==4)
+				ptypes.create_parts(mouseX, mouseY, selectedr);
 		}
 	}
 	

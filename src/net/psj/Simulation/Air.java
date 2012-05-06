@@ -84,7 +84,7 @@ public class Air {
 			hv[y][XRES/CELL-1] = 295.15f;
 			for (x=0; x<XRES/CELL; x++)
 			{
-				bmap_blockairh[y][x] = Walls.bmap[y][x]!=null && (Walls.bmap[y][x] instanceof WallBasic);
+				bmap_blockairh[y][x] = WallsData.bmap[y][x]!=null && (WallsData.bmap[y][x] instanceof WallBasic);
 				dh = 0.0f;
 				dx = 0.0f;
 				dy = 0.0f;
@@ -146,7 +146,7 @@ public class Air {
 		for (y=0; y<YRES/CELL; y++)
 			for (x=0; x<XRES/CELL; x++)
 			{
-				bmap_blockair[y][x] = Walls.bmap[y][x]!=null && (Walls.bmap[y][x] instanceof WallBasic);
+				bmap_blockair[y][x] = WallsData.bmap[y][x]!=null && (WallsData.bmap[y][x] instanceof WallBasic);
 			}
 		
 		if (airMode != 4) { //airMode 4 is no air/pressure update
@@ -269,7 +269,7 @@ public class Air {
 						dy += AIR_VADV*tx*ty*vy[j+1][i+1];
 					}
 
-					if (Walls.bmap[y][x] instanceof WallFan)
+					if (WallsData.bmap[y][x] instanceof WallFan)
 					{
 						dx += fvx[y][x];
 						dy += fvy[y][x];

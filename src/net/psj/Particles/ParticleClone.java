@@ -1,11 +1,12 @@
 package net.psj.Particles;
 
 import net.psj.PowderSimJ;
+import net.psj.Interface.Menu;
 
 public class ParticleClone extends Particle{
 
 	public ParticleClone() {
-		super("CLNE", new float[]{1.0f,0.81f,0.06f}, 0.0f, 0.90f, 0.0f, 0.0f, 0.0f, 0.0f, 0);
+		super("CLNE", new float[]{1.0f,0.81f,0.06f}, 0.0f, 0.90f, 0.0f, 0.0f, 0.0f, 0.0f, 0,Menu.MENU_PARTS);
 	}
 
 	public boolean update()

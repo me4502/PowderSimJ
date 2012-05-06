@@ -59,16 +59,20 @@ public class ParticleData {
 			{
 				if(parts[i] instanceof Particle)
 				{
-					parts[i].update();
-					int x = parts[i].x;
-					int y = parts[i].y;
-					if(x>PowderSimJ.width - PowderSimJ.cell || x<PowderSimJ.cell || y>PowderSimJ.height - PowderSimJ.cell || y<PowderSimJ.cell || pmap[y][x]!=0)
+					if(!parts[i].update())
 					{
-						kill(i);
-						continue;
+						int x = parts[i].x;
+						int y = parts[i].y;
+						if(x>PowderSimJ.width - PowderSimJ.cell || x<PowderSimJ.cell || y>PowderSimJ.height - PowderSimJ.cell || y<PowderSimJ.cell || pmap[y][x]!=0)
+						{
+							kill(i);
+							continue;
+						}
+						pmap[y][x] = i;
+						part++;
 					}
-					pmap[y][x] = i;
-					part++;
+					else
+						kill(i);
 				}
 				else
 					kill(i);

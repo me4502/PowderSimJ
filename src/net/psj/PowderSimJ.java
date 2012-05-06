@@ -2,8 +2,8 @@ package net.psj;
 
 import net.psj.Interface.Menu;
 import net.psj.Simulation.Air;
-import net.psj.Simulation.Walls;
-import net.psj.Walls.*;
+import net.psj.Simulation.WallsData;
+import net.psj.Walls.WallFan;
 
 import org.lwjgl.opengl.GL11;
 import org.newdawn.slick.AppGameContainer;
@@ -41,6 +41,8 @@ public class PowderSimJ extends BasicGame implements MouseListener,KeyListener{
 	public static int selectedl = 1;/*0x00 - 0xFF are particles */
 	public static int selectedr = 0;
 	
+	public static int wallStart = 4096; //Basically the element limit.
+	
 	int fanX,fanY;
 	
 	boolean isSettingFan = false;
@@ -54,7 +56,7 @@ public class PowderSimJ extends BasicGame implements MouseListener,KeyListener{
 	GameContainer gc;
 	
 	public Air air = new Air();
-	public Walls wall = new Walls();
+	public WallsData wall = new WallsData();
 	public static ParticleData ptypes = new ParticleData();
 	
 	public static int brushSize = 10;
@@ -149,6 +151,12 @@ public class PowderSimJ extends BasicGame implements MouseListener,KeyListener{
 	}
 	
 	@Override
+	public void mouseReleased(int button, int x, int y)
+	{
+		//TODO make more brush types;
+	}
+	
+	@Override
 	public void mouseClicked(int button, int x, int y, int clickCount)
 	{
 		Menu.click(button,x,y);
@@ -160,7 +168,7 @@ public class PowderSimJ extends BasicGame implements MouseListener,KeyListener{
 					mouseY--;
 				while(!(mouseX%cell==0))
 					mouseX--;
-				if(Walls.bmap[mouseY/cell][mouseX/cell] instanceof WallFan && gc.getInput().isKeyDown(Input.KEY_LSHIFT))
+				if(WallsData.bmap[mouseY/cell][mouseX/cell] instanceof WallFan && gc.getInput().isKeyDown(Input.KEY_LSHIFT))
 				{
 					isSettingFan = !isSettingFan;
 					fanX = mouseX;
@@ -187,7 +195,12 @@ public class PowderSimJ extends BasicGame implements MouseListener,KeyListener{
 			if(mouseX>0 && mouseX<width)
 			{
 				if(button==0)
-					ptypes.create_parts(mouseX, mouseY, selectedl);
+				{
+					if(selectedl<wallStart)
+						ptypes.create_parts(mouseX, mouseY, selectedl);
+					else
+						wall.create_walls(mouseX/4, mouseY/4, selectedl);
+				}
 				else if(button==4)
 					ptypes.create_parts(mouseX, mouseY, selectedr);
 			}

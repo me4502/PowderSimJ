@@ -3,14 +3,18 @@ package net.psj.Interface;
 import java.util.ArrayList;
 
 import net.psj.ParticleData;
+import net.psj.Placable;
 import net.psj.PowderSimJ;
 import net.psj.RenderUtils;
-import net.psj.Particles.Particle;
+import net.psj.Simulation.WallsData;
 
 public class Menu {
 
-	public static int selected = 0;
+	public static int selected = 1;
 	static int menus = 2;
+	
+	public static int MENU_WALLS = 1;
+	public static int MENU_PARTS = 0;
 	
 	public static void draw()
 	{
@@ -24,10 +28,17 @@ public class Menu {
 	
 	static void draw_items()
 	{
-		int w = PowderSimJ.width;
+		//int w = PowderSimJ.width;
 		int h = PowderSimJ.height;
 		int m = PowderSimJ.menuSize;
-		ArrayList<Particle> menuItems = new ArrayList<Particle>();
+		ArrayList<Placable> menuItems = new ArrayList<Placable>();
+		for(int i = PowderSimJ.wallStart; i < PowderSimJ.wallStart+WallsData.WL_NUM; i++)
+		{
+			if(WallsData.newWallfromID(i).menu == selected)
+			{
+				menuItems.add(WallsData.newWallfromID(i));
+			}
+		}
 		for(int i = 0; i < ParticleData.PT_NUM; i++)
 		{
 			if(ParticleData.newPartFromID(i).menu == selected)
@@ -35,6 +46,7 @@ public class Menu {
 				menuItems.add(ParticleData.newPartFromID(i));
 			}
 		}
+
 		for(int i = 0; i < menuItems.size(); i++)
 		{
 			RenderUtils.drawRect((i*64)+5, h+6, (i*64)+63, (h+m)-6, menuItems.get(i).colour[0], menuItems.get(i).colour[1], menuItems.get(i).colour[2]);
@@ -47,22 +59,44 @@ public class Menu {
 		int w = PowderSimJ.width;
 		int h = PowderSimJ.height;
 		int m = PowderSimJ.menuSize;
-		ArrayList<Particle> menuItems = new ArrayList<Particle>();
-		for(int i = 0; i < ParticleData.PT_NUM; i++)
+		int b = PowderSimJ.barSize;
+		if(y>h && x<w)
 		{
-			if(ParticleData.newPartFromID(i).menu == selected)
+			ArrayList<Placable> menuItems = new ArrayList<Placable>();
+			for(int i = PowderSimJ.wallStart; i < PowderSimJ.wallStart+WallsData.WL_NUM; i++)
 			{
-				menuItems.add(ParticleData.newPartFromID(i).setPos(x, y, i));
+				if(WallsData.newWallfromID(i).menu == selected)
+				{
+					menuItems.add(WallsData.newWallfromID(i));
+				}
+			}
+			for(int i = 0; i < ParticleData.PT_NUM; i++)
+			{
+				if(ParticleData.newPartFromID(i).menu == selected)
+				{
+					menuItems.add(ParticleData.newPartFromID(i).setPos(x, y, i));
+				}
+			}
+			for(int i = 0; i < menuItems.size(); i++)
+			{
+				if(x>(i*64)+5 && x < (i*64)+63)
+					if(y>h+6 && y < (h+m)-6)
+					{
+						if(button==0) PowderSimJ.selectedl = menuItems.get(i).id;
+						else if(button==1) PowderSimJ.selectedr = menuItems.get(i).id;
+					}
 			}
 		}
-		for(int i = 0; i < menuItems.size(); i++)
+		else
 		{
-			if(x>(i*64)+5 && x < (i*64)+63)
-				if(y>h+6 && y < (h+m)-6)
-				{
-					if(button==0) PowderSimJ.selectedl = menuItems.get(i).id;
-					else if(button==1) PowderSimJ.selectedr = menuItems.get(i).id;
-				}
+	        for (int i=0; i<menus; i++)
+	        {
+	        	if(x>(PowderSimJ.width+PowderSimJ.barSize)-16 && x<(PowderSimJ.width+PowderSimJ.barSize)-2 && y>(i*16)+PowderSimJ.height+PowderSimJ.menuSize-16-(menus*16) && y<((i*16)+PowderSimJ.height+PowderSimJ.menuSize-16-(menus*16))+14)
+	        	{
+	        		selected = i;
+	        	}
+	        }
+
 		}
 	}
 	

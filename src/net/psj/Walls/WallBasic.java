@@ -1,11 +1,10 @@
 package net.psj.Walls;
 
-import net.psj.RenderUtils;
+import net.psj.Interface.Menu;
 
 public class WallBasic extends Wall{
 
-	public void render(int x, int y)
-	{
-		RenderUtils.drawRect(x*CELL, y*CELL, (x*CELL)+CELL, (y*CELL)+CELL, 99,99,99);
+	public WallBasic() {
+		super("Wall", new float[]{0.6f,0.6f,0.6f}, 1,Menu.MENU_WALLS);
 	}
 }

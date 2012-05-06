@@ -1,11 +1,10 @@
 package net.psj.Walls;
 
-import net.psj.RenderUtils;
+import net.psj.Interface.Menu;
 
 public class WallFan extends Wall{
 
-	public void render(int x, int y)
-	{
-		RenderUtils.drawRect(x*CELL, y*CELL, (x*CELL)+CELL, (y*CELL)+CELL, 0,0,255);
-	}	
+	public WallFan() {
+		super("FAN", new float[]{0.0f,0.0f,1.0f}, 2,Menu.MENU_WALLS);
+	}
 }

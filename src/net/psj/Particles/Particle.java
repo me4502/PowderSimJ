@@ -19,6 +19,7 @@ public class Particle extends Placable
 	float diffusion;
 	float gravity;
 	int state = 0;//solid,powder,liquid,gas,special
+	int life = 0;
 	
 	public int x = 0;
 	public int y = 0;
@@ -46,6 +47,11 @@ public class Particle extends Placable
 		this.diffusion = diffusion;
 		this.gravity = gravity;
 		this.state = state;
+	}
+	
+	public void init()
+	{
+		
 	}
 	
 	public Particle setPos(int x, int y, int id)

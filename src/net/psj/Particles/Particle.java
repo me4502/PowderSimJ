@@ -9,7 +9,6 @@ import net.psj.RenderUtils;
 import net.psj.Interface.Menu;
 import net.psj.Simulation.Air;
 import net.psj.Simulation.WallData;
-import net.psj.Walls.WallBasic;
 
 public class Particle extends Placable
 {
@@ -116,7 +115,6 @@ public class Particle extends Placable
 						}
 						if(ParticleData.wallBlocksParticles(WallData.getWallAt(x+xx,y)))
 						{
-							System.out.println("IT ONE A DEM WALLS");
 							vx = 0;
 							break motion;
 						}
@@ -130,6 +128,8 @@ public class Particle extends Placable
 				{
 					setPos(x+vx, y, id);
 				}
+				else
+					vx = 0;
 			}
 			catch(IndexOutOfBoundsException e)
 			{
@@ -143,7 +143,6 @@ public class Particle extends Placable
 					{
 						if(ParticleData.wallBlocksParticles(WallData.getWallAt(x,y+yy)))
 						{
-							System.out.println("IT ONE A DEM WALLS");
 							vy = 0;
 							break motion;
 						}
@@ -180,6 +179,8 @@ public class Particle extends Placable
 				{
 					setPos(x, y+vy, id);
 				}
+				else
+					vy = 0;
 			}
 			catch(IndexOutOfBoundsException e)
 			{

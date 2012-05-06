@@ -116,13 +116,13 @@ public class PowderSimJ extends BasicGame implements MouseListener,KeyListener{
 		if(!isSettingFan)
 			air.drawAir();
 		wall.renderWalls();
-		ShaderData.blurH.activate();
-		ShaderData.blurV.activate();
-		ShaderData.fancy.activate();
+		//ShaderData.blurH.activate();
+		//ShaderData.blurV.activate();
+		//ShaderData.fancy.activate();
 		ptypes.render();
-		ShaderData.blurH.deactivate();
-		ShaderData.blurV.deactivate();
-		ShaderData.fancy.deactivate();
+		//ShaderData.blurH.deactivate();
+		//ShaderData.blurV.deactivate();
+		//ShaderData.fancy.deactivate();
 		
 		MenuData.draw();
 		

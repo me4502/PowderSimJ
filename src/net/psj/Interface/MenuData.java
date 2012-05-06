@@ -2,10 +2,10 @@ package net.psj.Interface;
 
 import java.util.ArrayList;
 
-import net.psj.ParticleData;
-import net.psj.Placable;
 import net.psj.PowderSimJ;
 import net.psj.RenderUtils;
+import net.psj.Simulation.ParticleData;
+import net.psj.Simulation.Placable;
 import net.psj.Simulation.WallData;
 
 public class MenuData {

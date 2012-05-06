@@ -342,7 +342,9 @@ public class PowderSimJ extends BasicGame implements MouseListener,KeyListener{
             file = new File(s, (new StringBuilder()).append('.').append(par0Str).append('/').toString());
         }
         else if(getOs().equalsIgnoreCase("linux"))
-        {}
+        {
+        	file = new File(s, (new StringBuilder()).append(par0Str).append('/').toString());
+        }
         else
         {
         	file = new File(s, (new StringBuilder()).append(par0Str).append('/').toString());

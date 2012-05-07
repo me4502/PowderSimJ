@@ -1,7 +1,5 @@
 package net.psj.Simulation;
 
-import org.lwjgl.opengl.GL11;
-
 import net.psj.PowderSimJ;
 import net.psj.Particles.Particle;
 import net.psj.Particles.ParticleClone;
@@ -19,14 +17,15 @@ public class ParticleData {
 	public static int latPart = 1;
 	public static int gravityMode = 0;
 	
-	public Particle create_part(int x, int y, int id)
+	public Particle create_part(int x, int y, int id, boolean fromBrush)
 	{
 		if(x>PowderSimJ.width - PowderSimJ.cell || x<PowderSimJ.cell || y>PowderSimJ.height - PowderSimJ.cell || y<PowderSimJ.cell || wallBlocksParticles(WallData.getWallAt(x,y)))
 		{
 			return null;
 		}
 		Particle newPart = newPartFromID(id);
-		if(!(newPart instanceof ParticleErase) && parts[pmap[y][x]]==null && newPart!=null)
+		if(newPart==null) return null;
+		if(!(newPart instanceof ParticleErase) && parts[pmap[y][x]]==null && newPart!=null && pmap[y][x]==0)
 		{
 			newPart.setPos(x,y,id);
 			newPart.init();
@@ -34,7 +33,7 @@ public class ParticleData {
 			pmap[y][x] = id;
 			return parts[latPart++];
 		}
-		else if(!(newPart instanceof ParticleErase) && parts[pmap[y][x]].id==2 && id != 2 && newPart!=null)
+		else if(!(newPart instanceof ParticleErase) && parts[pmap[y][x]]!=null && pmap[y][x]!=0 && parts[pmap[y][x]].id==2 && id != 2 && newPart!=null && fromBrush)
 		{
 			ParticleClone p = (ParticleClone) parts[pmap[y][x]];
 			p.ctype = id;
@@ -53,7 +52,7 @@ public class ParticleData {
 		{
 			for(int y = y1; y < y1 + PowderSimJ.brushSize; y++)
 			{
-				create_part(x,y,id);
+				create_part(x,y,id,true);
 			}
 		}
 	}
@@ -72,6 +71,11 @@ public class ParticleData {
 			{
 				if(parts[i] instanceof Particle)
 				{
+					if(parts[i].isDead) 
+					{
+						ParticleData.kill(i);
+						continue;
+					}
 					if(!parts[i].update())
 					{
 						int x = parts[i].x;
@@ -113,6 +117,7 @@ public class ParticleData {
 	
 	public static void kill(int i)
 	{
+		parts[i].isDead = true;
 		pmap[parts[i].y][parts[i].x] = 0;
 		parts[i] = null;
 		if(latPart>600000)
@@ -126,17 +131,14 @@ public class ParticleData {
 	public void render()
 	{
 		if(latPart==0) return;
-		GL11.glPushMatrix();
-		//ShaderData.GaussianBlur.startShader();
 		for(int i = 1; i < latPart; i++)
 		{
-			if(parts[i]!=null)
+			if(parts[i]!=null && pmap[parts[i].y][parts[i].x]!=0)
 			{
 				if(parts[i] instanceof Particle)
 					parts[i].render();
 			}
 		}
-		GL11.glPopMatrix();
 	}
 	
 	public static Particle newPartFromID(int id)

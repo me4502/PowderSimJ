@@ -22,7 +22,7 @@ public class ParticleClone extends Particle{
 		{
 			for(int x2 = x-1; x2 < x+1; x2++)
 				for(int y2 = y-1; y2 < y+1; y2++)
-					PowderSimJ.ptypes.create_part(x2,y2,ctype);
+					PowderSimJ.ptypes.create_part(x2,y2,ctype,false);
 		}
 		else
 		{

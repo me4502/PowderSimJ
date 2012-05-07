@@ -38,7 +38,7 @@ public class RenderUtils {
 	
 	public static void drawPixelBlend(int x, int y, float r, float g, float b, float a)
 	{
-		GL11.glDisable(3553 /*GL_TEXTURE_2D*/);
+		GL11.glDisable(GL11.GL_TEXTURE_2D);
 		GL11.glEnable(GL11.GL_NORMALIZE); 
 	    GL11.glEnable(GL11.GL_BLEND);
 	    GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
@@ -46,12 +46,12 @@ public class RenderUtils {
 		GL11.glColor4f(r,g,b,a);
 		GL11.glVertex2f(x, y);
 		GL11.glEnd();
-		GL11.glEnable(3553 /*GL_TEXTURE_2D*/);
+		GL11.glEnable(GL11.GL_TEXTURE_2D);
 	}
 		
 	public static void drawPixel(int x, int y, float r, float g, float b)
 	{
-		GL11.glDisable(3553 /*GL_TEXTURE_2D*/);
+		GL11.glDisable(GL11.GL_TEXTURE_2D);
 		GL11.glEnable(GL11.GL_NORMALIZE); 
 	    GL11.glEnable(GL11.GL_BLEND);
 	    GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
@@ -59,7 +59,7 @@ public class RenderUtils {
 		GL11.glColor3f(r,g,b);
 		GL11.glVertex2f(x, y);
 		GL11.glEnd();
-		GL11.glEnable(3553 /*GL_TEXTURE_2D*/);
+		GL11.glEnable(GL11.GL_TEXTURE_2D);
 	}
 	
 	public static void drawRect(int x1, int y1, int x2, int y2, float r,float g,float b)

@@ -2,6 +2,7 @@ package net.psj.Particles;
 import net.psj.RenderUtils;
 import net.psj.Utils;
 import net.psj.Interface.MenuData;
+import net.psj.Simulation.ShaderData;
 
 public class ParticleFire extends Particle{
 
@@ -11,13 +12,16 @@ public class ParticleFire extends Particle{
 
 	public boolean render()
 	{
+		ShaderData.fancy.activate();
+		int i = 0,p=0;
 		float caddress = Utils.restrict_flt(Utils.restrict_flt((float)life, 0.0f, 200.0f)*3, 0.0f, (200.0f*3)-3)/510;
-		for(int i = -1; i < 2; i++)
-			for(int p = -1; p < 2; p++)
-			{
-				RenderUtils.drawPixelBlend(x+i, y+p, colour[0]/Math.abs(i*p),colour[1]*Math.abs(i*p),colour[2],0.5f);
-			}
-		System.out.println(caddress);
+		//for(int i = -1; i < 2; i++)
+		//	for(int p = -1; p < 2; p++)
+		//	{
+				RenderUtils.drawPixelBlend(x+i, y+p, colour[0],colour[1],colour[2],0.5f);
+			//}
+		//System.out.println(caddress);
+		ShaderData.fancy.deactivate();
 		return false;
 	}
 	

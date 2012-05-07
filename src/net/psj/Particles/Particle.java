@@ -21,6 +21,8 @@ public class Particle extends Placable
 	int state = 0;//solid,powder,liquid,gas,special
 	int life = 0;
 	
+	public int ctype = 0;
+	
 	public int x = 0;
 	public int y = 0;
 	

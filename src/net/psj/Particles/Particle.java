@@ -38,6 +38,8 @@ public class Particle extends Placable
 	public static final float CFDS = (4.0f/CELL);
 	public static final int RAND_MAX = 0x7FFF;
 	
+	public boolean isDead = false;
+	
 	Random rand = new Random();
 	
 	public Particle(String name, float[] colour, float airdrag, float airloss, float advection, float loss, float diffusion, float gravity, int state, Menu menu)
@@ -206,6 +208,7 @@ public class Particle extends Placable
 				}
 			}
 		}
+		if(life>0) life--;
 		lastY = y;
 		lastX = x;
 		return false;

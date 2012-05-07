@@ -11,7 +11,7 @@ public class ShaderData {
 		try{
 			blurH = new Shader( "res/simplevertex.vert", "res/blurHorizontal.frg" );
 			blurV = new Shader( "res/simplevertex.vert", "res/blurVertical.frg" );
-			fancy = new Shader("res/simplevertex.vert","res/bloom.frag");
+			fancy = new Shader("res/shock.vert","res/shock.frag");
 		}
 		catch(Exception e){e.printStackTrace();}
 	}

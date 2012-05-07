@@ -73,23 +73,18 @@ public class ParticleData {
 				{
 					if(parts[i].isDead) 
 					{
-						ParticleData.kill(i);
+						kill(i);
 						continue;
 					}
-					if(!parts[i].update())
+					int x = parts[i].x;
+					int y = parts[i].y;
+					if(x>PowderSimJ.width - PowderSimJ.cell || x<PowderSimJ.cell || y>PowderSimJ.height - PowderSimJ.cell || y<PowderSimJ.cell || wallBlocksParticles(WallData.getWallAt(x, y)))
 					{
-						int x = parts[i].x;
-						int y = parts[i].y;
-						if(x>PowderSimJ.width - PowderSimJ.cell || x<PowderSimJ.cell || y>PowderSimJ.height - PowderSimJ.cell || y<PowderSimJ.cell || wallBlocksParticles(WallData.getWallAt(x, y)))
-						{
-							kill(i);
-							continue;
-						}
-						pmap[y][x] = i;
-						part++;
-					}
-					else
 						kill(i);
+						continue;
+					}
+					pmap[y][x] = i;
+					part++;
 				}
 				else
 					kill(i);
@@ -101,6 +96,14 @@ public class ParticleData {
 			}
 		}
 		if(part==0) latPart = 1;
+		for(int i = 1; i < latPart; i++)
+		{
+			if(parts[i]==null) continue;
+			if(parts[i].update())
+			{
+				kill(i);
+			}
+		}
 	}
 	
 	public static void moveDown(int i)

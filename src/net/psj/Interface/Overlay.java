@@ -38,7 +38,7 @@ public class Overlay {
 			if(ParticleData.parts[ParticleData.pmap[y][x]]!=null)
 			{
 				Particle p = ParticleData.parts[ParticleData.pmap[y][x]];
-				String text3 = "Name: " + p.name + " Temp: " + p.temp + p.getExtraData();
+				String text3 = "Name: " + p.name + " Temp: " + p.temp + " Life: " + p.life + p.getExtraData();
 				RenderUtils.drawFont(w - RenderUtils.getFontWidth(text3), 22, text3, 1.0f,1.0f,1.0f);
 			}
 			else if(WallData.bmap[y/c][x/c]!=null)

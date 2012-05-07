@@ -2,11 +2,29 @@ package net.psj.Particles;
 import net.psj.RenderUtils;
 import net.psj.Utils;
 import net.psj.Interface.MenuData;
+import net.psj.Simulation.ParticleData;
 
 public class ParticleFire extends Particle{
 
 	public ParticleFire() {
 		super("FIRE", new float[]{1.0f,0.2f,0.0f}, 0.04f * CFDS, 0.97f, 0.9f, 0.20f, 0.00f, -0.1f,1, MenuData.MENU_PARTS);
+	}
+	
+	public boolean update()
+	{
+		boolean ret = super.update();
+		for(int i = -3; i < 2; i++)
+			for(int p = -3; p < 2; p++)
+			{
+				Particle part = ParticleData.parts[ParticleData.pmap[y+i][x+p]];
+				if(part==null) continue;
+				if(part.id == 3)
+				{
+					isDead = true;
+					part.isDead = true;
+				}
+			}
+		return ret;
 	}
 
 	public boolean render()

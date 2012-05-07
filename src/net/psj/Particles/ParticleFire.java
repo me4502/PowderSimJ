@@ -2,26 +2,23 @@ package net.psj.Particles;
 import net.psj.RenderUtils;
 import net.psj.Utils;
 import net.psj.Interface.MenuData;
-import net.psj.Simulation.ShaderData;
 
 public class ParticleFire extends Particle{
 
 	public ParticleFire() {
-		super("FIRE", new float[]{1.0f,0.1f,0.0f}, 0.04f * CFDS, 0.97f, 0.9f, 0.20f, 0.00f, -0.1f,1, MenuData.MENU_PARTS);
+		super("FIRE", new float[]{1.0f,0.2f,0.0f}, 0.04f * CFDS, 0.97f, 0.9f, 0.20f, 0.00f, -0.1f,1, MenuData.MENU_PARTS);
 	}
 
 	public boolean render()
 	{
-		ShaderData.fancy.activate();
-		int i = 0,p=0;
-		float caddress = Utils.restrict_flt(Utils.restrict_flt((float)life, 0.0f, 200.0f)*3, 0.0f, (200.0f*3)-3)/510;
-		//for(int i = -1; i < 2; i++)
-		//	for(int p = -1; p < 2; p++)
-		//	{
-				RenderUtils.drawPixelBlend(x+i, y+p, colour[0],colour[1],colour[2],0.5f);
-			//}
-		//System.out.println(caddress);
-		ShaderData.fancy.deactivate();
+		for(int i = -2; i < 1; i++)
+			for(int p = -2; p < 1; p++)
+			{
+				if(p==0 && i == 0)
+					RenderUtils.drawPixelBlend(x+i, y+p, colour[0],colour[1],colour[2],(float)Utils.restrict_flt((float)life, 0f, 100f)/255);
+				else
+					RenderUtils.drawPixelBlend(x+i, y+p, colour[0],colour[1],colour[2],(float)Utils.restrict_flt((float)life, 0f, 100f)/510);
+			}
 		return false;
 	}
 	

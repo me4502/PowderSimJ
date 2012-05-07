@@ -31,12 +31,13 @@ public class ParticleData {
 			newPart.setPos(x,y,id);
 			newPart.init();
 			parts[latPart] = newPart;
+			pmap[y][x] = id;
 			return parts[latPart++];
 		}
 		else if(!(newPart instanceof ParticleErase) && parts[pmap[y][x]].id==2 && id != 2 && newPart!=null)
 		{
 			ParticleClone p = (ParticleClone) parts[pmap[y][x]];
-			p.cloneID = id;
+			p.ctype = id;
 		}
 		else if(newPart instanceof ParticleErase && parts[pmap[y][x]]!=null)
 			kill(pmap[y][x]);
@@ -112,6 +113,7 @@ public class ParticleData {
 	
 	public static void kill(int i)
 	{
+		pmap[parts[i].y][parts[i].x] = 0;
 		parts[i] = null;
 		if(latPart>600000)
 		{

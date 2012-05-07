@@ -19,7 +19,7 @@ public class Particle extends Placable
 	float diffusion;
 	float gravity;
 	int state = 0;//solid,powder,liquid,gas,special
-	int life = 0;
+	public int life = 0;
 	
 	public int ctype = 0;
 	
@@ -62,13 +62,13 @@ public class Particle extends Placable
 	{
 		this.x = x;
 		this.y = y;
-		ParticleData.pmap[y][x] = id;
 		return setId(id);
 	}
 	
 	public Particle setId(int id)
 	{
 		this.id = id;
+		ParticleData.pmap[y][x] = id;
 		return this;
 	}
 	

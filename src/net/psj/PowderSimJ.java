@@ -76,7 +76,7 @@ public class PowderSimJ extends BasicGame implements MouseListener,KeyListener{
 	
 	public static int brushSize = 10;
 
-	public static String version = "0.1 Alpha";
+	public static String version = "0.1 Test";
 	
 	public PowderSimJ()
     {

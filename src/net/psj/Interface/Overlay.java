@@ -15,7 +15,7 @@ public class Overlay {
 		//int w = PowderSimJ.width;
 		//int h = PowderSimJ.height;
 		
-		RenderUtils.drawFont(4, 6, "PowderSimJ version " + PowderSimJ.version + " FPS: " + PowderSimJ.gc.getFPS()*2, 1.0f,1.0f,1.0f);
+		RenderUtils.drawFont(4, 6, "PowderSimJ version " + PowderSimJ.version + " FPS: " + PowderSimJ.getGame().getFPS()*2, 1.0f,1.0f,1.0f);
 	}
 	
 	public static void drawPixInfo()

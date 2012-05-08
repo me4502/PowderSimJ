@@ -68,7 +68,7 @@ public class Particle extends Placable
 	public Particle setId(int id)
 	{
 		this.id = id;
-		ParticleData.pmap[y][x] = id;
+		ParticleData.pmap[(int)y][(int)x] = id;
 		return this;
 	}
 	
@@ -92,8 +92,8 @@ public class Particle extends Placable
 			pGravX = gravity * ((float)(x - PowderSimJ.cenX) / pGravD);
 			pGravY = gravity * ((float)(y - PowderSimJ.cenY) / pGravD);
 		}
-		Air.vx[y/CELL][x/CELL] = Air.vx[y/CELL][x/CELL]*airloss + airdrag*vx;
-		Air.vy[y/CELL][x/CELL] = Air.vy[y/CELL][x/CELL]*airloss + airdrag*vy;
+		Air.vx[(int)y/CELL][(int)x/CELL] = Air.vx[y/CELL][x/CELL]*airloss + airdrag*vx;
+		Air.vy[(int)y/CELL][x/CELL] = Air.vy[y/CELL][x/CELL]*airloss + airdrag*vy;
 		vx *= loss;
 		vy *= loss;
 		vx += advection*Air.vx[y/CELL][x/CELL];

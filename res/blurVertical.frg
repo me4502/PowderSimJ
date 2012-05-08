@@ -1,23 +1,30 @@
-uniform sampler2D colorMap; // this should hold the texture rendered by the horizontal blur pass
-varying vec2 vTexCoord;
+uniform sampler2D sceneTex; // 0
 
-const float blurSize = 1.0 / 512.0;
+uniform float rt_w; // render target width
+uniform float rt_h; // render target height
+uniform float vx_offset;
 
-void main( void )
+float offset[3] = float[]( 0.0, 1.3846153846, 3.2307692308 );
+float weight[3] = float[]( 0.2270270270, 0.3162162162, 0.0702702703 );
+
+void main()
 {
-   vec4 sum = vec4( 0.0 );
-
-   // blur in y (vertical)
-   // take nine samples, with the distance blurSize between them
-   sum += texture2D(colorMap, gl_TexCoord[0].st + vec2(vTexCoord.x, vTexCoord.y - 4.0*blurSize)) * 0.05;
-   sum += texture2D(colorMap, gl_TexCoord[0].st + vec2(vTexCoord.x, vTexCoord.y - 3.0*blurSize)) * 0.09;
-   sum += texture2D(colorMap, gl_TexCoord[0].st + vec2(vTexCoord.x, vTexCoord.y - 2.0*blurSize)) * 0.12;
-   sum += texture2D(colorMap, gl_TexCoord[0].st + vec2(vTexCoord.x, vTexCoord.y - blurSize)) * 0.15;
-   sum += texture2D(colorMap, gl_TexCoord[0].st + vec2(vTexCoord.x, vTexCoord.y)) * 0.16;
-   sum += texture2D(colorMap, gl_TexCoord[0].st + vec2(vTexCoord.x, vTexCoord.y + blurSize)) * 0.15;
-   sum += texture2D(colorMap, gl_TexCoord[0].st + vec2(vTexCoord.x, vTexCoord.y + 2.0*blurSize)) * 0.12;
-   sum += texture2D(colorMap, gl_TexCoord[0].st + vec2(vTexCoord.x, vTexCoord.y + 3.0*blurSize)) * 0.09;
-   sum += texture2D(colorMap, gl_TexCoord[0].st + vec2(vTexCoord.x, vTexCoord.y + 4.0*blurSize)) * 0.05;
-
-   gl_FragColor = sum;
+  vec3 tc = vec3(1.0, 0.0, 0.0);
+  if (gl_TexCoord[0].x<(vx_offset-0.01))
+  {
+    vec2 uv = gl_TexCoord[0].xy;
+    tc = texture2D(sceneTex, uv).rgb * weight[0];
+    for (int i=1; i<3; i++)
+    {
+      tc += texture2D(sceneTex, uv + vec2(0.0, offset[i])/rt_h).rgb \
+              * weight[i];
+      tc += texture2D(sceneTex, uv - vec2(0.0, offset[i])/rt_h).rgb \
+             * weight[i];
+    }
+  }
+  else if (gl_TexCoord[0].x>=(vx_offset+0.01))
+  {
+    tc = texture2D(sceneTex, gl_TexCoord[0].xy).rgb;
+  }
+  gl_FragColor = vec4(tc, 1.0);
 }

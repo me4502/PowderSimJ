@@ -108,13 +108,15 @@ public class ParticleData {
 	
 	public static void moveDown(int i)
 	{
-		for(int p = i; p < latPart; p++)
-		{
-			if(p!=latPart)
-				parts[p] = parts[p+1];
-			else
-				parts[p] = null;
-		}
+		parts[i] = parts[latPart];
+		parts[latPart] = null;
+		//for(int p = i; p < latPart; p++)
+		//{
+		//	if(p!=latPart)
+		//		parts[p] = parts[p+1];
+		//	else
+		//		parts[p] = null;
+		//}
 		latPart--;
 	}
 	

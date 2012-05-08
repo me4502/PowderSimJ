@@ -28,6 +28,7 @@ public class ParticleFire extends Particle{
 
 	public boolean render()
 	{
+		super.render();
 		//for(int i = -2; i < 1; i++)
 		//	for(int p = -2; p < 1; p++)
 		//	{

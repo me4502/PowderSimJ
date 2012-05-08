@@ -82,10 +82,16 @@ public class PowderSimJ extends BasicGame implements MouseListener,KeyListener{
     {
         super("Powder Sim Java");
     }
+	
+	public static GameContainer getGame()
+	{
+		return gc;
+	}
  
-    @Override
+    @SuppressWarnings("static-access")
+	@Override
     public void init(GameContainer gc) throws SlickException {
-    	PowderSimJ.gc = gc;
+    	this.gc = gc;
     	RenderUtils.setAntiAliasing(true);
     	GL11.glDisable(GL11.GL_LIGHTING);
     	GL11.glShadeModel(GL11.GL_SMOOTH);
@@ -114,16 +120,13 @@ public class PowderSimJ extends BasicGame implements MouseListener,KeyListener{
 
 	@Override
 	public void render(GameContainer arg0, Graphics arg1) throws SlickException {
+		ShaderData.blurH.activate();
+		ShaderData.blurV.activate();
 		if(!isSettingFan)
 			air.drawAir();
 		wall.renderWalls();
-		//ShaderData.blurH.activate();
-		//ShaderData.blurV.activate();
-		//ShaderData.fancy.activate();
+		
 		ptypes.render();
-		//ShaderData.blurH.deactivate();
-		//ShaderData.blurV.deactivate();
-		//ShaderData.fancy.deactivate();
 		
 		MenuData.draw();
 		
@@ -139,6 +142,10 @@ public class PowderSimJ extends BasicGame implements MouseListener,KeyListener{
 		
 		Overlay.drawInfoBar();
 		Overlay.drawPixInfo();
+		
+		ShaderData.blurH.deactivate();
+		ShaderData.blurV.deactivate();
+
 	}
 
 	@Override

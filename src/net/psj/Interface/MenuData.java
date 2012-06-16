@@ -11,12 +11,15 @@ import net.psj.Simulation.WallData;
 public class MenuData {
 
 	public static int selected = 0;
-	static int menus = 2;
+	static int menus = 3;
 
+	public static Menu MENU_TOOLS = new Menu("T", 2);
 	public static Menu MENU_WALLS = new Menu("W", 1);
 	public static Menu MENU_PARTS = new Menu("P", 0);
 
 	public static Menu getMenuFromID(int id) {
+		if (id == 2)
+			return MENU_TOOLS;
 		if (id == 1)
 			return MENU_WALLS;
 		if (id == 0)
@@ -46,6 +49,11 @@ public class MenuData {
 			}
 		}
 		for (int i = 0; i < ParticleData.PT_NUM; i++) {
+			if (ParticleData.newPartFromID(i).menu.id == selected) {
+				menuItems.add(ParticleData.newPartFromID(i));
+			}
+		}
+		for (int i = 100; i < 100 + ParticleData.PT_TOOLS; i++) {
 			if (ParticleData.newPartFromID(i).menu.id == selected) {
 				menuItems.add(ParticleData.newPartFromID(i));
 			}
@@ -81,6 +89,11 @@ public class MenuData {
 				}
 			}
 			for (int i = 0; i < ParticleData.PT_NUM; i++) {
+				if (ParticleData.newPartFromID(i).menu.id == selected) {
+					menuItems.add(ParticleData.newPartFromID(i).setId(i));
+				}
+			}
+			for (int i = 100; i < 100 + ParticleData.PT_TOOLS; i++) {
 				if (ParticleData.newPartFromID(i).menu.id == selected) {
 					menuItems.add(ParticleData.newPartFromID(i).setId(i));
 				}

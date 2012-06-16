@@ -8,7 +8,7 @@ public class ParticleClone extends Particle {
 
 	public ParticleClone() {
 		super("CLNE", new float[] { 1.0f, 0.81f, 0.06f }, 0.0f, 0.90f, 0.0f,
-				0.0f, 0.0f, 0.0f, 0, MenuData.MENU_PARTS);
+				0.0f, 0.0f, 0.0f, 0, 0, 0, MenuData.MENU_PARTS);
 	}
 
 	public String getExtraData() {

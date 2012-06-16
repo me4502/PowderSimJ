@@ -3,15 +3,8 @@ package net.psj;
 import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
-import java.nio.ByteBuffer;
-import java.nio.IntBuffer;
-
-import net.psj.Simulation.ShaderData;
 
 import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL12;
-import org.lwjgl.opengl.GL14;
-import org.lwjgl.opengl.GL20;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.UnicodeFont;
 import org.newdawn.slick.font.GlyphPage;

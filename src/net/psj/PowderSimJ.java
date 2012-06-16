@@ -118,8 +118,8 @@ public class PowderSimJ extends BasicGame implements MouseListener, KeyListener 
 
 	@Override
 	public void render(GameContainer arg0, Graphics arg1) throws SlickException {
-		ShaderData.blurH.activate();
-		ShaderData.blurV.activate();
+		//ShaderData.blurH.activate();
+		//ShaderData.blurV.activate();
 		if (!isSettingFan)
 			air.drawAir();
 		wall.renderWalls();
@@ -142,8 +142,8 @@ public class PowderSimJ extends BasicGame implements MouseListener, KeyListener 
 		Overlay.drawInfoBar();
 		Overlay.drawPixInfo();
 
-		ShaderData.blurH.deactivate();
-		ShaderData.blurV.deactivate();
+		//ShaderData.blurH.deactivate();
+		//ShaderData.blurV.deactivate();
 
 	}
 

@@ -3,8 +3,15 @@ package net.psj;
 import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
+import java.nio.ByteBuffer;
+import java.nio.IntBuffer;
+
+import net.psj.Simulation.ShaderData;
 
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL12;
+import org.lwjgl.opengl.GL14;
+import org.lwjgl.opengl.GL20;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.UnicodeFont;
 import org.newdawn.slick.font.GlyphPage;
@@ -40,6 +47,7 @@ public class RenderUtils {
 		GL11.glDisable(GL11.GL_TEXTURE_2D);
 		GL11.glEnable(GL11.GL_NORMALIZE);
 		GL11.glEnable(GL11.GL_BLEND);
+		GL11.glPointSize(1f);
 		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 		GL11.glBegin(GL11.GL_POINTS);
 		GL11.glColor4f(r, g, b, a);
@@ -62,13 +70,34 @@ public class RenderUtils {
 		GL11.glVertex2f(x, y);
 		GL11.glEnd();
 		GL11.glEnable(GL11.GL_TEXTURE_2D);
+		GL11.glDisable(GL11.GL_POINT_SMOOTH);
 		GL11.glPopMatrix();
+	}
+	
+	public static void drawFire(int x, int y, float r, float g, float b, float a) {
+		GL11.glDisable(GL11.GL_TEXTURE_2D);
+		double increment = 2*Math.PI/50;	
+		double radius = 6;  
+		for(double angle = 0; angle < 2*Math.PI; angle+=increment){
+			GL11.glBegin(GL11.GL_POLYGON);
+			//Setting color of this vertex same as the color required for center		
+			GL11.glColor4f(r,g,b,a);
+			GL11.glVertex2d(x, y);
+			//Setting the color of other two vertices same as the color required for periphery 		
+			GL11.glColor4f(r*2,g*2,b/2,0);
+			GL11.glVertex2d(x+ Math.cos(angle)* radius, y + Math.sin(angle)*radius);
+			GL11.glVertex2d(x+ Math.cos(angle + increment)* radius, y 
+					+ Math.sin(angle + increment)*radius);
+			GL11.glEnd();
+		}
+		GL11.glEnable(GL11.GL_TEXTURE_2D);
 	}
 
 	public static void drawPixel(int x, int y, float r, float g, float b) {
 		GL11.glDisable(GL11.GL_TEXTURE_2D);
 		GL11.glEnable(GL11.GL_NORMALIZE);
 		GL11.glEnable(GL11.GL_BLEND);
+		GL11.glPointSize(1f);
 		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 		GL11.glBegin(GL11.GL_POINTS);
 		GL11.glColor3f(r, g, b);

@@ -142,7 +142,11 @@ public class ParticleData {
 			if (parts[i] != null && pmap[(int)parts[i].y][(int)parts[i].x] != 0) {
 				if (parts[i] instanceof Particle)
 					parts[i].render();
+				else
+					kill(i);
 			}
+			else
+				kill(i);
 		}
 	}
 

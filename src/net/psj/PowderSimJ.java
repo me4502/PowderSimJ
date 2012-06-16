@@ -112,7 +112,7 @@ public class PowderSimJ extends BasicGame implements MouseListener, KeyListener 
 		app.setVerbose(Debug);
 		app.setTargetFrameRate(targetFrames);
 		app.setShowFPS(false);
-		app.setIcon("res/powder.png");
+		app.setIcon(ResourceLoader.loadResource("powder.png"));
 		app.start();
 	}
 

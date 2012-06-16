@@ -47,6 +47,23 @@ public class RenderUtils {
 		GL11.glEnd();
 		GL11.glEnable(GL11.GL_TEXTURE_2D);
 	}
+	
+	public static void drawBlob(int x, int y, float r, float g, float b,
+			float a) {
+		GL11.glPushMatrix();
+		GL11.glDisable(GL11.GL_TEXTURE_2D);
+		GL11.glEnable(GL11.GL_NORMALIZE);
+		GL11.glEnable(GL11.GL_BLEND);
+		GL11.glEnable(GL11.GL_POINT_SMOOTH);
+		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+		GL11.glPointSize(4f);
+		GL11.glBegin(GL11.GL_POINTS);
+		GL11.glColor4f(r, g, b, a);
+		GL11.glVertex2f(x, y);
+		GL11.glEnd();
+		GL11.glEnable(GL11.GL_TEXTURE_2D);
+		GL11.glPopMatrix();
+	}
 
 	public static void drawPixel(int x, int y, float r, float g, float b) {
 		GL11.glDisable(GL11.GL_TEXTURE_2D);

@@ -76,6 +76,8 @@ public class PowderSimJ extends BasicGame implements MouseListener, KeyListener 
 	public static int brushSize = 10;
 
 	public static String version = "0.1 Test";
+	
+	boolean shouldUpdateAir = true;
 
 	public PowderSimJ() {
 		super("Powder Sim Java");
@@ -148,10 +150,16 @@ public class PowderSimJ extends BasicGame implements MouseListener, KeyListener 
 	@Override
 	public void update(GameContainer arg0, int arg1) throws SlickException {
 		if (!isPaused) {
-			air.update_air();
-			air.make_kernel();
-			if (airHeat)
-				air.update_airh();
+			if(shouldUpdateAir)
+			{
+				shouldUpdateAir = false;
+				air.update_air();
+				air.make_kernel();
+				if (airHeat)
+					air.update_airh();
+			}
+			else
+				shouldUpdateAir = true;
 
 			ptypes.update();
 		}

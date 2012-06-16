@@ -6,7 +6,9 @@ import net.psj.Particles.ParticleClone;
 import net.psj.Particles.ParticleDust;
 import net.psj.Particles.ParticleErase;
 import net.psj.Particles.ParticleFire;
+import net.psj.Particles.ParticleGas;
 import net.psj.Particles.ParticleWater;
+import net.psj.Particles.Tools.ParticleAir;
 import net.psj.Walls.Wall;
 import net.psj.Walls.WallBasic;
 
@@ -17,7 +19,14 @@ public class ParticleData {
 
 	public static int latPart = 1;
 	public static int gravityMode = 0;
-
+	public static int renderMode = 0;
+	
+	public Particle change_part(Particle old, int x, int y, int id)
+	{
+		kill(pmap[y][x]);
+		return create_part(x,y,id,false);
+	}
+	
 	public Particle create_part(int x, int y, int id, boolean fromBrush) {
 		if (x > PowderSimJ.width - PowderSimJ.cell || x < PowderSimJ.cell
 				|| y > PowderSimJ.height - PowderSimJ.cell
@@ -71,17 +80,17 @@ public class ParticleData {
 						kill(i);
 						continue;
 					}
-					int x = parts[i].x;
-					int y = parts[i].y;
+					float x = parts[i].x;
+					float y = parts[i].y;
 					if (x > PowderSimJ.width - PowderSimJ.cell
 							|| x < PowderSimJ.cell
 							|| y > PowderSimJ.height - PowderSimJ.cell
 							|| y < PowderSimJ.cell
-							|| wallBlocksParticles(WallData.getWallAt(x, y))) {
+							|| wallBlocksParticles(WallData.getWallAt((int)x, (int)y))) {
 						kill(i);
 						continue;
 					}
-					pmap[y][x] = i;
+					pmap[(int)y][(int)x] = i;
 					part++;
 				} else
 					kill(i);
@@ -115,8 +124,9 @@ public class ParticleData {
 	}
 
 	public static void kill(int i) {
+		if(parts[i] == null) return;
 		parts[i].isDead = true;
-		pmap[parts[i].y][parts[i].x] = 0;
+		pmap[(int)parts[i].y][(int)parts[i].x] = 0;
 		parts[i] = null;
 		if (latPart > 600000) {
 			System.out.println(latPart);
@@ -129,7 +139,7 @@ public class ParticleData {
 		if (latPart == 0)
 			return;
 		for (int i = 1; i < latPart; i++) {
-			if (parts[i] != null && pmap[parts[i].y][parts[i].x] != 0) {
+			if (parts[i] != null && pmap[(int)parts[i].y][(int)parts[i].x] != 0) {
 				if (parts[i] instanceof Particle)
 					parts[i].render();
 			}
@@ -147,10 +157,17 @@ public class ParticleData {
 			return new ParticleWater();
 		if (id == 4)
 			return new ParticleFire();
+		if (id == 5)
+			return new ParticleGas();
+
+		if (id == 100)
+			return new ParticleAir();
+		
 		return null;
 	}
 
-	public static int PT_NUM = 5;
+	public static int PT_NUM = 6;
+	public static int PT_TOOLS = 1;
 
 	public static boolean wallBlocksParticles(Wall w) {
 		if (w == null)

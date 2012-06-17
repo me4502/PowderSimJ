@@ -2,6 +2,7 @@ package net.psj.Simulation;
 
 import net.psj.PowderSimJ;
 import net.psj.Particles.Particle;
+import net.psj.Particles.ParticleC4;
 import net.psj.Particles.ParticleClone;
 import net.psj.Particles.ParticleDust;
 import net.psj.Particles.ParticleErase;
@@ -163,6 +164,8 @@ public class ParticleData {
 			return new ParticleFire();
 		if (id == 5)
 			return new ParticleGas();
+		if (id == 6)
+			return new ParticleC4();
 
 		if (id == 100)
 			return new ParticleAir();
@@ -170,7 +173,7 @@ public class ParticleData {
 		return null;
 	}
 
-	public static int PT_NUM = 6;
+	public static int PT_NUM = 7;
 	public static int PT_TOOLS = 1;
 
 	public static boolean wallBlocksParticles(Wall w) {

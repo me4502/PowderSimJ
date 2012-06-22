@@ -1,6 +1,5 @@
 package net.psj.Simulation;
 
-import net.Company.Engine;
 import net.psj.PowderSimJ;
 import net.psj.Walls.*;
 

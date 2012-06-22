@@ -69,20 +69,12 @@ public class RenderUtils {
 	
 	public static void drawFire(int x, int y, float r, float g, float b, float a) {
 		GL11.glDisable(GL11.GL_TEXTURE_2D);
-		double increment = 2*Math.PI/50;	
-		double radius = 6;  
-		for(double angle = 0; angle < 2*Math.PI; angle+=increment){
-			GL11.glBegin(GL11.GL_POLYGON);
-			//Setting color of this vertex same as the color required for center		
-			GL11.glColor4f(r,g,b,a);
-			GL11.glVertex2d(x, y);
-			//Setting the color of other two vertices same as the color required for periphery 		
-			GL11.glColor4f(r*2,g*2,b/2,0);
-			GL11.glVertex2d(x+ Math.cos(angle)* radius, y + Math.sin(angle)*radius);
-			GL11.glVertex2d(x+ Math.cos(angle + increment)* radius, y 
-					+ Math.sin(angle + increment)*radius);
-			GL11.glEnd();
-		}
+		GL11.glPointSize(3f);
+		GL11.glBegin(GL11.GL_POINTS);
+		GL11.glColor4f(r, g, b, a);
+		GL11.glVertex2f(x, y);
+		GL11.glEnd();
+		GL11.glPointSize(1f);
 		GL11.glEnable(GL11.GL_TEXTURE_2D);
 	}
 

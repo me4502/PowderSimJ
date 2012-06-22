@@ -1,6 +1,5 @@
 package net.psj.Particles;
 
-import net.Company.Engine;
 import net.psj.PowderSimJ;
 import net.psj.Interface.MenuData;
 import net.psj.Simulation.ParticleData;

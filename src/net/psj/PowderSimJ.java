@@ -221,4 +221,16 @@ public class PowderSimJ extends CompanyGame {
 				ptypes.create_parts(Engine.mouseX, Engine.mouseY, selectedr);
 		}
 	}
+	
+	@Override
+	public void configLoad(String[] args)
+	{
+		
+	}
+	
+	@Override
+	public String[] configSave()
+	{
+		return null;
+	}
 }

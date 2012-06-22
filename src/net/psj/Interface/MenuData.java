@@ -2,7 +2,6 @@ package net.psj.Interface;
 
 import java.util.ArrayList;
 
-import net.Company.Engine;
 import net.Company.Rendering;
 import net.psj.PowderSimJ;
 import net.psj.Simulation.ParticleData;

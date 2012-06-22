@@ -10,6 +10,7 @@ import net.psj.Particles.ParticleFire;
 import net.psj.Particles.ParticleGas;
 import net.psj.Particles.ParticleWater;
 import net.psj.Particles.Tools.ParticleAir;
+import net.psj.Particles.Tools.ParticleVac;
 import net.psj.Walls.Wall;
 import net.psj.Walls.WallBasic;
 
@@ -170,12 +171,14 @@ public class ParticleData {
 
 	if (id == 100)
 	    return new ParticleAir();
+	if (id == 101)
+	    return new ParticleVac();
 
 	return null;
     }
 
     public static int PT_NUM = 7;
-    public static int PT_TOOLS = 1;
+    public static int PT_TOOLS = 2;
 
     public static boolean wallBlocksParticles(Wall w) {
 	if (w == null)

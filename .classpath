@@ -18,5 +18,6 @@
 			<attribute name="javadoc_location" value="http://slick.cokeandcode.com/javadoc/"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry combineaccessrules="false" kind="src" path="/GameEngine"/>
 	<classpathentry kind="output" path="bin/res"/>
 </classpath>

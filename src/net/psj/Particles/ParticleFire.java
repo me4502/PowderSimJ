@@ -1,7 +1,7 @@
 package net.psj.Particles;
 
+import net.Company.Rendering;
 import net.psj.PowderSimJ;
-import net.psj.RenderUtils;
 import net.psj.Utils;
 import net.psj.Interface.MenuData;
 import net.psj.Simulation.Air;
@@ -57,7 +57,7 @@ public class ParticleFire extends Particle {
 	// colour[0],colour[1],colour[2],(float)Utils.restrict_flt((float)life,
 	// 0f, 100f)/510);
 	// }
-	RenderUtils.drawFire((int)x,(int)y,colour[0],colour[1],colour[2],(float)Utils.restrict_flt((float)life,0f, 100f)/255);
+    Rendering.drawFire((int)x,(int)y,colour[0],colour[1],colour[2],(float)Utils.restrict_flt((float)life,0f, 100f)/255);
 	//ShaderData.fire.deactivate();
 	return true;
     }

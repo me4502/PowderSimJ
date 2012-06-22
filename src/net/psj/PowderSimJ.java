@@ -75,12 +75,12 @@ public class PowderSimJ extends BasicGame implements MouseListener, KeyListener 
 
     public static int brushSize = 10;
 
-    public static String version = "0.1 Test";
+    public static final String version = "0.1 Test";
 
     boolean shouldUpdateAir = true;
 
     public PowderSimJ() {
-	super("Powder Sim Java");
+	super("Powder Sim Java    Build: " + version);
     }
 
     public static GameContainer getGame() {
@@ -112,13 +112,12 @@ public class PowderSimJ extends BasicGame implements MouseListener, KeyListener 
 	app.setTargetFrameRate(targetFrames);
 	app.setShowFPS(false);
 	app.setIcon(ResourceLoader.loadResource("powder.png"));
+	app.setAlwaysRender(true);
 	app.start();
     }
 
     @Override
     public void render(GameContainer arg0, Graphics arg1) throws SlickException {
-	//ShaderData.blurH.activate();
-	//ShaderData.blurV.activate();
 	if (!isSettingFan)
 	    air.drawAir();
 	wall.renderWalls();
@@ -140,10 +139,6 @@ public class PowderSimJ extends BasicGame implements MouseListener, KeyListener 
 
 	Overlay.drawInfoBar();
 	Overlay.drawPixInfo();
-
-	//ShaderData.blurH.deactivate();
-	//ShaderData.blurV.deactivate();
-
     }
 
     @Override

@@ -2,8 +2,9 @@ package net.psj.Interface;
 
 import java.util.ArrayList;
 
+import net.Company.Engine;
+import net.Company.Rendering;
 import net.psj.PowderSimJ;
-import net.psj.RenderUtils;
 import net.psj.Simulation.ParticleData;
 import net.psj.Simulation.Placable;
 import net.psj.Simulation.WallData;
@@ -67,10 +68,10 @@ public class MenuData {
 			} else {
 				c = 0f;
 			}
-			RenderUtils.drawRect((i * 64) + 5, h + 6, (i * 64) + 63,
-					(h + m) - 6, menuItems.get(i).colour[0],
-					menuItems.get(i).colour[1], menuItems.get(i).colour[2]);
-			RenderUtils.drawFont((i * 64) + 23, h + (m / 2) - 5,
+			Rendering.drawRect((i * 64) + 5, h + 6, (i * 64) + 63, (h + m) - 6,
+					menuItems.get(i).colour[0], menuItems.get(i).colour[1],
+					menuItems.get(i).colour[2]);
+			Rendering.drawFont((i * 64) + 23, h + (m / 2) - 5,
 					menuItems.get(i).name, c, c, c);
 		}
 	}
@@ -112,41 +113,40 @@ public class MenuData {
 				if (x > (PowderSimJ.width + PowderSimJ.barSize) - 16
 						&& x < (PowderSimJ.width + PowderSimJ.barSize) - 2
 						&& y > (i * 16) + PowderSimJ.height
-								+ PowderSimJ.menuSize - 16 - (menus * 16)
+						+ PowderSimJ.menuSize - 16 - (menus * 16)
 						&& y < ((i * 16) + PowderSimJ.height
 								+ PowderSimJ.menuSize - 16 - (menus * 16)) + 14) {
 					selected = i;
 				}
 			}
-
 		}
 	}
 
 	static void draw_menu(int i) {
-		RenderUtils
-				.drawRectLine((PowderSimJ.width + PowderSimJ.barSize) - 16,
-						(i * 16) + PowderSimJ.height + PowderSimJ.menuSize - 16
-								- (menus * 16),
-						(PowderSimJ.width + PowderSimJ.barSize) - 2,
-						((i * 16) + PowderSimJ.height + PowderSimJ.menuSize
-								- 16 - (menus * 16)) + 14, 255, 255, 255);
+		Rendering
+		.drawRectLine((PowderSimJ.width + PowderSimJ.barSize) - 16,
+				(i * 16) + PowderSimJ.height + PowderSimJ.menuSize - 16
+				- (menus * 16),
+				(PowderSimJ.width + PowderSimJ.barSize) - 2,
+				((i * 16) + PowderSimJ.height + PowderSimJ.menuSize
+						- 16 - (menus * 16)) + 14, 255, 255, 255);
 		if (selected == i)// selected menu
 		{
-			RenderUtils
-					.drawRect((PowderSimJ.width + PowderSimJ.barSize) - 16,
-							(i * 16) + PowderSimJ.height + PowderSimJ.menuSize
-									- 16 - (menus * 16),
-							(PowderSimJ.width + PowderSimJ.barSize) - 2,
-							((i * 16) + PowderSimJ.height + PowderSimJ.menuSize
-									- 16 - (menus * 16)) + 14, 255, 255, 255);
-			RenderUtils.drawFont((PowderSimJ.width + PowderSimJ.barSize) - 13,
+			Rendering
+			.drawRect((PowderSimJ.width + PowderSimJ.barSize) - 16,
+					(i * 16) + PowderSimJ.height + PowderSimJ.menuSize
+					- 16 - (menus * 16),
+					(PowderSimJ.width + PowderSimJ.barSize) - 2,
+					((i * 16) + PowderSimJ.height + PowderSimJ.menuSize
+							- 16 - (menus * 16)) + 14, 255, 255, 255);
+			Rendering.drawFont((PowderSimJ.width + PowderSimJ.barSize) - 13,
 					(i * 16) + PowderSimJ.height + PowderSimJ.menuSize - 14
-							- (menus * 16), getMenuFromID(i).name, 0, 0, 0);
+					- (menus * 16), getMenuFromID(i).name, 0, 0, 0);
 		} else // unselected menu
 		{
-			RenderUtils.drawFont((PowderSimJ.width + PowderSimJ.barSize) - 13,
+			Rendering.drawFont((PowderSimJ.width + PowderSimJ.barSize) - 13,
 					(i * 16) + PowderSimJ.height + PowderSimJ.menuSize - 14
-							- (menus * 16), getMenuFromID(i).name, 255, 255,
+					- (menus * 16), getMenuFromID(i).name, 255, 255,
 					255);
 		}
 	}

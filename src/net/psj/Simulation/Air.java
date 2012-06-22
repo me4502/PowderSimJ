@@ -1,7 +1,8 @@
 package net.psj.Simulation;
 
+import net.Company.Engine;
+import net.Company.Rendering;
 import net.psj.PowderSimJ;
-import net.psj.RenderUtils;
 import net.psj.Walls.WallBasic;
 import net.psj.Walls.WallFan;
 
@@ -339,24 +340,24 @@ public class Air {
 		int pixr = 0, pixg = 0, pixb = 0;
 		if (displayAir == 1) {
 			if (pv[y][x] > 0.0f) {
-				pixr = RenderUtils.clamp_flt(pv[y][x], 0.0f, 8.0f);
+				pixr = Rendering.clamp_flt(pv[y][x], 0.0f, 8.0f);
 				pixg = 0;
 				pixb = 0; // positive pressure is red!
 			} else {
 				pixr = 0;
 				pixg = 0;
-				pixb = RenderUtils.clamp_flt(-pv[y][x], 0.0f, 8.0f); // positive
+				pixb = Rendering.clamp_flt(-pv[y][x], 0.0f, 8.0f); // positive
 																		// pressure
 																		// is
 																		// red!
 			}
 		} else if (displayAir == 2) {
-			pixr = RenderUtils.clamp_flt(Math.abs(vx[y][x]), 0.0f, 8.0f);// vx
+			pixr = Rendering.clamp_flt(Math.abs(vx[y][x]), 0.0f, 8.0f);// vx
 																			// adds
 																			// red
-			pixg = RenderUtils.clamp_flt(pv[y][x], 0.0f, 8.0f);// pressure adds
+			pixg = Rendering.clamp_flt(pv[y][x], 0.0f, 8.0f);// pressure adds
 																// green
-			pixb = RenderUtils.clamp_flt(Math.abs(vy[y][x]), 0.0f, 8.0f);// vy
+			pixb = Rendering.clamp_flt(Math.abs(vy[y][x]), 0.0f, 8.0f);// vy
 																			// adds
 																			// blue
 		} else if (displayAir == 3) {
@@ -364,14 +365,14 @@ public class Air {
 			int g;
 			int b;
 			// velocity adds grey
-			r = RenderUtils.clamp_flt(Math.abs(vx[y][x]), 0.0f, 24.0f)
-					+ RenderUtils.clamp_flt(Math.abs(vy[y][x]), 0.0f, 20.0f);
-			g = RenderUtils.clamp_flt(Math.abs(vx[y][x]), 0.0f, 20.0f)
-					+ RenderUtils.clamp_flt(Math.abs(vy[y][x]), 0.0f, 24.0f);
-			b = RenderUtils.clamp_flt(Math.abs(vx[y][x]), 0.0f, 24.0f)
-					+ RenderUtils.clamp_flt(Math.abs(vy[y][x]), 0.0f, 20.0f);
+			r = Rendering.clamp_flt(Math.abs(vx[y][x]), 0.0f, 24.0f)
+					+ Rendering.clamp_flt(Math.abs(vy[y][x]), 0.0f, 20.0f);
+			g = Rendering.clamp_flt(Math.abs(vx[y][x]), 0.0f, 20.0f)
+					+ Rendering.clamp_flt(Math.abs(vy[y][x]), 0.0f, 24.0f);
+			b = Rendering.clamp_flt(Math.abs(vx[y][x]), 0.0f, 24.0f)
+					+ Rendering.clamp_flt(Math.abs(vy[y][x]), 0.0f, 20.0f);
 			if (pv[y][x] > 0.0f) {
-				r += RenderUtils.clamp_flt(pv[y][x], 0.0f, 16.0f);// pressure
+				r += Rendering.clamp_flt(pv[y][x], 0.0f, 16.0f);// pressure
 																	// adds red!
 				if (r > 255)
 					r = 255;
@@ -383,7 +384,7 @@ public class Air {
 				pixg = g;
 				pixb = b;
 			} else {
-				b += RenderUtils.clamp_flt(-pv[y][x], 0.0f, 16.0f);// pressure
+				b += Rendering.clamp_flt(-pv[y][x], 0.0f, 16.0f);// pressure
 																	// adds
 																	// blue!
 				if (r > 255)
@@ -407,7 +408,7 @@ public class Air {
 		}
 		if (pixr == 0 && pixg == 0 && pixb == 0)
 			return;
-		RenderUtils.drawRect(x * CELL, y * CELL, (x * CELL) + CELL, (y * CELL)
+		Rendering.drawRect(x * CELL, y * CELL, (x * CELL) + CELL, (y * CELL)
 				+ CELL, (float) pixr / 255, (float) pixg / 255,
 				(float) pixb / 255);
 	}

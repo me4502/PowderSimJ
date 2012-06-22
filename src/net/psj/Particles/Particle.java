@@ -2,8 +2,9 @@ package net.psj.Particles;
 
 import java.util.Random;
 
+import net.Company.Engine;
+import net.Company.Rendering;
 import net.psj.PowderSimJ;
-import net.psj.RenderUtils;
 import net.psj.Utils;
 import net.psj.Interface.Menu;
 import net.psj.Simulation.Air;
@@ -88,10 +89,10 @@ public class Particle extends Placable {
 			pGravX = pGravY = 0.0f;
 			break;
 		case 2:
-			pGravD = (float) (0.01f - Math.hypot((x - PowderSimJ.cenX),
-					(y - PowderSimJ.cenY)));
-			pGravX = gravity * ((float) (x - PowderSimJ.cenX) / pGravD);
-			pGravY = gravity * ((float) (y - PowderSimJ.cenY) / pGravD);
+			pGravD = (float) (0.01f - Math.hypot((x - Engine.cenX),
+					(y - Engine.cenY)));
+			pGravX = gravity * ((float) (x - Engine.cenX) / pGravD);
+			pGravY = gravity * ((float) (y - Engine.cenY) / pGravD);
 		}
 		Air.vx[(int) y / CELL][(int) x / CELL] = Air.vx[(int)y / CELL][(int)x / CELL]
 				* airloss + airdrag * vx;
@@ -242,9 +243,9 @@ public class Particle extends Placable {
 
 	public boolean render() {
 		if(ParticleData.renderMode == 0)
-			RenderUtils.drawPixel((int)x, (int)y, colour[0], colour[1], colour[2]);
+			Rendering.drawPixel((int)x, (int)y, colour[0], colour[1], colour[2]);
 		else if(ParticleData.renderMode == 1) //Blob
-			RenderUtils.drawBlob((int)x, (int)y, colour[0], colour[1], colour[2], 255);
+			Rendering.drawBlob((int)x, (int)y, colour[0], colour[1], colour[2], 255);
 		return false;
 	}
 

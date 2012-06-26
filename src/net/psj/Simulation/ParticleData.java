@@ -76,6 +76,14 @@ public class ParticleData {
 
 	public void update() {
 		int part = 0;
+		for (int i = 1; i < latPart; i++) {
+			if (parts[i] == null)
+				continue;
+			if (parts[i].update()) {
+				kill(i);
+			}
+		}
+
 		for (int x = 0; x < PowderSimJ.width; x++)
 			for (int y = 0; y < PowderSimJ.height; y++) {
 				pmap[y][x] = 0;
@@ -108,13 +116,6 @@ public class ParticleData {
 		}
 		if (part == 0)
 			latPart = 1;
-		for (int i = 1; i < latPart; i++) {
-			if (parts[i] == null)
-				continue;
-			if (parts[i].update()) {
-				kill(i);
-			}
-		}
 	}
 
 	public static void moveDown(int i) {

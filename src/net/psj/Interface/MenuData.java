@@ -7,6 +7,7 @@ import net.psj.PowderSimJ;
 import net.psj.Simulation.ParticleData;
 import net.psj.Simulation.Placable;
 import net.psj.Simulation.WallData;
+import net.psj.Simulation.ParticleData.ParticleEnum;
 
 public class MenuData {
 
@@ -49,13 +50,13 @@ public class MenuData {
 			}
 		}
 		for (int i = 0; i < ParticleData.PT_NUM; i++) {
-			if (ParticleData.newPartFromID(i).menu.id == selected) {
-				menuItems.add(ParticleData.newPartFromID(i));
+			if (ParticleData.ParticleEnum.fromID(i).menu.id == selected) {
+				menuItems.add(ParticleData.ParticleEnum.fromID(i));
 			}
 		}
 		for (int i = 100; i < 100 + ParticleData.PT_TOOLS; i++) {
-			if (ParticleData.newPartFromID(i).menu.id == selected) {
-				menuItems.add(ParticleData.newPartFromID(i));
+			if (ParticleData.ParticleEnum.fromID(i).menu.id == selected) {
+				menuItems.add(ParticleData.ParticleEnum.fromID(i));
 			}
 		}
 
@@ -89,13 +90,13 @@ public class MenuData {
 				}
 			}
 			for (int i = 0; i < ParticleData.PT_NUM; i++) {
-				if (ParticleData.newPartFromID(i).menu.id == selected) {
-					menuItems.add(ParticleData.newPartFromID(i).setId(i));
+				if (ParticleData.ParticleEnum.fromID(i).menu.id == selected) {
+					menuItems.add(ParticleData.ParticleEnum.fromID(i).setId(i));
 				}
 			}
 			for (int i = 100; i < 100 + ParticleData.PT_TOOLS; i++) {
-				if (ParticleData.newPartFromID(i).menu.id == selected) {
-					menuItems.add(ParticleData.newPartFromID(i).setId(i));
+				if (ParticleData.ParticleEnum.fromID(i).menu.id == selected) {
+					menuItems.add(ParticleData.ParticleEnum.fromID(i).setId(i));
 				}
 			}
 			for (int i = 0; i < menuItems.size(); i++) {

@@ -33,7 +33,7 @@ public class PowderSimJ extends CompanyGame {
 	public static int selectedl = 1;/* 0x00 - 0xFF are particles */
 	public static int selectedr = 0;
 
-	public static int wallStart = 4096; // Basically the element limit.
+	public static int wallStart = 4096; // Basically the element limit. Can be changed, but once saving is done, it will break saves.
 
 	int fanX, fanY;
 

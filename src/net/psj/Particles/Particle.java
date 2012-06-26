@@ -208,7 +208,7 @@ public class Particle extends Placable {
 			else if (state == 2 && lastY == y) // Liquid stuff.
 			{
 				if (!tryMove((int)x, (int)y + 1)) {
-					int c = rand.nextInt(5) - 2;
+					int c = rand.nextInt(9) - 5;
 					if (!tryMove((int)x + c, (int)y + 1)) {
 						tryMove((int)x + c, (int)y);
 					}

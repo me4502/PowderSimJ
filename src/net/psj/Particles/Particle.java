@@ -44,7 +44,7 @@ public class Particle extends Placable {
 	public boolean isDead = false;
 
 	Random rand = new Random();
-	
+
 	public int type = 0;
 
 	public Particle(String name, float[] colour, float airdrag, float airloss,
@@ -121,7 +121,7 @@ public class Particle extends Placable {
 			try {
 				if (vx > 0) {
 					for (float xx = vx; xx < 0; xx--) {
-						if (ParticleData.parts[ParticleData.pmap[(int)y][(int)x + (int)xx]].id > -1) {
+						if (ParticleData.getParticleAt((int)x + (int)xx, (int)y)!=null) {
 							vx = 0;
 							break motion;
 						}
@@ -133,7 +133,7 @@ public class Particle extends Placable {
 					}
 				} else if (vx < 0) {
 					for (float xx = vx; xx > 0; xx++) {
-						if (ParticleData.parts[ParticleData.pmap[(int)y][(int)x + (int)xx]].id > -1) {
+						if (ParticleData.getParticleAt((int)x + (int)xx, (int)y)!=null) {
 							vx = 0;
 							break motion;
 						}
@@ -166,7 +166,7 @@ public class Particle extends Placable {
 							vy = 0;
 							break motion;
 						}
-						if (ParticleData.parts[ParticleData.pmap[(int)y + (int)yy][(int)x]].id > -1) {
+						if (ParticleData.getParticleAt((int)x, (int)y + (int)yy)!=null) {
 							vy = 0;
 							break motion;
 						}
@@ -179,7 +179,7 @@ public class Particle extends Placable {
 							break motion;
 						}
 
-						if (ParticleData.parts[ParticleData.pmap[(int)y + (int)yy][(int)x]].id > -1) {
+						if (ParticleData.getParticleAt((int)x, (int)y + (int)yy)!=null) {
 							vy = 0;
 							break motion;
 						}

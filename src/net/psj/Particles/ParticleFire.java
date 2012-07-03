@@ -25,13 +25,15 @@ public class ParticleFire extends Particle {
 				Particle part = ParticleData.parts[ParticleData.pmap[(int) y + i][(int) x + p]];
 				if (part == null)
 					continue;
-				if (part.id == 3) {
+				if (part instanceof ParticleWater) {
 					isDead = true;
 					part.isDead = true;
 				}
 				if((part.explosive>0 || part.flammable > 0) && (part.temp < 2273.15f && Air.pv[(int)y/CELL][(int)x/CELL] < 50.0f) && part.flammable > 0 && (part.flammable + (int)(Air.pv[(int)(y+i)/CELL][(int)(x+p)/CELL]*10.0f))>(rand.nextInt(10000)))
 				{
 					PowderSimJ.ptypes.change_part(part, (int)part.x, (int)part.y, 4);
+					part = ParticleData.parts[ParticleData.pmap[(int) y + i][(int) x + p]];
+					if(part == null) continue;
 					part.temp = Utils.restrict_flt(part.temp + (part.flammable/2), PowderSimJ.MIN_TEMP, PowderSimJ.MAX_TEMP);
 					part.life = rand.nextInt(80)+180;
 					part.ctype = 0;

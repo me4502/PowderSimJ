@@ -7,7 +7,6 @@ import net.psj.PowderSimJ;
 import net.psj.Simulation.ParticleData;
 import net.psj.Simulation.Placable;
 import net.psj.Simulation.WallData;
-import net.psj.Simulation.ParticleData.ParticleEnum;
 
 public class MenuData {
 

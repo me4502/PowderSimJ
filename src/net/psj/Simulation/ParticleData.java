@@ -27,6 +27,7 @@ public class ParticleData {
 	public static int renderMode = 0;
 
 	public static Particle getParticleAt(int x, int y) {
+		if(x<0 || y<0) return null;
 		if(pmap[y][x]==-1) return null;
 		Particle part = parts[pmap[y][x]];
 		if(part == null) return null;
@@ -35,7 +36,8 @@ public class ParticleData {
 	
 	public Particle change_part(Particle old, int x, int y, int id)
 	{
-		kill(x,y);
+		if(!(getParticleAt(x,y) == null))
+			kill(getParticleAt(x,y).id);
 		return create_part(x,y,id,false); 
 	}
 
@@ -59,14 +61,13 @@ public class ParticleData {
 			pmap[y][x] = latPart;
 			return parts[latPart];
 		} else if (!(newPart instanceof ParticleErase)
-				&& parts[pmap[y][x]] != null && pmap[y][x] != 0
-				&& parts[pmap[y][x]] instanceof ParticleClone && id != 2 && newPart != null
+				&& getParticleAt(x,y) != null
+				&& getParticleAt(x,y) instanceof ParticleClone && id != 2 && newPart != null
 				&& fromBrush) {
-			ParticleClone p = (ParticleClone) parts[pmap[y][x]];
+			ParticleClone p = (ParticleClone) getParticleAt(x,y);
 			p.ctype = id;
-		} else if (newPart instanceof ParticleErase
-				&& parts[pmap[y][x]] != null)
-			kill(x,y);
+		} else if (newPart instanceof ParticleErase && getParticleAt(x,y) != null)
+			kill(pmap[y][x]);
 
 		return null;
 	}
@@ -87,7 +88,7 @@ public class ParticleData {
 			if (parts[i] == null)
 				continue;
 			if (parts[i].update()) {
-				kill((int)parts[i].x,(int)parts[i].y);
+				kill(i);
 			}
 		}
 
@@ -99,7 +100,7 @@ public class ParticleData {
 			if (parts[i] != null) {
 				if (parts[i] instanceof Particle) {
 					if (parts[i].isDead) {
-						kill((int)parts[i].x,(int)parts[i].y);
+						kill(i);
 						continue;
 					}
 					float x = parts[i].x;
@@ -109,13 +110,13 @@ public class ParticleData {
 							|| y > PowderSimJ.height - PowderSimJ.cell
 							|| y < PowderSimJ.cell
 							|| wallBlocksParticles(WallData.getWallAt((int)x, (int)y))) {
-						kill((int)parts[i].x,(int)parts[i].y);
+						kill(i);
 						continue;
 					}
 					pmap[(int)y][(int)x] = i;
 					part++;
 				} else
-					kill((int)parts[i].x,(int)parts[i].y);
+					kill(i);
 			} else {
 				moveDown(i);
 				i--;
@@ -138,16 +139,14 @@ public class ParticleData {
 		latPart--;
 	}
 
-	public static void kill(int x, int y) {
-		Particle part = getParticleAt(x,y);
-		if(part == null) return;
-		part.isDead = true;
-		int old = pmap[(int)y][(int)x];
-		pmap[(int)y][(int)x] = -1;
-		part = null;
+	public static void kill(int i) {
+		if(parts[i] == null) return;
+		parts[i].isDead = true;
+		pmap[(int)parts[i].y][(int)parts[i].x] = -1;
+		parts[i] = null;
 		if (latPart > 600000) {
 			System.out.println(latPart);
-			moveDown(old);
+			moveDown(i);
 			System.out.println(latPart);
 		}
 	}
@@ -160,7 +159,7 @@ public class ParticleData {
 				if (parts[i] instanceof Particle)
 					parts[i].render();
 				else
-					kill((int)parts[i].x,(int)parts[i].y);
+					kill(i);
 			}
 		}
 	}

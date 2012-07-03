@@ -28,7 +28,7 @@ public class ParticleClone extends Particle {
 					if (x + rx >= 0 && y + ry > 0 && x + rx < PowderSimJ.width
 							&& y + ry < PowderSimJ.height
 							&& (rx != 0 || ry != 0)) {
-						Particle r = ParticleData.parts[ParticleData.pmap[(int) y + (int) ry][(int) x + (int) rx]];
+						Particle r = ParticleData.getParticleAt((int) x + (int) rx, (int) y + (int) ry);
 						if (r == null)
 							continue;
 						if (r.id == 0)

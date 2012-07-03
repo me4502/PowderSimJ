@@ -233,4 +233,9 @@ public class PowderSimJ extends CompanyGame {
 	{
 		return null;
 	}
+	
+	@Override
+	public boolean isAcceptingInput(){
+		return true;
+	}
 }

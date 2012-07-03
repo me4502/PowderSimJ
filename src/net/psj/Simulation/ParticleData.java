@@ -84,7 +84,7 @@ public class ParticleData {
 
 	public void update() {
 		int part = 0;
-		for (int i = 1; i < latPart; i++) {
+		for (int i = 0; i < latPart; i++) {
 			if (parts[i] == null)
 				continue;
 			if (parts[i].update()) {
@@ -96,7 +96,7 @@ public class ParticleData {
 			for (int y = 0; y < PowderSimJ.height; y++) {
 				pmap[y][x] = -1;
 			}
-		for (int i = 1; i < latPart; i++) {
+		for (int i = 0; i < latPart; i++) {
 			if (parts[i] != null) {
 				if (parts[i] instanceof Particle) {
 					if (parts[i].isDead) {
@@ -150,10 +150,22 @@ public class ParticleData {
 			System.out.println(latPart);
 		}
 	}
+	
+	public static void kill(int x, int y) {
+		Particle parts = getParticleAt(x,y);
+		if(parts == null) return;
+		parts.isDead = true;
+		int old = pmap[(int)y][(int)x];
+		pmap[(int)y][(int)x] = -1;
+		parts = null;
+		if (latPart > 600000) {
+			System.out.println(latPart);
+			moveDown(old);
+			System.out.println(latPart);
+		}
+	}
 
 	public void render() {
-		if (latPart == 0)
-			return;
 		for (int i = 1; i < latPart; i++) {
 			if (parts[i] != null && pmap[(int)parts[i].y][(int)parts[i].x] != -1) {
 				if (parts[i] instanceof Particle)

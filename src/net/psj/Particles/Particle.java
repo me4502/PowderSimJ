@@ -228,7 +228,7 @@ public class Particle extends Placable {
 		boolean ret = false;
 		motion: {
 			try {
-				Particle r = ParticleData.parts[ParticleData.pmap[y][x]];
+				Particle r = ParticleData.getParticleAt(x, y);
 				if (r != null)
 					break motion;
 				if (ParticleData.wallBlocksParticles(WallData.getWallAt(x, y)))

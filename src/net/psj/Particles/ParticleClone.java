@@ -31,7 +31,7 @@ public class ParticleClone extends Particle {
 						Particle r = ParticleData.getParticleAt((int) x + (int) rx, (int) y + (int) ry);
 						if (r == null)
 							continue;
-						if (r.id == 0)
+						if (r.id < 0)
 							continue;
 						if (r.id == id)
 							continue;

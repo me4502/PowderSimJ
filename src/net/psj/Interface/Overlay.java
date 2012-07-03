@@ -39,7 +39,7 @@ public class Overlay {
 			Rendering.drawFont(w - Rendering.getFontWidth(text2), 14,
 					text2, 1.0f, 1.0f, 1.0f);
 
-			if (ParticleData.parts[ParticleData.pmap[y][x]] != null) {
+			if (ParticleData.getParticleAt(x,y) != null) {
 				Particle p = ParticleData.parts[ParticleData.pmap[y][x]];
 				String text3 = "Name: " + p.name + " Temp: " + p.temp
 						+ " Life: " + p.life + p.getExtraData();

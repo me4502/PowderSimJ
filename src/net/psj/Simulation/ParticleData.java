@@ -1,7 +1,6 @@
 package net.psj.Simulation;
 
 import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
 
 import net.psj.PowderSimJ;
 import net.psj.Particles.Particle;
@@ -30,7 +29,7 @@ public class ParticleData {
 	public Particle change_part(Particle old, int x, int y, int id)
 	{
 		kill(pmap[y][x]);
-		return create_part(x,y,id,false);
+		return create_part(x,y,id,false); 
 	}
 
 	public Particle create_part(int x, int y, int id, boolean fromBrush) {
@@ -178,9 +177,9 @@ public class ParticleData {
 		AIR(100, ParticleAir.class), VAC(101, ParticleVac.class);
 
 		private int id;
-		private Class partClass;
+		private Class<?> partClass;
 
-		private ParticleEnum(int id, Class partClass) {
+		private ParticleEnum(int id, Class<?> partClass) {
 			this.id = id;
 			this.partClass = partClass;
 		}
@@ -189,6 +188,7 @@ public class ParticleData {
 			return id;
 		}
 
+		@SuppressWarnings("rawtypes")
 		public Particle getPart() {
 			Constructor[] ctors = partClass.getDeclaredConstructors();
 			Constructor ctor = null;

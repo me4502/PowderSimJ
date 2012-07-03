@@ -46,6 +46,7 @@ public class ParticleData {
 				&& newPart != null && pmap[y][x] == 0) {
 			latPart++;
 			newPart.setPos(x, y, latPart);
+			newPart.type = id;
 			newPart.init();
 			parts[latPart] = newPart;
 			pmap[y][x] = latPart;

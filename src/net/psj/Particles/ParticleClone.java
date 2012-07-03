@@ -35,7 +35,9 @@ public class ParticleClone extends Particle {
 							continue;
 						if (r.id == id)
 							continue;
-						ctype = r.id;
+						if(r instanceof ParticleClone)
+							continue;
+						ctype = r.type;
 						break;
 					}
 		}

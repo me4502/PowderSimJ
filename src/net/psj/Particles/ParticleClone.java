@@ -18,9 +18,14 @@ public class ParticleClone extends Particle {
 	public boolean update() {
 		boolean ret = super.update();
 		if (ctype != -0) {
-			for (float x2 = x - 1; x2 < x + 1; x2++)
-				for (float y2 = y - 1; y2 < y + 1; y2++)
-					PowderSimJ.ptypes.create_part((int)x2, (int)y2, ctype, false);
+			for (float x2 = x - 1; x2 < x + 2; x2++)
+				for (float y2 = y - 1; y2 < y + 2; y2++)
+					if(ParticleData.getParticleAt((int)x2, (int)y2) == null || ParticleData.getParticleAt((int)x2, (int)y2).id==-1) {
+						PowderSimJ.ptypes.create_part((int)x2, (int)y2, ctype, false);
+						break;
+					}
+					else if(ParticleData.getParticleAt((int)x2, (int)y2).type == ParticleData.ParticleEnum.CLONE.getId())
+						ParticleData.getParticleAt((int)x2, (int)y2).ctype = ctype;
 		} else {
 			float rx, ry;
 			for (rx = -1; rx < 2; rx++)

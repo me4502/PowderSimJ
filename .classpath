@@ -19,5 +19,6 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry combineaccessrules="false" kind="src" path="/GameEngine"/>
+	<classpathentry kind="lib" path="C:/Users/Matthew/Company/PowderSimJ/JOCL-0.1.7.jar"/>
 	<classpathentry kind="output" path="bin/res"/>
 </classpath>

@@ -36,10 +36,10 @@ public class Overlay {
 			String text2 = "P: " + Math.round(Air.pv[y / c][x / c] * 100)
 					+ " X: " + Math.round(Air.vx[y / c][x / c] * 100) + " Y: "
 					+ Math.round(Air.vy[y / c][x / c] * 100);
-			Rendering.drawFont(w - Rendering.getFontWidth(text2), 14,
-					text2, 1.0f, 1.0f, 1.0f);
+			Rendering.drawFont(w - Rendering.getFontWidth(text2), 14, text2,
+					1.0f, 1.0f, 1.0f);
 
-			if (ParticleData.getParticleAt(x,y) != null) {
+			if (ParticleData.getParticleAt(x, y) != null) {
 				Particle p = ParticleData.parts[ParticleData.pmap[y][x]];
 				String text3 = "Name: " + p.name + " Temp: " + p.temp
 						+ " Life: " + p.life + p.getExtraData();

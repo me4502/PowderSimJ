@@ -20,12 +20,14 @@ public class ParticleClone extends Particle {
 		if (ctype != -0) {
 			for (float x2 = x - 1; x2 < x + 2; x2++)
 				for (float y2 = y - 1; y2 < y + 2; y2++)
-					if(ParticleData.getParticleAt((int)x2, (int)y2) == null || ParticleData.getParticleAt((int)x2, (int)y2).id==-1) {
-						PowderSimJ.ptypes.create_part((int)x2, (int)y2, ctype, false);
+					if (ParticleData.getParticleAt((int) x2, (int) y2) == null
+							|| ParticleData.getParticleAt((int) x2, (int) y2).id == -1) {
+						PowderSimJ.ptypes.create_part((int) x2, (int) y2,
+								ctype, false);
 						break;
-					}
-					else if(ParticleData.getParticleAt((int)x2, (int)y2).type == ParticleData.ParticleEnum.CLONE.getId())
-						ParticleData.getParticleAt((int)x2, (int)y2).ctype = ctype;
+					} else if (ParticleData.getParticleAt((int) x2, (int) y2).type == ParticleData.ParticleEnum.CLONE
+							.getId())
+						ParticleData.getParticleAt((int) x2, (int) y2).ctype = ctype;
 		} else {
 			float rx, ry;
 			for (rx = -1; rx < 2; rx++)
@@ -33,14 +35,15 @@ public class ParticleClone extends Particle {
 					if (x + rx >= 0 && y + ry > 0 && x + rx < PowderSimJ.width
 							&& y + ry < PowderSimJ.height
 							&& (rx != 0 || ry != 0)) {
-						Particle r = ParticleData.getParticleAt((int) x + (int) rx, (int) y + (int) ry);
+						Particle r = ParticleData.getParticleAt((int) x
+								+ (int) rx, (int) y + (int) ry);
 						if (r == null)
 							continue;
 						if (r.id < 0)
 							continue;
 						if (r.id == id)
 							continue;
-						if(r instanceof ParticleClone)
+						if (r instanceof ParticleClone)
 							continue;
 						ctype = r.type;
 						break;

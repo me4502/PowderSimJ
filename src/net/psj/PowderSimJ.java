@@ -1,6 +1,7 @@
 package net.psj;
 
 import net.Company.CompanyGame;
+import net.Company.DebugProfiler;
 import net.Company.Engine;
 import net.Company.Rendering;
 import net.psj.Interface.MenuData;
@@ -20,7 +21,7 @@ import org.newdawn.slick.SlickException;
 public class PowderSimJ extends CompanyGame {
 
 	static Engine engine;
-	
+
 	public static final int width = 612;
 	public static final int height = 384;
 	public static final int menuSize = 40;
@@ -56,11 +57,15 @@ public class PowderSimJ extends CompanyGame {
 	public static final String version = "0.1 Test";
 
 	boolean shouldUpdateAir = true;
-	
+
+	//Debug Data
+	private DebugProfiler updateProfiler = new DebugProfiler(5,20,"Tick");
+	private DebugProfiler renderProfiler = new DebugProfiler(5,80,"Render");
+
 	public PowderSimJ(Engine engine) {
 		super(engine);
 	}
-	
+
 	public PowderSimJ() {
 		super();
 	}
@@ -93,11 +98,18 @@ public class PowderSimJ extends CompanyGame {
 
 	@Override
 	public void render(GameContainer arg0, Graphics arg1) {
-		if (!isSettingFan)
+		renderProfiler.reset();
+		renderProfiler.start();
+		if (!isSettingFan) {
+			renderProfiler.startSection("Air");
 			air.drawAir();
+			renderProfiler.endSection();
+		}
 		wall.renderWalls();
 
+		renderProfiler.startSection("Parts");
 		ptypes.render();
+		renderProfiler.endSection();
 
 		MenuData.draw();
 
@@ -106,31 +118,40 @@ public class PowderSimJ extends CompanyGame {
 					1.0f);
 		else {
 			int x1 = Engine.mouseX, y1 = Engine.mouseY;
-			x1 = x1 - (PowderSimJ.brushSize / 2);
-			y1 = y1 - (PowderSimJ.brushSize / 2);
+			x1 = x1 - PowderSimJ.brushSize / 2;
+			y1 = y1 - PowderSimJ.brushSize / 2;
 			Rendering.drawRectLine(x1, y1, x1 + brushSize, y1 + brushSize,
 					1.0f, 1.0f, 1.0f);
 		}
 
 		Overlay.drawInfoBar();
 		Overlay.drawPixInfo();
+		renderProfiler.stop();
+		renderProfiler.drawTimes();
+		updateProfiler.drawTimes();
 	}
 
 	@Override
 	public void update(GameContainer arg0, int arg1) {
+		updateProfiler.reset();
+		updateProfiler.start();
 		if (!isPaused) {
 			if(shouldUpdateAir)
 			{
 				shouldUpdateAir = false;
+				updateProfiler.startSection("Air");
 				air.update_air();
 				air.make_kernel();
 				if (airHeat)
 					air.update_airh();
+				updateProfiler.endSection();
 			}
 			else
 				shouldUpdateAir = true;
 
+			updateProfiler.startSection("Parts");
 			ptypes.update();
+			updateProfiler.endSection();
 		}
 
 		Input input = arg0.getInput();
@@ -138,6 +159,7 @@ public class PowderSimJ extends CompanyGame {
 			onMouseClick(arg0, 0);
 		if (input.isMouseButtonDown(Input.MOUSE_RIGHT_BUTTON))
 			onMouseClick(arg0, 4);
+		updateProfiler.stop();
 	}
 
 	@Override
@@ -221,19 +243,19 @@ public class PowderSimJ extends CompanyGame {
 				ptypes.create_parts(Engine.mouseX, Engine.mouseY, selectedr);
 		}
 	}
-	
+
 	@Override
 	public void configLoad(String[] args)
 	{
-		
+
 	}
-	
+
 	@Override
 	public String[] configSave()
 	{
 		return null;
 	}
-	
+
 	@Override
 	public boolean isAcceptingInput(){
 		return true;

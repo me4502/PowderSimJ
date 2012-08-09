@@ -346,19 +346,19 @@ public class Air {
 				pixr = 0;
 				pixg = 0;
 				pixb = Rendering.clamp_flt(-pv[y][x], 0.0f, 8.0f); // positive
-																		// pressure
-																		// is
-																		// red!
+																	// pressure
+																	// is
+																	// red!
 			}
 		} else if (displayAir == 2) {
 			pixr = Rendering.clamp_flt(Math.abs(vx[y][x]), 0.0f, 8.0f);// vx
-																			// adds
-																			// red
+																		// adds
+																		// red
 			pixg = Rendering.clamp_flt(pv[y][x], 0.0f, 8.0f);// pressure adds
 																// green
 			pixb = Rendering.clamp_flt(Math.abs(vy[y][x]), 0.0f, 8.0f);// vy
-																			// adds
-																			// blue
+																		// adds
+																		// blue
 		} else if (displayAir == 3) {
 			int r;
 			int g;
@@ -372,7 +372,7 @@ public class Air {
 					+ Rendering.clamp_flt(Math.abs(vy[y][x]), 0.0f, 20.0f);
 			if (pv[y][x] > 0.0f) {
 				r += Rendering.clamp_flt(pv[y][x], 0.0f, 16.0f);// pressure
-																	// adds red!
+																// adds red!
 				if (r > 255)
 					r = 255;
 				if (g > 255)

@@ -34,13 +34,13 @@ public class PowderSimJ extends CompanyGame {
 	public static int selectedl = 1;/* 0x00 - 0xFF are particles */
 	public static int selectedr = 0;
 
-	public static int wallStart = 4096; // Basically the element limit. Can be changed, but once saving is done, it will break saves.
+	public static int wallStart = 4096; // Basically the element limit. Can be
+	// changed, but once saving is done, it
+	// will break saves.
 
 	int fanX, fanY;
 
 	boolean isSettingFan = false;
-
-	int keyTick = 5;
 
 	public boolean isPaused = false;
 
@@ -58,9 +58,9 @@ public class PowderSimJ extends CompanyGame {
 
 	boolean shouldUpdateAir = true;
 
-	//Debug Data
-	private DebugProfiler updateProfiler = new DebugProfiler(5,20,"Tick");
-	private DebugProfiler renderProfiler = new DebugProfiler(5,80,"Render");
+	// Debug Data
+	private DebugProfiler updateProfiler = new DebugProfiler(5, 20, "Tick");
+	private DebugProfiler renderProfiler = new DebugProfiler(5, 80, "Render");
 
 	public PowderSimJ(Engine engine) {
 		super(engine);
@@ -76,8 +76,7 @@ public class PowderSimJ extends CompanyGame {
 
 	@Override
 	public void init(GameContainer gc) {
-		try
-		{
+		try {
 			gc.setIcon(ResourceLoader.loadResource("powder.png"));
 			gc.setAlwaysRender(true);
 			PowderSimJ.gc = gc;
@@ -86,14 +85,16 @@ public class PowderSimJ extends CompanyGame {
 			GL11.glShadeModel(GL11.GL_SMOOTH);
 			Rendering.init();
 			ShaderData.init();
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
-		catch(Exception e){e.printStackTrace();}
 	}
 
 	public static void main(String[] args) throws SlickException {
-		//Initializes the engine.
+		// Initializes the engine.
 		engine = new Engine("PowderSimJ");
-		Engine.setup("PowderSimJ", new PowderSimJ(engine),width+barSize,height+menuSize);
+		Engine.setup("PowderSimJ", new PowderSimJ(engine), width + barSize,
+				height + menuSize);
 	}
 
 	@Override
@@ -105,17 +106,19 @@ public class PowderSimJ extends CompanyGame {
 			air.drawAir();
 			renderProfiler.endSection();
 		}
+		renderProfiler.startSection("Walls");
 		wall.renderWalls();
 
-		renderProfiler.startSection("Parts");
+		renderProfiler.startEndSection("Parts");
 		ptypes.render();
-		renderProfiler.endSection();
 
+		renderProfiler.startEndSection("Menu");
 		MenuData.draw();
 
+		renderProfiler.startEndSection("Cursor");
 		if (isSettingFan)
-			Rendering.drawLine(fanX, fanY, Engine.mouseX, Engine.mouseY, 1, 1.0f, 1.0f,
-					1.0f);
+			Rendering.drawLine(fanX, fanY, Engine.mouseX, Engine.mouseY, 1,
+					1.0f, 1.0f, 1.0f);
 		else {
 			int x1 = Engine.mouseX, y1 = Engine.mouseY;
 			x1 = x1 - PowderSimJ.brushSize / 2;
@@ -124,8 +127,10 @@ public class PowderSimJ extends CompanyGame {
 					1.0f, 1.0f, 1.0f);
 		}
 
+		renderProfiler.startSection("Info");
 		Overlay.drawInfoBar();
 		Overlay.drawPixInfo();
+		renderProfiler.endSection();
 		renderProfiler.stop();
 		renderProfiler.drawTimes();
 		updateProfiler.drawTimes();
@@ -136,8 +141,7 @@ public class PowderSimJ extends CompanyGame {
 		updateProfiler.reset();
 		updateProfiler.start();
 		if (!isPaused) {
-			if(shouldUpdateAir)
-			{
+			if (shouldUpdateAir) {
 				shouldUpdateAir = false;
 				updateProfiler.startSection("Air");
 				air.update_air();
@@ -145,8 +149,7 @@ public class PowderSimJ extends CompanyGame {
 				if (airHeat)
 					air.update_airh();
 				updateProfiler.endSection();
-			}
-			else
+			} else
 				shouldUpdateAir = true;
 
 			updateProfiler.startSection("Parts");
@@ -198,28 +201,26 @@ public class PowderSimJ extends CompanyGame {
 	}
 
 	@Override
-	public void mouseClicked(int button, int x, int y, int clickCount) {
+	public void mousePressed(int button, int x, int y) {
 		MenuData.click(button, x, y);
-		if (Engine.mouseY > 0 && Engine.mouseY < PowderSimJ.height) {
-			if (Engine.mouseX > 0 && Engine.mouseX < PowderSimJ.width) {
-				while (!(Engine.mouseY % cell == 0))
-					Engine.mouseY--;
-				while (!(Engine.mouseX % cell == 0))
-					Engine.mouseX--;
-				if (WallData.bmap[Engine.mouseY / cell][Engine.mouseX / cell] instanceof WallFan
-						&& gc.getInput().isKeyDown(Input.KEY_LSHIFT)) {
-					isSettingFan = !isSettingFan;
-					fanX = Engine.mouseX;
-					fanY = Engine.mouseY;
-					return;
-				} else if (isSettingFan) {
-					float nfvx = (Engine.mouseX - fanX) * 0.055f;
-					float nfvy = (Engine.mouseY - fanY) * 0.055f;
-					air.fvx[fanY / cell][fanX / cell] = nfvx;
-					air.fvy[fanY / cell][fanX / cell] = nfvy;
-					isSettingFan = false;
-					return;
-				}
+		if (isInPlayField(x, y)) {
+			while (!(Engine.mouseY % cell == 0))
+				Engine.mouseY--;
+			while (!(Engine.mouseX % cell == 0))
+				Engine.mouseX--;
+			if (WallData.bmap[Engine.mouseY / cell][Engine.mouseX / cell] instanceof WallFan
+					&& gc.getInput().isKeyDown(Input.KEY_LSHIFT)) {
+				isSettingFan = !isSettingFan;
+				fanX = Engine.mouseX;
+				fanY = Engine.mouseY;
+				return;
+			} else if (isSettingFan) {
+				float nfvx = (Engine.mouseX - fanX) * 0.055f;
+				float nfvy = (Engine.mouseY - fanY) * 0.055f;
+				air.fvx[fanY / cell][fanX / cell] = nfvx;
+				air.fvy[fanY / cell][fanX / cell] = nfvy;
+				isSettingFan = false;
+				return;
 			}
 		}
 	}
@@ -238,26 +239,25 @@ public class PowderSimJ extends CompanyGame {
 				if (selectedl < wallStart)
 					ptypes.create_parts(Engine.mouseX, Engine.mouseY, selectedl);
 				else
-					wall.create_walls(Engine.mouseX / 4, Engine.mouseY / 4, selectedl);
+					wall.create_walls(Engine.mouseX / 4, Engine.mouseY / 4,
+							selectedl);
 			} else if (button == 4)
 				ptypes.create_parts(Engine.mouseX, Engine.mouseY, selectedr);
 		}
 	}
 
 	@Override
-	public void configLoad(String[] args)
-	{
+	public void configLoad(String[] args) {
 
 	}
 
 	@Override
-	public String[] configSave()
-	{
+	public String[] configSave() {
 		return null;
 	}
 
 	@Override
-	public boolean isAcceptingInput(){
+	public boolean isAcceptingInput() {
 		return true;
 	}
 }

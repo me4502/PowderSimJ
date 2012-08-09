@@ -20,25 +20,27 @@ import net.psj.Walls.WallBasic;
 public class ParticleData {
 	public static int[][] pmap = new int[PowderSimJ.height][PowderSimJ.width];
 	public static Particle[] parts = new Particle[PowderSimJ.height
-	                                              * PowderSimJ.width * PowderSimJ.cell];
+			* PowderSimJ.width * PowderSimJ.cell];
 
 	public static int latPart = 1;
 	public static int gravityMode = 0;
 	public static int renderMode = 0;
 
 	public static Particle getParticleAt(int x, int y) {
-		if(x<0 || y<0) return null;
-		if(pmap[y][x]==-1) return null;
+		if (x < 0 || y < 0)
+			return null;
+		if (pmap[y][x] == -1)
+			return null;
 		Particle part = parts[pmap[y][x]];
-		if(part == null) return null;
+		if (part == null)
+			return null;
 		return part;
 	}
-	
-	public Particle change_part(Particle old, int x, int y, int id)
-	{
-		if(!(getParticleAt(x,y) == null))
-			kill(getParticleAt(x,y).id);
-		return create_part(x,y,id,false); 
+
+	public Particle change_part(Particle old, int x, int y, int id) {
+		if (!(getParticleAt(x, y) == null))
+			kill(getParticleAt(x, y).id);
+		return create_part(x, y, id, false);
 	}
 
 	public Particle create_part(int x, int y, int id, boolean fromBrush) {
@@ -51,7 +53,7 @@ public class ParticleData {
 		Particle newPart = ParticleEnum.fromID(id);
 		if (newPart == null)
 			return null;
-		if (!(newPart instanceof ParticleErase) && getParticleAt(x,y) == null
+		if (!(newPart instanceof ParticleErase) && getParticleAt(x, y) == null
 				&& newPart != null && pmap[y][x] == -1) {
 			latPart++;
 			newPart.setPos(x, y, latPart);
@@ -61,12 +63,13 @@ public class ParticleData {
 			pmap[y][x] = latPart;
 			return parts[latPart];
 		} else if (!(newPart instanceof ParticleErase)
-				&& getParticleAt(x,y) != null
-				&& getParticleAt(x,y) instanceof ParticleClone && id != 2 && newPart != null
-				&& fromBrush) {
-			ParticleClone p = (ParticleClone) getParticleAt(x,y);
+				&& getParticleAt(x, y) != null
+				&& getParticleAt(x, y) instanceof ParticleClone && id != 2
+				&& newPart != null && fromBrush) {
+			ParticleClone p = (ParticleClone) getParticleAt(x, y);
 			p.ctype = id;
-		} else if (newPart instanceof ParticleErase && getParticleAt(x,y) != null)
+		} else if (newPart instanceof ParticleErase
+				&& getParticleAt(x, y) != null)
 			kill(pmap[y][x]);
 
 		return null;
@@ -109,11 +112,12 @@ public class ParticleData {
 							|| x < PowderSimJ.cell
 							|| y > PowderSimJ.height - PowderSimJ.cell
 							|| y < PowderSimJ.cell
-							|| wallBlocksParticles(WallData.getWallAt((int)x, (int)y))) {
+							|| wallBlocksParticles(WallData.getWallAt((int) x,
+									(int) y))) {
 						kill(i);
 						continue;
 					}
-					pmap[(int)y][(int)x] = i;
+					pmap[(int) y][(int) x] = i;
 					part++;
 				} else
 					kill(i);
@@ -140,9 +144,10 @@ public class ParticleData {
 	}
 
 	public static void kill(int i) {
-		if(parts[i] == null) return;
+		if (parts[i] == null)
+			return;
 		parts[i].isDead = true;
-		pmap[(int)parts[i].y][(int)parts[i].x] = -1;
+		pmap[(int) parts[i].y][(int) parts[i].x] = -1;
 		parts[i] = null;
 		if (latPart > 600000) {
 			System.out.println(latPart);
@@ -150,13 +155,14 @@ public class ParticleData {
 			System.out.println(latPart);
 		}
 	}
-	
+
 	public static void kill(int x, int y) {
-		Particle parts = getParticleAt(x,y);
-		if(parts == null) return;
+		Particle parts = getParticleAt(x, y);
+		if (parts == null)
+			return;
 		parts.isDead = true;
-		int old = pmap[(int)y][(int)x];
-		pmap[(int)y][(int)x] = -1;
+		int old = pmap[(int) y][(int) x];
+		pmap[(int) y][(int) x] = -1;
 		parts = null;
 		if (latPart > 600000) {
 			System.out.println(latPart);
@@ -167,7 +173,8 @@ public class ParticleData {
 
 	public void render() {
 		for (int i = 1; i < latPart; i++) {
-			if (parts[i] != null && pmap[(int)parts[i].y][(int)parts[i].x] != -1) {
+			if (parts[i] != null
+					&& pmap[(int) parts[i].y][(int) parts[i].x] != -1) {
 				if (parts[i] instanceof Particle)
 					parts[i].render();
 				else
@@ -175,6 +182,7 @@ public class ParticleData {
 			}
 		}
 	}
+
 	public static int PT_NUM = 8;
 	public static int PT_TOOLS = 2;
 
@@ -189,9 +197,10 @@ public class ParticleData {
 
 	public enum ParticleEnum {
 
-		ERASE(0, ParticleErase.class), DUST(1, ParticleDust.class), CLONE(2, ParticleClone.class), 
-		WATER(3, ParticleWater.class), FIRE(4, ParticleFire.class), GAS(5, ParticleGas.class),
-		C4(6, ParticleC4.class), WOOD(7, ParticleWood.class),
+		ERASE(0, ParticleErase.class), DUST(1, ParticleDust.class), CLONE(2,
+				ParticleClone.class), WATER(3, ParticleWater.class), FIRE(4,
+				ParticleFire.class), GAS(5, ParticleGas.class), C4(6,
+				ParticleC4.class), WOOD(7, ParticleWood.class),
 
 		AIR(100, ParticleAir.class), VAC(101, ParticleVac.class);
 
@@ -212,26 +221,26 @@ public class ParticleData {
 			Constructor[] ctors = partClass.getDeclaredConstructors();
 			Constructor ctor = null;
 			for (int i = 0; i < ctors.length; i++) {
-			    ctor = ctors[i];
-			    if (ctor.getGenericParameterTypes().length == 0)
-				break;
+				ctor = ctors[i];
+				if (ctor.getGenericParameterTypes().length == 0)
+					break;
 			}
 
 			try {
-			    ctor.setAccessible(true);
-		 	    Particle p = (Particle)ctor.newInstance();
-		 	    
-		 	    return p;
+				ctor.setAccessible(true);
+				Particle p = (Particle) ctor.newInstance();
+
+				return p;
 			} catch (Exception e) {
-			    e.printStackTrace();
-		 	}
-			
+				e.printStackTrace();
+			}
+
 			return null;
 		}
-		
+
 		public static Particle fromID(int id) {
-			for(ParticleEnum e : values()) {
-				if(e.getId() == id)
+			for (ParticleEnum e : values()) {
+				if (e.getId() == id)
 					return e.getPart();
 			}
 			return null;

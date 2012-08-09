@@ -38,7 +38,7 @@ public class Particle extends Placable {
 
 	float lastY, lastX;
 
-	public static final float CFDS = (4.0f / CELL);
+	public static final float CFDS = 4.0f / CELL;
 	public static final int RAND_MAX = 0x7FFF;
 
 	public boolean isDead = false;
@@ -48,7 +48,7 @@ public class Particle extends Placable {
 	public int type = 0;
 
 	public Particle(String name, float[] colour, float airdrag, float airloss,
-			float advection, float loss, float diffusion, float gravity, 
+			float advection, float loss, float diffusion, float gravity,
 			int flammable, int explosive, int state, Menu menu) {
 		super(name, colour, 0, menu);
 		this.airdrag = airdrag;
@@ -91,29 +91,31 @@ public class Particle extends Placable {
 			pGravX = pGravY = 0.0f;
 			break;
 		case 2:
-			pGravD = (float) (0.01f - Math.hypot((x - Engine.cenX),
-					(y - Engine.cenY)));
-			pGravX = gravity * ((float) (x - Engine.cenX) / pGravD);
-			pGravY = gravity * ((float) (y - Engine.cenY) / pGravD);
+			pGravD = (float) (0.01f - Math.hypot(x - Engine.cenX, y
+					- Engine.cenY));
+			pGravX = gravity * ((x - Engine.cenX) / pGravD);
+			pGravY = gravity * ((y - Engine.cenY) / pGravD);
 		}
-		Air.vx[(int) y / CELL][(int) x / CELL] = Air.vx[(int)y / CELL][(int)x / CELL]
+		Air.vx[(int) y / CELL][(int) x / CELL] = Air.vx[(int) y / CELL][(int) x
+				/ CELL]
 				* airloss + airdrag * vx;
-		Air.vy[(int) y / CELL][(int)x / CELL] = Air.vy[(int)y / CELL][(int)x / CELL] * airloss
-				+ airdrag * vy;
+		Air.vy[(int) y / CELL][(int) x / CELL] = Air.vy[(int) y / CELL][(int) x
+				/ CELL]
+				* airloss + airdrag * vy;
 		vx *= loss;
 		vy *= loss;
-		vx += advection * Air.vx[(int)y / CELL][(int)x / CELL];
-		vy += advection * Air.vy[(int)y / CELL][(int)x / CELL];
+		vx += advection * Air.vx[(int) y / CELL][(int) x / CELL];
+		vy += advection * Air.vy[(int) y / CELL][(int) x / CELL];
 		vy += pGravY * 10;
 		vx += pGravX * 10;
 		vx += diffusion * (rand.nextInt() / (0.5f * RAND_MAX) - 1.0f) / 10000;
 		vy += diffusion * (rand.nextInt() / (0.5f * RAND_MAX) - 1.0f) / 10000;
-		if (explosive > 0 && Air.pv[(int) (y/CELL)][(int) (x/CELL)]>2.5f)
-		{
-			life = rand.nextInt(80)+180;
-			temp = Utils.restrict_flt(temp + (flammable/2), PowderSimJ.MIN_TEMP, PowderSimJ.MAX_TEMP);
-			Air.pv[(int) (y/CELL)][(int) (x/CELL)] += 0.25f * CFDS;
-			PowderSimJ.ptypes.change_part(this, (int)x, (int)y, 4);
+		if (explosive > 0 && Air.pv[(int) (y / CELL)][(int) (x / CELL)] > 2.5f) {
+			life = rand.nextInt(80) + 180;
+			temp = Utils.restrict_flt(temp + flammable / 2,
+					PowderSimJ.MIN_TEMP, PowderSimJ.MAX_TEMP);
+			Air.pv[(int) (y / CELL)][(int) (x / CELL)] += 0.25f * CFDS;
+			PowderSimJ.ptypes.change_part(this, (int) x, (int) y, 4);
 			return false;
 		}
 
@@ -121,24 +123,26 @@ public class Particle extends Placable {
 			try {
 				if (vx > 0) {
 					for (float xx = vx; xx < 0; xx--) {
-						if (ParticleData.getParticleAt((int)x + (int)xx, (int)y)!=null) {
+						if (ParticleData.getParticleAt((int) x + (int) xx,
+								(int) y) != null) {
 							vx = 0;
 							break motion;
 						}
 						if (ParticleData.wallBlocksParticles(WallData
-								.getWallAt((int)x + (int)xx, (int)y))) {
+								.getWallAt((int) x + (int) xx, (int) y))) {
 							vx = 0;
 							break motion;
 						}
 					}
 				} else if (vx < 0) {
 					for (float xx = vx; xx > 0; xx++) {
-						if (ParticleData.getParticleAt((int)x + (int)xx, (int)y)!=null) {
+						if (ParticleData.getParticleAt((int) x + (int) xx,
+								(int) y) != null) {
 							vx = 0;
 							break motion;
 						}
 						if (ParticleData.wallBlocksParticles(WallData
-								.getWallAt((int)x + (int)xx, (int)y))) {
+								.getWallAt((int) x + (int) xx, (int) y))) {
 							vx = 0;
 							break motion;
 						}
@@ -150,7 +154,7 @@ public class Particle extends Placable {
 						|| y < PowderSimJ.cell) {
 					return true;
 				}
-				if (!tryMove((int)x + (int)vx, (int)y))
+				if (!tryMove((int) x + (int) vx, (int) y))
 					vx = 0;
 			} catch (IndexOutOfBoundsException e) {
 				if (vx > 0)
@@ -162,11 +166,12 @@ public class Particle extends Placable {
 				if (vy > 0) {
 					for (float yy = vy; yy < 0; yy--) {
 						if (ParticleData.wallBlocksParticles(WallData
-								.getWallAt((int)x, (int)y + (int)yy))) {
+								.getWallAt((int) x, (int) y + (int) yy))) {
 							vy = 0;
 							break motion;
 						}
-						if (ParticleData.getParticleAt((int)x, (int)y + (int)yy)!=null) {
+						if (ParticleData.getParticleAt((int) x, (int) y
+								+ (int) yy) != null) {
 							vy = 0;
 							break motion;
 						}
@@ -174,12 +179,13 @@ public class Particle extends Placable {
 				} else if (vy < 0) {
 					for (float yy = vy; yy > 0; yy++) {
 						if (ParticleData.wallBlocksParticles(WallData
-								.getWallAt((int)x, (int)y + (int)yy))) {
+								.getWallAt((int) x, (int) y + (int) yy))) {
 							vy = 0;
 							break motion;
 						}
 
-						if (ParticleData.getParticleAt((int)x, (int)y + (int)yy)!=null) {
+						if (ParticleData.getParticleAt((int) x, (int) y
+								+ (int) yy) != null) {
 							vy = 0;
 							break motion;
 						}
@@ -191,7 +197,7 @@ public class Particle extends Placable {
 						|| y + vy < PowderSimJ.cell) {
 					return true;
 				}
-				if (!tryMove((int)x, (int)y + (int)vy))
+				if (!tryMove((int) x, (int) y + (int) vy))
 					vy = 0;
 			} catch (IndexOutOfBoundsException e) {
 				if (vy > 0)
@@ -202,17 +208,16 @@ public class Particle extends Placable {
 
 			if (state == 1 && lastY == y) // Powder stuff.
 			{
-				if (!tryMove((int)x, (int)y + 1)) {
+				if (!tryMove((int) x, (int) y + 1)) {
 					int c = rand.nextInt(5) - 2;
-					tryMove((int)x + c, (int)y + 1);
+					tryMove((int) x + c, (int) y + 1);
 				}
-			}
-			else if (state == 2 && lastY == y) // Liquid stuff.
+			} else if (state == 2 && lastY == y) // Liquid stuff.
 			{
-				if (!tryMove((int)x, (int)y + 1)) {
+				if (!tryMove((int) x, (int) y + 1)) {
 					int c = rand.nextInt(9) - 5;
-					if (!tryMove((int)x + c, (int)y + 1)) {
-						tryMove((int)x + c, (int)y);
+					if (!tryMove((int) x + c, (int) y + 1)) {
+						tryMove((int) x + c, (int) y);
 					}
 				}
 			}
@@ -244,10 +249,12 @@ public class Particle extends Placable {
 	}
 
 	public boolean render() {
-		if(ParticleData.renderMode == 0)
-			Rendering.drawPixel((int)x, (int)y, colour[0], colour[1], colour[2]);
-		else if(ParticleData.renderMode == 1) //Blob
-			Rendering.drawBlob((int)x, (int)y, colour[0], colour[1], colour[2], 255);
+		if (ParticleData.renderMode == 0)
+			Rendering.drawPixel((int) x, (int) y, colour[0], colour[1],
+					colour[2]);
+		else if (ParticleData.renderMode == 1) // Blob
+			Rendering.drawBlob((int) x, (int) y, colour[0], colour[1],
+					colour[2], 255);
 		return false;
 	}
 

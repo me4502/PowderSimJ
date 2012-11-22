@@ -4,6 +4,7 @@ import net.Company.CompanyGame;
 import net.Company.DebugProfiler;
 import net.Company.Engine;
 import net.Company.Rendering;
+import net.Company.ResourceLoader;
 import net.psj.Interface.MenuData;
 import net.psj.Interface.Overlay;
 import net.psj.Simulation.Air;
@@ -77,7 +78,7 @@ public class PowderSimJ extends CompanyGame {
 	@Override
 	public void init(GameContainer gc) {
 		try {
-			gc.setIcon(ResourceLoader.loadResource("powder.png"));
+			gc.setIcon(ResourceLoader.loadResource("res", "powder.png"));
 			gc.setAlwaysRender(true);
 			PowderSimJ.gc = gc;
 			Rendering.setAntiAliasing(true);
@@ -93,8 +94,9 @@ public class PowderSimJ extends CompanyGame {
 	public static void main(String[] args) throws SlickException {
 		// Initializes the engine.
 		engine = new Engine("PowderSimJ");
+		//Engine.Resizable = true;
 		Engine.setup("PowderSimJ", new PowderSimJ(engine), width + barSize,
-				height + menuSize);
+				height + menuSize, false);
 	}
 
 	@Override
@@ -138,6 +140,11 @@ public class PowderSimJ extends CompanyGame {
 
 	@Override
 	public void update(GameContainer arg0, int arg1) {
+		try {
+		}
+		catch(Exception e){
+			e.printStackTrace();
+		}
 		updateProfiler.reset();
 		updateProfiler.start();
 		if (!isPaused) {

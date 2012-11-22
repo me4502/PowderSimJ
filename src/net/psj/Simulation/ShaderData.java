@@ -1,6 +1,6 @@
 package net.psj.Simulation;
 
-import net.psj.ResourceLoader;
+import net.Company.ResourceLoader;
 import net.psj.shader.Shader;
 
 public class ShaderData {
@@ -10,17 +10,17 @@ public class ShaderData {
 	public static void init() {
 		try {
 			blurH = new Shader(
-					ResourceLoader.loadResource("simplevertex.vert"),
-					ResourceLoader.loadResource("blurHorizontal.frg"));
+					ResourceLoader.loadResource("res","simplevertex.vert"),
+					ResourceLoader.loadResource("res","blurHorizontal.frg"));
 			blurV = new Shader(
-					ResourceLoader.loadResource("simplevertex.vert"),
-					ResourceLoader.loadResource("blurVertical.frg"));
-			fancy = new Shader(ResourceLoader.loadResource("shock.vert"),
-					ResourceLoader.loadResource("shock.frag"));
-			FXAA = new Shader(ResourceLoader.loadResource("FXAA.vert"),
-					ResourceLoader.loadResource("FXAA.frag"));
-			fire = new Shader(ResourceLoader.loadResource("fireVertex.vert"),
-					ResourceLoader.loadResource("fireFrag.frg"));
+					ResourceLoader.loadResource("res","simplevertex.vert"),
+					ResourceLoader.loadResource("res","blurVertical.frg"));
+			fancy = new Shader(ResourceLoader.loadResource("res","shock.vert"),
+					ResourceLoader.loadResource("res","shock.frag"));
+			FXAA = new Shader(ResourceLoader.loadResource("res","FXAA.vert"),
+					ResourceLoader.loadResource("res","FXAA.frag"));
+			fire = new Shader(ResourceLoader.loadResource("res","fireVertex.vert"),
+					ResourceLoader.loadResource("res","fireFrag.frg"));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

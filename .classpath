@@ -3,22 +3,10 @@
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="src" path="res"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.6"/>
-	<classpathentry kind="lib" path="lwjgl_util.jar">
-		<attributes>
-			<attribute name="javadoc_location" value="http://www.lwjgl.org/javadoc/"/>
-		</attributes>
-	</classpathentry>
-	<classpathentry kind="lib" path="lwjgl.jar">
-		<attributes>
-			<attribute name="javadoc_location" value="http://www.lwjgl.org/javadoc/"/>
-		</attributes>
-	</classpathentry>
-	<classpathentry kind="lib" path="slick.jar">
-		<attributes>
-			<attribute name="javadoc_location" value="http://slick.cokeandcode.com/javadoc/"/>
-		</attributes>
-	</classpathentry>
 	<classpathentry combineaccessrules="false" kind="src" path="/GameEngine"/>
-	<classpathentry kind="lib" path="C:/Users/Matthew/Company/PowderSimJ/JOCL-0.1.7.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Matthew/Company/GameEngine/JOCL-0.1.7.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Matthew/Company/GameEngine/lwjgl.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Matthew/Company/GameEngine/lwjgl_util.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Matthew/Company/GameEngine/slick.jar"/>
 	<classpathentry kind="output" path="bin/res"/>
 </classpath>

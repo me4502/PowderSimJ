@@ -21,7 +21,7 @@ import org.newdawn.slick.SlickException;
 
 public class PowderSimJ extends CompanyGame {
 
-	static Engine engine;
+	public static Engine engine;
 
 	public static final int width = 612;
 	public static final int height = 384;
@@ -92,10 +92,7 @@ public class PowderSimJ extends CompanyGame {
 	}
 
 	public static void main(String[] args) throws SlickException {
-		// Initializes the engine.
-		engine = new Engine("PowderSimJ");
-		//Engine.Resizable = true;
-		Engine.setup("PowderSimJ", new PowderSimJ(engine), width + barSize,
+		engine = Engine.setup("PowderSimJ", new PowderSimJ(engine), width + barSize,
 				height + menuSize, false);
 	}
 
@@ -119,10 +116,9 @@ public class PowderSimJ extends CompanyGame {
 
 		renderProfiler.startEndSection("Cursor");
 		if (isSettingFan)
-			Rendering.drawLine(fanX, fanY, Engine.mouseX, Engine.mouseY, 1,
-					1.0f, 1.0f, 1.0f);
+			Rendering.Lines.drawSingleLine(fanX, fanY, engine.mouseX, engine.mouseY, 1, 1.0f, 1.0f, 1.0f, 1.0f);
 		else {
-			int x1 = Engine.mouseX, y1 = Engine.mouseY;
+			int x1 = engine.mouseX, y1 = engine.mouseY;
 			x1 = x1 - PowderSimJ.brushSize / 2;
 			y1 = y1 - PowderSimJ.brushSize / 2;
 			Rendering.drawRectLine(x1, y1, x1 + brushSize, y1 + brushSize,
@@ -211,19 +207,19 @@ public class PowderSimJ extends CompanyGame {
 	public void mousePressed(int button, int x, int y) {
 		MenuData.click(button, x, y);
 		if (isInPlayField(x, y)) {
-			while (!(Engine.mouseY % cell == 0))
-				Engine.mouseY--;
-			while (!(Engine.mouseX % cell == 0))
-				Engine.mouseX--;
-			if (WallData.bmap[Engine.mouseY / cell][Engine.mouseX / cell] instanceof WallFan
+			while (!(engine.mouseY % cell == 0))
+				engine.mouseY--;
+			while (!(engine.mouseX % cell == 0))
+				engine.mouseX--;
+			if (WallData.bmap[engine.mouseY / cell][engine.mouseX / cell] instanceof WallFan
 					&& gc.getInput().isKeyDown(Input.KEY_LSHIFT)) {
 				isSettingFan = !isSettingFan;
-				fanX = Engine.mouseX;
-				fanY = Engine.mouseY;
+				fanX = engine.mouseX;
+				fanY = engine.mouseY;
 				return;
 			} else if (isSettingFan) {
-				float nfvx = (Engine.mouseX - fanX) * 0.055f;
-				float nfvy = (Engine.mouseY - fanY) * 0.055f;
+				float nfvx = (engine.mouseX - fanX) * 0.055f;
+				float nfvy = (engine.mouseY - fanY) * 0.055f;
 				air.fvx[fanY / cell][fanX / cell] = nfvx;
 				air.fvy[fanY / cell][fanX / cell] = nfvy;
 				isSettingFan = false;
@@ -233,23 +229,23 @@ public class PowderSimJ extends CompanyGame {
 	}
 
 	public static boolean isInPlayField(int x, int y) {
-		if (Engine.mouseY > 0 && Engine.mouseY < PowderSimJ.height)
-			if (Engine.mouseX > 0 && Engine.mouseX < PowderSimJ.width)
+		if (engine.mouseY > 0 && engine.mouseY < PowderSimJ.height)
+			if (engine.mouseX > 0 && engine.mouseX < PowderSimJ.width)
 				return true;
 
 		return false;
 	}
 
 	public void onMouseClick(GameContainer arg0, int button) {
-		if (isInPlayField(Engine.mouseX, Engine.mouseY)) {
+		if (isInPlayField(engine.mouseX, engine.mouseY)) {
 			if (button == 0) {
 				if (selectedl < wallStart)
-					ptypes.create_parts(Engine.mouseX, Engine.mouseY, selectedl);
+					ptypes.create_parts(engine.mouseX, engine.mouseY, selectedl);
 				else
-					wall.create_walls(Engine.mouseX / 4, Engine.mouseY / 4,
+					wall.create_walls(engine.mouseX / 4, engine.mouseY / 4,
 							selectedl);
 			} else if (button == 4)
-				ptypes.create_parts(Engine.mouseX, Engine.mouseY, selectedr);
+				ptypes.create_parts(engine.mouseX, engine.mouseY, selectedr);
 		}
 	}
 

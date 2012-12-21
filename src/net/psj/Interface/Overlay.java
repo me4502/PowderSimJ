@@ -1,6 +1,5 @@
 package net.psj.Interface;
 
-import net.Company.Engine;
 import net.Company.Rendering;
 import net.psj.PowderSimJ;
 import net.psj.Particles.Particle;
@@ -24,8 +23,8 @@ public class Overlay {
 		int w = PowderSimJ.width;
 		// int h = PowderSimJ.height;
 
-		int x = Engine.mouseX;
-		int y = Engine.mouseY;
+		int x = PowderSimJ.engine.mouseX;
+		int y = PowderSimJ.engine.mouseY;
 		int c = PowderSimJ.cell;
 
 		String text = "X: " + x + " Y: " + y;
@@ -53,7 +52,7 @@ public class Overlay {
 			}
 		}
 
-		if (Engine.Debug) {
+		if (PowderSimJ.engine.Debug) {
 			int height = 14;
 			if (PowderSimJ.isInPlayField(x, y)) {
 				if (ParticleData.parts[ParticleData.pmap[y][x]] != null

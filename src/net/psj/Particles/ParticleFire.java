@@ -14,10 +14,11 @@ public class ParticleFire extends Particle {
 				0.9f, 0.20f, 0.00f, -0.1f, 0, 0, 1, MenuData.MENU_PARTS);
 	}
 
+	@Override
 	public boolean update() {
 		boolean ret = super.update();
 		if (life <= 0) {
-			this.isDead = true;
+			isDead = true;
 			return ret;
 		}
 		for (int i = -3; i < 2; i++)
@@ -34,10 +35,10 @@ public class ParticleFire extends Particle {
 				}
 				if ((part.explosive > 0 || part.flammable > 0)
 						&& (part.temp < 2273.15f && Air.pv[(int) y / CELL][(int) x
-								/ CELL] < 50.0f)
-						&& part.flammable > 0
-						&& (part.flammable + (int) (Air.pv[(int) (y + i) / CELL][(int) (x + p)
-								/ CELL] * 10.0f)) > (rand.nextInt(10000))) {
+						                                                   / CELL] < 50.0f)
+						                                                   && part.flammable > 0
+						                                                   && (part.flammable + (int) (Air.pv[(int) (y + i) / CELL][(int) (x + p)
+						                                                                                                            / CELL] * 10.0f)) > (rand.nextInt(10000))) {
 					PowderSimJ.ptypes.change_part(part, (int) part.x,
 							(int) part.y, 4);
 					part = ParticleData.getParticleAt((int) x + p, (int) y + i);
@@ -55,6 +56,7 @@ public class ParticleFire extends Particle {
 		return ret;
 	}
 
+	@Override
 	public boolean render() {
 		// /ShaderData.fire.activate();
 		// super.render();
@@ -71,11 +73,12 @@ public class ParticleFire extends Particle {
 		// 0f, 100f)/510);
 		// }
 		Rendering.drawFire((int) x, (int) y, colour[0], colour[1], colour[2],
-				(float) Utils.restrict_flt((float) life, 0f, 100f) / 255);
+				Utils.restrict_flt(life, 0f, 100f) / 255);
 		// ShaderData.fire.deactivate();
 		return true;
 	}
 
+	@Override
 	public void init() {
 		life = rand.nextInt() % 50 + 120;
 	}

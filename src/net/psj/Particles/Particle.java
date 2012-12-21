@@ -2,7 +2,6 @@ package net.psj.Particles;
 
 import java.util.Random;
 
-import net.Company.Engine;
 import net.Company.Rendering;
 import net.psj.PowderSimJ;
 import net.psj.Utils;
@@ -91,17 +90,17 @@ public class Particle extends Placable {
 			pGravX = pGravY = 0.0f;
 			break;
 		case 2:
-			pGravD = (float) (0.01f - Math.hypot(x - Engine.cenX, y
-					- Engine.cenY));
-			pGravX = gravity * ((x - Engine.cenX) / pGravD);
-			pGravY = gravity * ((y - Engine.cenY) / pGravD);
+			pGravD = (float) (0.01f - Math.hypot(x - PowderSimJ.engine.cenX, y
+					- PowderSimJ.engine.cenY));
+			pGravX = gravity * ((x - PowderSimJ.engine.cenX) / pGravD);
+			pGravY = gravity * ((y - PowderSimJ.engine.cenY) / pGravD);
 		}
 		Air.vx[(int) y / CELL][(int) x / CELL] = Air.vx[(int) y / CELL][(int) x
-				/ CELL]
-				* airloss + airdrag * vx;
+		                                                                / CELL]
+		                                                                		* airloss + airdrag * vx;
 		Air.vy[(int) y / CELL][(int) x / CELL] = Air.vy[(int) y / CELL][(int) x
-				/ CELL]
-				* airloss + airdrag * vy;
+		                                                                / CELL]
+		                                                                		* airloss + airdrag * vy;
 		vx *= loss;
 		vy *= loss;
 		vx += advection * Air.vx[(int) y / CELL][(int) x / CELL];

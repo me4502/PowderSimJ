@@ -8,6 +8,8 @@ import net.psj.Simulation.ParticleData;
 import net.psj.Simulation.Placable;
 import net.psj.Simulation.WallData;
 
+import com.me4502.MAPL.MAPL;
+
 public class MenuData {
 
 	public static int selected = 0;
@@ -29,7 +31,7 @@ public class MenuData {
 	}
 
 	public static void draw() {
-		// RenderUtils.drawRect(0, h+m, w, h, 1.0f,1.0f,1.0f);
+		//Rendering.drawRect(0, h+m, w, h, 1.0f,1.0f,1.0f);
 		for (int i = 0; i < menus; i++) {
 			draw_menu(i);
 		}
@@ -66,11 +68,10 @@ public class MenuData {
 			} else {
 				c = 0f;
 			}
-			Rendering.drawRect(i * 64 + 5, h + 6, i * 64 + 63, h + m - 6,
-					menuItems.get(i).colour[0], menuItems.get(i).colour[1],
-					menuItems.get(i).colour[2]);
-			Rendering.drawFont(i * 64 + 23, h + m / 2 - 5,
-					menuItems.get(i).name, c, c, c);
+			MAPL.inst().getRenderer().setTextureState(false);
+			Rendering.drawRect(i * 64 + 5, h + 2, i * 64 + 63, h + 30,menuItems.get(i).colour[0], menuItems.get(i).colour[1],menuItems.get(i).colour[2]);
+			MAPL.inst().getRenderer().setTextureState(true);
+			Rendering.drawFont(i * 64 + 23, h + m / 2 - 22,menuItems.get(i).name, c, c, c);
 		}
 	}
 
@@ -87,12 +88,12 @@ public class MenuData {
 					menuItems.add(WallData.newWallfromID(i));
 				}
 			}
-			for (int i = 0; i < ParticleData.PT_NUM; i++) {
+			for (short i = 0; i < ParticleData.PT_NUM; i++) {
 				if (ParticleData.ParticleEnum.fromID(i).menu.id == selected) {
 					menuItems.add(ParticleData.ParticleEnum.fromID(i).setId(i));
 				}
 			}
-			for (int i = 100; i < 100 + ParticleData.PT_TOOLS; i++) {
+			for (short i = 100; i < 100 + ParticleData.PT_TOOLS; i++) {
 				if (ParticleData.ParticleEnum.fromID(i).menu.id == selected) {
 					menuItems.add(ParticleData.ParticleEnum.fromID(i).setId(i));
 				}
@@ -111,9 +112,9 @@ public class MenuData {
 				if (x > PowderSimJ.width + PowderSimJ.barSize - 16
 						&& x < PowderSimJ.width + PowderSimJ.barSize - 2
 						&& y > i * 16 + PowderSimJ.height + PowderSimJ.menuSize
-								- 16 - menus * 16
+						- 16 - menus * 16
 						&& y < i * 16 + PowderSimJ.height + PowderSimJ.menuSize
-								- 16 - menus * 16 + 14) {
+						- 16 - menus * 16 + 14) {
 					selected = i;
 				}
 			}
@@ -121,17 +122,21 @@ public class MenuData {
 	}
 
 	static void draw_menu(int i) {
+		MAPL.inst().getRenderer().setTextureState(false);
 		Rendering.drawRectLine(PowderSimJ.width + PowderSimJ.barSize - 16, i
 				* 16 + PowderSimJ.height + PowderSimJ.menuSize - 16 - menus
 				* 16, PowderSimJ.width + PowderSimJ.barSize - 2, i * 16
 				+ PowderSimJ.height + PowderSimJ.menuSize - 16 - menus * 16
 				+ 14, 255, 255, 255);
+		MAPL.inst().getRenderer().setTextureState(true);
 		if (selected == i) {
+			MAPL.inst().getRenderer().setTextureState(false);
 			Rendering.drawRect(PowderSimJ.width + PowderSimJ.barSize - 16, i
 					* 16 + PowderSimJ.height + PowderSimJ.menuSize - 16 - menus
 					* 16, PowderSimJ.width + PowderSimJ.barSize - 2, i * 16
 					+ PowderSimJ.height + PowderSimJ.menuSize - 16 - menus * 16
 					+ 14, 255, 255, 255);
+			MAPL.inst().getRenderer().setTextureState(true);
 			Rendering.drawFont(PowderSimJ.width + PowderSimJ.barSize - 13, i
 					* 16 + PowderSimJ.height + PowderSimJ.menuSize - 14 - menus
 					* 16, getMenuFromID(i).name, 0, 0, 0);

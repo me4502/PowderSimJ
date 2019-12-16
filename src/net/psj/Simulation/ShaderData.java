@@ -1,6 +1,5 @@
 package net.psj.Simulation;
 
-import net.Company.ResourceLoader;
 import net.psj.shader.Shader;
 
 public class ShaderData {
@@ -8,7 +7,7 @@ public class ShaderData {
 	public static Shader blurH, blurV, fancy, FXAA, fire;
 
 	public static void init() {
-		try {
+		/*try {
 			blurH = new Shader(
 					ResourceLoader.loadResource("res","simplevertex.vert"),
 					ResourceLoader.loadResource("res","blurHorizontal.frg"));
@@ -23,6 +22,6 @@ public class ShaderData {
 					ResourceLoader.loadResource("res","fireFrag.frg"));
 		} catch (Exception e) {
 			e.printStackTrace();
-		}
+		}*/
 	}
 }

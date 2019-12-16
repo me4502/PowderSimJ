@@ -6,10 +6,10 @@ public class Placable {
 
 	public String name;
 	public float[] colour;
-	public int id;
+	public short id;
 	public Menu menu;
 
-	public Placable(String name, float[] colour, int id, Menu menu) {
+	public Placable(String name, float[] colour, short id, Menu menu) {
 		this.name = name;
 		this.colour = colour;
 		this.id = id;

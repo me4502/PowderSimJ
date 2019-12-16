@@ -11,19 +11,21 @@ public class ParticleClone extends Particle {
 				0.0f, 0.0f, 0.0f, 0, 0, 0, MenuData.MENU_PARTS);
 	}
 
+	@Override
 	public String getExtraData() {
 		return " C: " + ctype;
 	}
 
+	@Override
 	public boolean update() {
 		boolean ret = super.update();
 		if (ctype != -0) {
 			for (float x2 = x - 1; x2 < x + 2; x2++)
 				for (float y2 = y - 1; y2 < y + 2; y2++)
 					if (ParticleData.getParticleAt((int) x2, (int) y2) == null
-							|| ParticleData.getParticleAt((int) x2, (int) y2).id == -1) {
+					|| ParticleData.getParticleAt((int) x2, (int) y2).id == -1) {
 						PowderSimJ.ptypes.create_part((int) x2, (int) y2,
-								ctype, false);
+								(short) ctype, false);
 						break;
 					} else if (ParticleData.getParticleAt((int) x2, (int) y2).type == ParticleData.ParticleEnum.CLONE
 							.getId())
@@ -33,8 +35,8 @@ public class ParticleClone extends Particle {
 			for (rx = -1; rx < 2; rx++)
 				for (ry = -1; ry < 2; ry++)
 					if (x + rx >= 0 && y + ry > 0 && x + rx < PowderSimJ.width
-							&& y + ry < PowderSimJ.height
-							&& (rx != 0 || ry != 0)) {
+					&& y + ry < PowderSimJ.height
+					&& (rx != 0 || ry != 0)) {
 						Particle r = ParticleData.getParticleAt((int) x
 								+ (int) rx, (int) y + (int) ry);
 						if (r == null)

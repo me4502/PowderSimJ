@@ -2,7 +2,6 @@ package net.psj.Particles;
 
 import java.util.Random;
 
-import net.Company.Rendering;
 import net.psj.PowderSimJ;
 import net.psj.Utils;
 import net.psj.Interface.Menu;
@@ -10,6 +9,8 @@ import net.psj.Simulation.Air;
 import net.psj.Simulation.ParticleData;
 import net.psj.Simulation.Placable;
 import net.psj.Simulation.WallData;
+
+import com.me4502.MAPL.MAPL;
 
 public class Particle extends Placable {
 	float airdrag;
@@ -23,7 +24,7 @@ public class Particle extends Placable {
 	int state = 0;// solid,powder,liquid,gas,special
 	public int life = 0;
 
-	public int ctype = 0;
+	public short ctype = 0;
 
 	public float x = 0;
 	public float y = 0;
@@ -44,12 +45,12 @@ public class Particle extends Placable {
 
 	Random rand = new Random();
 
-	public int type = 0;
+	public short type = 0;
 
 	public Particle(String name, float[] colour, float airdrag, float airloss,
 			float advection, float loss, float diffusion, float gravity,
 			int flammable, int explosive, int state, Menu menu) {
-		super(name, colour, 0, menu);
+		super(name, colour, (short) 0, menu);
 		this.airdrag = airdrag;
 		this.airloss = airloss;
 		this.advection = advection;
@@ -64,13 +65,13 @@ public class Particle extends Placable {
 
 	}
 
-	public Particle setPos(float x, float y, int id) {
+	public Particle setPos(float x, float y, short id) {
 		this.x = x;
 		this.y = y;
 		return setId(id);
 	}
 
-	public Particle setId(int id) {
+	public Particle setId(short id) {
 		this.id = id;
 		ParticleData.pmap[(int) y][(int) x] = id;
 		return this;
@@ -114,7 +115,7 @@ public class Particle extends Placable {
 			temp = Utils.restrict_flt(temp + flammable / 2,
 					PowderSimJ.MIN_TEMP, PowderSimJ.MAX_TEMP);
 			Air.pv[(int) (y / CELL)][(int) (x / CELL)] += 0.25f * CFDS;
-			PowderSimJ.ptypes.change_part(this, (int) x, (int) y, 4);
+			PowderSimJ.ptypes.change_part(this, (int) x, (int) y, (short)4);
 			return false;
 		}
 
@@ -248,12 +249,12 @@ public class Particle extends Placable {
 	}
 
 	public boolean render() {
+		MAPL.inst().getRenderer().setTextureState(false);
 		if (ParticleData.renderMode == 0)
-			Rendering.drawPixel((int) x, (int) y, colour[0], colour[1],
-					colour[2]);
+			MAPL.inst().getRenderer().pixels().drawPixel((int) x, (int) y, colour[0], colour[1], colour[2], 1.0f);
 		else if (ParticleData.renderMode == 1) // Blob
-			Rendering.drawBlob((int) x, (int) y, colour[0], colour[1],
-					colour[2], 255);
+			Rendering.drawBlob((int) x, (int) y, colour[0], colour[1], colour[2], 255);
+		MAPL.inst().getRenderer().setTextureState(true);
 		return false;
 	}
 

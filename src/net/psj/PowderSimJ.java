@@ -1,10 +1,5 @@
 package net.psj;
 
-import net.Company.CompanyGame;
-import net.Company.DebugProfiler;
-import net.Company.Engine;
-import net.Company.Rendering;
-import net.Company.ResourceLoader;
 import net.psj.Interface.MenuData;
 import net.psj.Interface.Overlay;
 import net.psj.Simulation.Air;
@@ -13,29 +8,34 @@ import net.psj.Simulation.ShaderData;
 import net.psj.Simulation.WallData;
 import net.psj.Walls.WallFan;
 
+import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 
-public class PowderSimJ extends CompanyGame {
+import com.me4502.MAPL.DebugProfiler;
+import com.me4502.MAPL.MAPL;
+import com.me4502.MAPL.slick.MAPLSlickProgram;
+import com.me4502.MAPL.slick.SlickMAPL;
+import com.me4502.MAPL.util.config.YAMLConfiguration;
 
-	public static Engine engine;
+public class PowderSimJ implements MAPLSlickProgram {
 
 	public static final int width = 612;
 	public static final int height = 384;
-	public static final int menuSize = 40;
+	public static final int menuSize = 60;
 	public static final int barSize = 17;
 	public static final int cell = 4;
 
 	public static final int MAX_TEMP = 9000;
 	public static final int MIN_TEMP = 0;
 
-	public static int selectedl = 1;/* 0x00 - 0xFF are particles */
-	public static int selectedr = 0;
+	public static short selectedl = 1;/* 0x00 - 0xFF are particles */
+	public static short selectedr = 0;
 
-	public static int wallStart = 4096; // Basically the element limit. Can be
+	public static short wallStart = 4096; // Basically the element limit. Can be
 	// changed, but once saving is done, it
 	// will break saves.
 
@@ -46,8 +46,6 @@ public class PowderSimJ extends CompanyGame {
 	public boolean isPaused = false;
 
 	public boolean airHeat = false;
-
-	public static GameContainer gc;
 
 	public Air air = new Air();
 	public WallData wall = new WallData();
@@ -60,31 +58,32 @@ public class PowderSimJ extends CompanyGame {
 	boolean shouldUpdateAir = true;
 
 	// Debug Data
-	private DebugProfiler updateProfiler = new DebugProfiler(5, 20, "Tick");
-	private DebugProfiler renderProfiler = new DebugProfiler(5, 80, "Render");
+	private DebugProfiler updateProfiler = new DebugProfiler(5, 20, "Tick") {
 
-	public PowderSimJ(Engine engine) {
-		super(engine);
-	}
+		@Override
+		public void drawTimes() {
+
+		}
+	};
+	private DebugProfiler renderProfiler = new DebugProfiler(5, 80, "Render") {
+
+		@Override
+		public void drawTimes() {
+
+		}
+	};
 
 	public PowderSimJ() {
 		super();
 	}
 
-	public static GameContainer getGame() {
-		return gc;
-	}
-
 	@Override
 	public void init(GameContainer gc) {
 		try {
-			gc.setIcon(ResourceLoader.loadResource("res", "powder.png"));
+			//gc.setIcon(ResourceLoader.loadResource("res", "powder.png"));
 			gc.setAlwaysRender(true);
-			PowderSimJ.gc = gc;
-			Rendering.setAntiAliasing(true);
 			GL11.glDisable(GL11.GL_LIGHTING);
 			GL11.glShadeModel(GL11.GL_SMOOTH);
-			Rendering.init();
 			ShaderData.init();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -92,8 +91,8 @@ public class PowderSimJ extends CompanyGame {
 	}
 
 	public static void main(String[] args) throws SlickException {
-		engine = Engine.setup("PowderSimJ", new PowderSimJ(engine), width + barSize,
-				height + menuSize, false);
+
+		new SlickMAPL().setup(new PowderSimJ(), "PowderSimJ", width + barSize, height + menuSize, false);
 	}
 
 	@Override
@@ -116,13 +115,12 @@ public class PowderSimJ extends CompanyGame {
 
 		renderProfiler.startEndSection("Cursor");
 		if (isSettingFan)
-			Rendering.Lines.drawSingleLine(fanX, fanY, engine.mouseX, engine.mouseY, 1, 1.0f, 1.0f, 1.0f, 1.0f);
+			MAPL.inst().getRenderer().lines().drawSingleLine(fanX, fanY, ((SlickMAPL)MAPL.inst()).mouseX, ((SlickMAPL)MAPL.inst()).mouseY, 1, 1.0f, 1.0f, 1.0f, 1.0f);
 		else {
-			int x1 = engine.mouseX, y1 = engine.mouseY;
+			int x1 = ((SlickMAPL)MAPL.inst()).mouseX, y1 = ((SlickMAPL)MAPL.inst()).mouseY;
 			x1 = x1 - PowderSimJ.brushSize / 2;
 			y1 = y1 - PowderSimJ.brushSize / 2;
-			Rendering.drawRectLine(x1, y1, x1 + brushSize, y1 + brushSize,
-					1.0f, 1.0f, 1.0f);
+			MAPL.inst().getRenderer().lines().drawSingleLine(x1, y1, x1 + brushSize, y1 + brushSize, 1, 1.0f, 1.0f, 1.0f, 1.0f);
 		}
 
 		renderProfiler.startSection("Info");
@@ -207,19 +205,18 @@ public class PowderSimJ extends CompanyGame {
 	public void mousePressed(int button, int x, int y) {
 		MenuData.click(button, x, y);
 		if (isInPlayField(x, y)) {
-			while (!(engine.mouseY % cell == 0))
-				engine.mouseY--;
-			while (!(engine.mouseX % cell == 0))
-				engine.mouseX--;
-			if (WallData.bmap[engine.mouseY / cell][engine.mouseX / cell] instanceof WallFan
-					&& gc.getInput().isKeyDown(Input.KEY_LSHIFT)) {
+			while (!(y % cell == 0))
+				y--;
+			while (!(x % cell == 0))
+				x--;
+			if (WallData.bmap[y / cell][x / cell] instanceof WallFan && Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
 				isSettingFan = !isSettingFan;
-				fanX = engine.mouseX;
-				fanY = engine.mouseY;
+				fanX = x;
+				fanY = y;
 				return;
 			} else if (isSettingFan) {
-				float nfvx = (engine.mouseX - fanX) * 0.055f;
-				float nfvy = (engine.mouseY - fanY) * 0.055f;
+				float nfvx = (x - fanX) * 0.055f;
+				float nfvy = (y - fanY) * 0.055f;
 				air.fvx[fanY / cell][fanX / cell] = nfvx;
 				air.fvy[fanY / cell][fanX / cell] = nfvy;
 				isSettingFan = false;
@@ -229,38 +226,95 @@ public class PowderSimJ extends CompanyGame {
 	}
 
 	public static boolean isInPlayField(int x, int y) {
-		if (engine.mouseY > 0 && engine.mouseY < PowderSimJ.height)
-			if (engine.mouseX > 0 && engine.mouseX < PowderSimJ.width)
+		if (y > 0 && y < PowderSimJ.height)
+			if (x > 0 && x < PowderSimJ.width)
 				return true;
 
 		return false;
 	}
 
 	public void onMouseClick(GameContainer arg0, int button) {
-		if (isInPlayField(engine.mouseX, engine.mouseY)) {
+		if (isInPlayField(arg0.getInput().getMouseX(), arg0.getInput().getMouseY())) {
 			if (button == 0) {
 				if (selectedl < wallStart)
-					ptypes.create_parts(engine.mouseX, engine.mouseY, selectedl);
+					ptypes.create_parts(((SlickMAPL)MAPL.inst()).mouseX, ((SlickMAPL)MAPL.inst()).mouseY, selectedl);
 				else
-					wall.create_walls(engine.mouseX / 4, engine.mouseY / 4,
+					wall.create_walls(((SlickMAPL)MAPL.inst()).mouseX / 4, ((SlickMAPL)MAPL.inst()).mouseY / 4,
 							selectedl);
 			} else if (button == 4)
-				ptypes.create_parts(engine.mouseX, engine.mouseY, selectedr);
+				ptypes.create_parts(((SlickMAPL)MAPL.inst()).mouseX, ((SlickMAPL)MAPL.inst()).mouseY, selectedr);
 		}
 	}
 
 	@Override
-	public void configLoad(String[] args) {
-
-	}
-
-	@Override
-	public String[] configSave() {
+	public String getProgramName() {
+		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public boolean isAcceptingInput() {
-		return true;
+	public int getWindowWidth() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public int getWindowHeight() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public float getWindowScaleX() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public float getWindowScaleY() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public YAMLConfiguration getConfiguration() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void load() {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public boolean close() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public void mouseClicked(int arg0, int arg1, int arg2, int arg3) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void mouseDragged(int arg0, int arg1, int arg2, int arg3) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void mouseMoved(int arg0, int arg1, int arg2, int arg3) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void keyReleased(int arg0, char arg1) {
+		// TODO Auto-generated method stub
+
 	}
 }

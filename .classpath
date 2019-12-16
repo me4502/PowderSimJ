@@ -3,10 +3,9 @@
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="src" path="res"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.6"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/GameEngine"/>
-	<classpathentry kind="lib" path="C:/Users/Matthew/Company/GameEngine/JOCL-0.1.7.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Matthew/Company/GameEngine/lwjgl.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Matthew/Company/GameEngine/lwjgl_util.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Matthew/Company/GameEngine/slick.jar"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/MAPL"/>
+	<classpathentry kind="lib" path="C:/workspaces/lwjgl.jar"/>
+	<classpathentry kind="lib" path="C:/workspaces/lwjgl_util.jar"/>
+	<classpathentry kind="lib" path="C:/workspaces/slick.jar"/>
 	<classpathentry kind="output" path="bin/res"/>
 </classpath>

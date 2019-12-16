@@ -20,7 +20,7 @@ import net.psj.Walls.WallBasic;
 public class ParticleData {
 	public static int[][] pmap = new int[PowderSimJ.height][PowderSimJ.width];
 	public static Particle[] parts = new Particle[PowderSimJ.height
-			* PowderSimJ.width * PowderSimJ.cell];
+	                                              * PowderSimJ.width * PowderSimJ.cell];
 
 	public static int latPart = 1;
 	public static int gravityMode = 0;
@@ -37,13 +37,13 @@ public class ParticleData {
 		return part;
 	}
 
-	public Particle change_part(Particle old, int x, int y, int id) {
+	public Particle change_part(Particle old, int x, int y, short id) {
 		if (!(getParticleAt(x, y) == null))
 			kill(getParticleAt(x, y).id);
 		return create_part(x, y, id, false);
 	}
 
-	public Particle create_part(int x, int y, int id, boolean fromBrush) {
+	public Particle create_part(int x, int y, short id, boolean fromBrush) {
 		if (x > PowderSimJ.width - PowderSimJ.cell || x < PowderSimJ.cell
 				|| y > PowderSimJ.height - PowderSimJ.cell
 				|| y < PowderSimJ.cell
@@ -56,7 +56,7 @@ public class ParticleData {
 		if (!(newPart instanceof ParticleErase) && getParticleAt(x, y) == null
 				&& newPart != null && pmap[y][x] == -1) {
 			latPart++;
-			newPart.setPos(x, y, latPart);
+			newPart.setPos(x, y, id);
 			newPart.type = id;
 			newPart.init();
 			parts[latPart] = newPart;
@@ -75,9 +75,9 @@ public class ParticleData {
 		return null;
 	}
 
-	public void create_parts(int x1, int y1, int id) {
-		x1 = x1 - (PowderSimJ.brushSize / 2);
-		y1 = y1 - (PowderSimJ.brushSize / 2);
+	public void create_parts(int x1, int y1, short id) {
+		x1 = x1 - PowderSimJ.brushSize / 2;
+		y1 = y1 - PowderSimJ.brushSize / 2;
 		for (int x = x1; x < x1 + PowderSimJ.brushSize; x++) {
 			for (int y = y1; y < y1 + PowderSimJ.brushSize; y++) {
 				create_part(x, y, id, true);
@@ -161,8 +161,8 @@ public class ParticleData {
 		if (parts == null)
 			return;
 		parts.isDead = true;
-		int old = pmap[(int) y][(int) x];
-		pmap[(int) y][(int) x] = -1;
+		int old = pmap[y][x];
+		pmap[y][x] = -1;
 		parts = null;
 		if (latPart > 600000) {
 			System.out.println(latPart);
@@ -199,10 +199,10 @@ public class ParticleData {
 
 		ERASE(0, ParticleErase.class), DUST(1, ParticleDust.class), CLONE(2,
 				ParticleClone.class), WATER(3, ParticleWater.class), FIRE(4,
-				ParticleFire.class), GAS(5, ParticleGas.class), C4(6,
-				ParticleC4.class), WOOD(7, ParticleWood.class),
+						ParticleFire.class), GAS(5, ParticleGas.class), C4(6,
+								ParticleC4.class), WOOD(7, ParticleWood.class),
 
-		AIR(100, ParticleAir.class), VAC(101, ParticleVac.class);
+								AIR(100, ParticleAir.class), VAC(101, ParticleVac.class);
 
 		private int id;
 		private Class<?> partClass;
